@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SwitchBtn extends StatelessWidget {
   final Function(bool val) onChange;
   final bool value;
-  const SwitchBtn({required this.onChange, required this.value});
+  const SwitchBtn({super.key, required this.onChange, required this.value});
 
   @override
   Widget build(BuildContext context) {

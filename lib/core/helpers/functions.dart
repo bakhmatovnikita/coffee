@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../features/auth/presentation/views/hello_view.dart';
+
 class Functions {
   final BuildContext context;
 
@@ -78,7 +80,7 @@ class Functions {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginView(),
+                          builder: (context) => const HelloView(),
                         ),
                       );
                     },

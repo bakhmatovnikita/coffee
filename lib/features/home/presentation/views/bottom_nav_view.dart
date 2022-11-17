@@ -37,8 +37,8 @@ class _BottomNavViewState extends State<BottomNavView>
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          HomeView(),
-          CartView(),
+          const HomeView(),
+          const CartView(),
           BodyView(
             onChangeView: (index) {
               _streamController.sink.add(index);

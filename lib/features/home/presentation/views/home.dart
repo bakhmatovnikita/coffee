@@ -6,17 +6,15 @@ import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/core/models/category.dart';
 import 'package:cofee/core/models/product.dart';
-import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({super.key});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
