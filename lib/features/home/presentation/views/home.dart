@@ -216,7 +216,7 @@ class _HomeViewState extends State<HomeView>
   SliverAppBar _appBar() {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 125.h : 100.h,
+      toolbarHeight: Platform.isAndroid ? 145.h : 100.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,
@@ -225,7 +225,7 @@ class _HomeViewState extends State<HomeView>
         children: [
           _topInfo(),
           Padding(
-            padding: EdgeInsets.only(top: 17.h, left: 15.w),
+            padding: EdgeInsets.only(top: 17.h, left: 15.w, bottom: 15.h),
             child: CustomText(
               title: 'Меню на 12 июля (Вт)',
               fontSize: 16,

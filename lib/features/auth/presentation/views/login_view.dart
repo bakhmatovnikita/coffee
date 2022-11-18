@@ -125,7 +125,10 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 42.5.h),
-                  child: CustomButton(title: 'Отправить код'),
+                  child: CustomButton(
+                    title: 'Отправить код',
+                    onTap: () => Navigator.of(context).pushNamed('/CodeView'),
+                  ),
                 ),
               ],
             ),
