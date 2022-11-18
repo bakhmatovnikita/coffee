@@ -106,53 +106,20 @@ class HelloView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(bottom: 190.h),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  maximumSize: MaterialStatePropertyAll(
-                    Size(343.w, 48.h),
-                  ),
-                  minimumSize: MaterialStatePropertyAll(
-                    Size(343.w, 48.h),
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                  ),
-                  backgroundColor:
-                      MaterialStateProperty.all(ColorStyles.accentColor),
-                ),
-                child: Text(
-                  'Войти по номеру телефона',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                    color: ColorStyles.whiteColor,
-                  ),
-                ),
-              ),
+              child: CustomButton(title: 'Войти по номеру телефона'),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.only(
-                top: 28.h,
-                bottom: 137.h,
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Пропустить',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                    color: ColorStyles.accentColor,
-                  ),
+                padding: EdgeInsets.only(
+                  top: 28.h,
+                  bottom: 137.h,
                 ),
-              ),
-            ),
+                child: CustomButton(
+                  title: 'Пропустить',
+                  accent: false,
+                )),
           )
         ],
       ),
