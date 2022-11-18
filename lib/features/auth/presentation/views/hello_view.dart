@@ -106,7 +106,7 @@ class HelloView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(bottom: 190.h),
-              child: CustomButton(title: 'Войти по номеру телефона'),
+              child: CustomButton(title: 'Войти по номеру телефона', onTap: () => Navigator.of(context).pushNamed('/LoginView'),),
             ),
           ),
           Align(

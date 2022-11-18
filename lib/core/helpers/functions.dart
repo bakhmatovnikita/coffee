@@ -77,12 +77,7 @@ class Functions {
                   child: CustomButton(
                     title: 'Перейти к регистрации',
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HelloView(),
-                        ),
-                      );
+                      Navigator.of(context).pushNamed('/HelloView');
                     },
                   ),
                 ),

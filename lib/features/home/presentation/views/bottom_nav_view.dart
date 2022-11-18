@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/home/presentation/views/body_view.dart';
 import 'package:cofee/features/home/presentation/views/cart_view.dart';
 import 'package:cofee/features/home/presentation/views/home.dart';
@@ -66,9 +67,11 @@ class _BottomNavViewState extends State<BottomNavView>
                   icon: Column(
                     children: [
                       SvgPicture.asset(
-                        'assets/icons/house.fill.svg',
+                        snapshot.data! == 0
+                            ? SvgImg.houseFill
+                            : SvgImg.houseNotFill,
                         width: 20.73.h,
-                        height: 18.4.h,
+                        height: 18.14.h,
                         color: snapshot.data! == 0
                             ? ColorStyles.accentColor
                             : ColorStyles.greyTitleColor,
@@ -90,8 +93,8 @@ class _BottomNavViewState extends State<BottomNavView>
                   icon: Column(
                     children: [
                       SvgPicture.asset(
-                        'assets/icons/cart.svg',
-                        width: 16.7.h,
+                        snapshot.data! == 1 ? SvgImg.cartFill : SvgImg.cart,
+                        width: 19.7.h,
                         height: 16.9.h,
                         color: snapshot.data! == 1
                             ? ColorStyles.accentColor
@@ -113,8 +116,7 @@ class _BottomNavViewState extends State<BottomNavView>
                 BottomNavigationBarItem(
                   icon: Column(
                     children: [
-                      SvgPicture.asset(
-                        'assets/icons/heart.svg',
+                      SvgPicture.asset( SvgImg.heart,
                         width: 17.15.h,
                         height: 15.88.h,
                         color: snapshot.data! == 2
