@@ -1,12 +1,12 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/auth/presentation/views/login_view.dart';
+import 'package:cofee/features/auth/presentation/views/login_view/login_view.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../features/auth/presentation/views/hello_view.dart';
+import '../../features/auth/presentation/views/hello_view/hello_view.dart';
 
 class Functions {
   final BuildContext context;

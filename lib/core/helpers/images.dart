@@ -1,6 +1,7 @@
 abstract class Img{
 static const String dish = "assets/images/dish.png";
 static const String backgroundImg = "assets/images/backgroundImg.png";
+static const String berry = "assets/images/Berry.png";
 }
 
 abstract class SvgImg{

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
-import 'package:cofee/features/auth/presentation/views/login_view.dart';
+import 'package:cofee/features/auth/presentation/views/login_view/login_view.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
