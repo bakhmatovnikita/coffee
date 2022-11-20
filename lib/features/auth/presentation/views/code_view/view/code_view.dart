@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../widgets/push_error.dart';
-
 class CodeView extends StatefulWidget {
   const CodeView({super.key});
 
@@ -62,7 +60,11 @@ class _CodeViewState extends State<CodeView> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 32.h),
-                child: CustomButton(title: 'Подтвердить'),
+                child: CustomButton(
+                  title: 'Подтвердить',
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/ChoiceAdressView'),
+                ),
               )
             ],
           ),

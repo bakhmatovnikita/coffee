@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PushError extends StatelessWidget {
@@ -15,7 +13,7 @@ class PushError extends StatelessWidget {
         color: const Color(0xffD30000),
         borderRadius: BorderRadius.circular(8),
       ),
-      
+
     );
   }
 }

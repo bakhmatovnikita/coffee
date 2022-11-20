@@ -475,7 +475,6 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
