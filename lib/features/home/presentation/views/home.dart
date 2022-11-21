@@ -216,16 +216,18 @@ class _HomeViewState extends State<HomeView>
   SliverAppBar _appBar() {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 145.h : 100.h,
-      elevation: 1,
-      expandedHeight: 10.h,
-      // forceElevated: true,
+      toolbarHeight: Platform.isAndroid ? 150.h : 100.h,
+      elevation: 0,
+      expandedHeight: 150.h,
       flexibleSpace: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _topInfo(),
           Padding(
-            padding: EdgeInsets.only(top: 17.h, left: 15.w, bottom: 15.h),
+            padding: EdgeInsets.only(
+              top: 17.h,
+              left: 15.w,
+            ),
             child: CustomText(
               title: 'Меню на 12 июля (Вт)',
               fontSize: 16,
@@ -244,6 +246,7 @@ class _HomeViewState extends State<HomeView>
           return SliverAppBar(
             backgroundColor: ColorStyles.backgroundColor,
             toolbarHeight: newData.data!,
+            expandedHeight: 40.h,
             pinned: true,
             flexibleSpace: AnimatedAlign(
               duration: const Duration(milliseconds: 500),
@@ -428,8 +431,14 @@ class _HomeViewState extends State<HomeView>
       padding: EdgeInsets.only(top: 68.h, left: 15.w, right: 15.w),
       child: Row(
         children: [
-          CustomText(title: 'Меню', fontWeight: FontWeight.w600, fontSize: 40),
-          const Expanded(child: SizedBox()),
+          CustomText(
+            title: 'Меню',
+            fontWeight: FontWeight.w600,
+            fontSize: 40,
+          ),
+          const Expanded(
+            child: SizedBox(),
+          ),
           ScaleButton(
             onTap: () => Functions(context).showModalNotifications(),
             bound: 0.05,
