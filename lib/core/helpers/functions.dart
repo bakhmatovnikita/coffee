@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/features/auth/presentation/views/login_view/widgets/login_bottomscheet.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +93,20 @@ class Functions {
             ],
           ),
         );
+      },
+    );
+  }
+
+  void showLoginBottomsheet() {
+    showMaterialModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return const LoginBottomsheet();
       },
     );
   }

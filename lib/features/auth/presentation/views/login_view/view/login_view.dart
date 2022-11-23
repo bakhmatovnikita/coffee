@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:cofee/features/widgets/custom_text_field.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -98,7 +100,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 87.h, left: 16.h, right: 16.h),
-                  child: const CustomTextField(),
+                  child: const CustomTextField(
+                    color: ColorStyles.backgroundColor,
+                  ),
                 ),
                 Padding(
                   padding:
@@ -127,7 +131,8 @@ class _LoginViewState extends State<LoginView> {
                   padding: EdgeInsets.only(top: 42.5.h),
                   child: CustomButton(
                     title: 'Отправить код',
-                    onTap: () => Navigator.of(context).pushNamed('/CodeView'),
+                    onTap: () => Functions(context).showLoginBottomsheet(),
+                    // onTap: () => Navigator.of(context).pushNamed('/CodeView'),
                   ),
                 ),
               ],

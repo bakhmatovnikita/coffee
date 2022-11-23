@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key});
+  final Color color;
+  const CustomTextField({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CustomTextField extends StatelessWidget {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: ColorStyles.backgroundColor,
+        color: color,
       ),
       child: TextField(
         style: GoogleFonts.montserrat(
