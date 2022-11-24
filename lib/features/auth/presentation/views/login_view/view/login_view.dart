@@ -18,6 +18,13 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    controller.addListener(() {});
+    super.initState();
+  }
+
   bool switchValue = true;
   @override
   Widget build(BuildContext context) {
@@ -100,8 +107,10 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 87.h, left: 16.h, right: 16.h),
-                  child: const CustomTextField(
+                  child: CustomTextField(
                     color: ColorStyles.backgroundColor,
+                    controller: controller,
+                    type: TextInputType.number,
                   ),
                 ),
                 Padding(
@@ -131,8 +140,13 @@ class _LoginViewState extends State<LoginView> {
                   padding: EdgeInsets.only(top: 42.5.h),
                   child: CustomButton(
                     title: 'Отправить код',
-                    onTap: () => Functions(context).showLoginBottomsheet(),
-                    // onTap: () => Navigator.of(context).pushNamed('/CodeView'),
+                    onTap: () {
+                      if (controller.text.length < 17 && controller.text.isEmpty){
+                        // print('error');
+                      } else {
+                        Navigator.of(context).pushNamed('/CodeView');
+                      }
+                    },
                   ),
                 ),
               ],
