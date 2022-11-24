@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/images.dart';
@@ -20,6 +22,11 @@ class ChoiceAdressView extends StatefulWidget {
 }
 
 class _ChoiceAdressViewState extends State<ChoiceAdressView> {
+  Stream<int> getIndex(int index) async* {
+    yield index;
+  }
+
+  final streamController = StreamController<int>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -31,74 +38,101 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
               .fetchOrganization("organizations", BackConstants.token);
         } else if (state is ChoiceAdressLoadedState) {
           return Scaffold(
-            body: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    height: 116.h,
-                    width: 68.w,
-                    margin: EdgeInsets.only(bottom: 163.h),
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(Img.berry),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 56.h,
-                        left: 25.5.w,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.arrow_back_ios),
-                            color: ColorStyles.accentColor,
+            body: StreamBuilder<int>(
+              initialData: 0,
+                stream: streamController.stream,
+                builder: (context, snapshot) {
+                  return Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          height: 116.h,
+                          width: 68.w,
+                          margin: EdgeInsets.only(bottom: 163.h),
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(Img.berry),
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 128.h),
-                      child: Text(
-                        'Выберите адрес заведения',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: ColorStyles.blackColor,
                         ),
                       ),
-                    ),
-                    Container(
-                      width: size.width,
-                      height: 300.w,
-                      margin: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 40.h),
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          return const ChoicedRestaurant(
-                            title: "Ресторан Ели-Млели в Ростове",
-                            adress:
-                                "Доломановский переулок, 70ДБЦ Гвардейский, этаж 1",
-                          );
-                        },
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 56.h,
+                              left: 25.5.w,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(Icons.arrow_back_ios),
+                                  color: ColorStyles.accentColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 128.h),
+                            child: Text(
+                              'Выберите адрес заведения',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: ColorStyles.blackColor,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width,
+                            height: 300.w,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 40.h),
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => streamController.sink.add(index),
+                                  child: ChoicedRestaurant(
+                                    title: state.organizationsEntiti
+                                        .organizations[index].name,
+                                    adress: state.organizationsEntiti
+                                        .organizations[index].restaurantAddress,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          CustomButton(
+                              title: "Готово",
+                              onTap: () {
+                                setState(() {
+                                  if (context
+                                      .read<ChoiceAdressCubit>()
+                                      .createCustomer(
+                                          "loyalty/iiko/customer/create_or_update",
+                                          state.organizationsEntiti
+                                              .organizations[snapshot.data!].id,
+                                          widget.phone)) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      "/",
+                                      (route) => false,
+                                    );
+                                  }
+                                });
+                              }),
+                        ],
                       ),
-                    ),
-                    CustomButton(title: "Готово")
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  );
+                }),
           );
         }
         return const SafeArea(

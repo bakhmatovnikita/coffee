@@ -7,7 +7,7 @@ class OrganizationEntiti {
   final bool useUaeAddressingSystem;
   final String version;
   final String currencyIsoName;
-  final int currencyMinimumDenomination;
+  final double currencyMinimumDenomination;
   final String countryPhoneCode;
   final bool marketingSourceRequiredInDelivery;
   final String defaultDeliveryCityId;

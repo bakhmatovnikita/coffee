@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
@@ -36,9 +38,9 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Token ${BackConstants.token}',
+      'Authorization': 'Bearer ${BackConstants.token}',
     };
-    final userData = FormData.fromMap({
+    final userData = jsonEncode({
       "organizationId": organizationId,
       "phone": phone,
     });
@@ -64,9 +66,9 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Token ${BackConstants.token}',
+      'Authorization': 'Bearer ${BackConstants.token}',
     };
-    final organizationData = FormData.fromMap(
+    final organizationData = jsonEncode(
       {
         "organizationIds": organizationIds,
         "returnAdditionalInfo": true,

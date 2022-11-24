@@ -215,6 +215,7 @@ class _HomeViewState extends State<HomeView>
 
   SliverAppBar _appBar() {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: ColorStyles.backgroundColor,
       toolbarHeight: Platform.isAndroid ? 150.h : 100.h,
       elevation: 0,

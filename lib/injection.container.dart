@@ -11,7 +11,12 @@ final sl = GetIt.asNewInstance();
 
 Future<void> init() async {
   //Cubit
-  sl.registerFactory(() => ChoiceAdressCubit(getOrganization: sl()));
+  sl.registerFactory(
+    () => ChoiceAdressCubit(
+      getOrganization: sl(),
+      createUser: sl(),
+    ),
+  );
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
