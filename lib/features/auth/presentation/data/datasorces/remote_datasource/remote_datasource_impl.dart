@@ -1,6 +1,7 @@
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
+import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
@@ -52,6 +53,37 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return UserIdModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<OrganizationsModel> getOrganizations(List<String> organizationIds,
+      bool returnAdditionalInfo, bool includeDisabled, String endpoint) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': 'Token ${BackConstants.token}',
+    };
+    final organizationData = FormData.fromMap(
+      {
+        "organizationIds": organizationIds,
+        "returnAdditionalInfo": true,
+        "includeDisabled": true
+      },
+    );
+    final response = await _dio.post(
+      endpoint,
+      data: organizationData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return OrganizationsModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

@@ -8,7 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/choiced_restaurant.dart';
 
 class ChoiceAdressView extends StatefulWidget {
-  const ChoiceAdressView({super.key});
+  final String phone;
+  const ChoiceAdressView({super.key, required this.phone});
 
   @override
   State<ChoiceAdressView> createState() => _ChoiceAdressViewState();

@@ -1,5 +1,4 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:cofee/features/widgets/custom_text_field.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -141,10 +139,15 @@ class _LoginViewState extends State<LoginView> {
                   child: CustomButton(
                     title: 'Отправить код',
                     onTap: () {
-                      if (controller.text.length < 17 && controller.text.isEmpty){
-                        // print('error');
+                      if (controller.text.length < 17 &&
+                          controller.text.isEmpty) {
                       } else {
-                        Navigator.of(context).pushNamed('/CodeView');
+                        Navigator.of(context).pushNamed(
+                          '/CodeView',
+                          arguments: {
+                            'phone': controller.text,
+                          },
+                        );
                       }
                     },
                   ),
