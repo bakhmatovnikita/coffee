@@ -36,54 +36,74 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
               ),
             ),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 56.h,
-                  left: 25.5.w,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.arrow_back_ios),
-                      color: ColorStyles.accentColor,
+          CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: SizedBox(height: 56.h)),
+              // const SliverAppBar(
+              //   backgroundColor: ColorStyles.whiteColor,
+              //   foregroundColor: ColorStyles.accentColor,
+              //   elevation: 0,
+              //   pinned: true,
+              // ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 128.h),
+                  child: Text(
+                    'Выберите адрес заведения',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: ColorStyles.blackColor,
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 128.h),
-                child: Text(
-                  'Выберите адрес заведения',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: ColorStyles.blackColor,
                   ),
                 ),
               ),
-              Container(
-                width: size.width,
-                height: 300.w,
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return const ChoicedRestaurant(
-                      title: "Ресторан Ели-Млели в Ростове",
-                      adress:
-                          "Доломановский переулок, 70ДБЦ Гвардейский, этаж 1",
-                    );
-                  },
+              SliverToBoxAdapter(child: SizedBox(height: 40.h)),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: 2,
+                  (context, index) => const ChoicedRestaurant(
+                    title: "Ресторан Ели-Млели в Ростове",
+                    adress: "Доломановский переулок, 70ДБЦ Гвардейский, этаж 1",
+                  ),
                 ),
               ),
-              CustomButton(title: "Готово")
+              SliverToBoxAdapter(child: SizedBox(height: 40.h)),
+              // Container(
+              //   width: size.width,
+              //   height: 300.w,
+              //   margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+              //   child: ListView.builder(
+              //     physics: const BouncingScrollPhysics(),
+              //     itemCount: 2,
+              //     itemBuilder: (context, index) {
+              //       return const ChoicedRestaurant(
+              //         title: "Ресторан Ели-Млели в Ростове",
+              //         adress:
+              //             "Доломановский переулок, 70ДБЦ Гвардейский, этаж 1",
+              //       );
+              //     },
+              //   ),
+              // ),
+              SliverToBoxAdapter(child: CustomButton(title: "Готово"))
             ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 56.h,
+              left: 25.5.w,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.arrow_back_ios),
+                  color: ColorStyles.accentColor,
+                ),
+              ],
+            ),
           ),
         ],
       ),

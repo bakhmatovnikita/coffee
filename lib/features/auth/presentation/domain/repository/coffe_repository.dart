@@ -7,5 +7,9 @@ import '../entiti/organizations_entiti.dart';
 abstract class CoffeeRepository {
   Future<Either<Failure, UserIdEntiti>> createUser(
       String endpoint, String phone, String organizationId);
-  Future<Either<Failure, OrganizationsEntiti>> getOrganization(List<String> organizationIds, bool returnAdditionalInfo, bool includeDisabled, String endpoint);
+  Future<Either<Failure, OrganizationsEntiti>> getOrganization(
+      List<String> organizationIds,
+      bool returnAdditionalInfo,
+      bool includeDisabled,
+      String endpoint);
 }

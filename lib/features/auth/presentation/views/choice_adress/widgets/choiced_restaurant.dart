@@ -32,7 +32,7 @@ class _ChoicedRestaurantState extends State<ChoicedRestaurant> {
       },
       child: Container(
         width: 343.w,
-        margin: EdgeInsets.symmetric(vertical: 4.h),
+        margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 16.w),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
