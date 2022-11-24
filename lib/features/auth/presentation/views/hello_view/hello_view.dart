@@ -43,7 +43,6 @@ class HelloView extends StatelessWidget {
               padding: EdgeInsets.only(top: 6.h),
               child: SizedBox(
                 width: 343.w,
-                height: 160.h,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
