@@ -1,4 +1,5 @@
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
+import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/organizations_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/user_id_entiti.dart';
@@ -35,7 +36,17 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
     bool includeDisabled,
     String endpoint,
   ) async {
-    // TODO: implement getOrganization
-    throw UnimplementedError();
+    return await _getOrganization(() => remoteDatasource.getOrganizations(
+        organizationIds, returnAdditionalInfo, includeDisabled, endpoint));
+  }
+
+  Future<Either<Failure, OrganizationsModel>> _getOrganization(
+      Future<OrganizationsModel> Function() organization) async {
+    try {
+      final organizationModel = await organization();
+      return Right(organizationModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 }
