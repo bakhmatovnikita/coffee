@@ -8,7 +8,8 @@ class CustomTextField extends StatelessWidget {
   final Color color;
   final TextEditingController? controller;
   final TextInputType? type;
-  const CustomTextField({super.key, required this.color, this.controller, this.type});
+  const CustomTextField(
+      {super.key, required this.color, this.controller, this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,10 @@ class CustomTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
-        onChanged: (value){
-          print(value.length);
+        onTap: () {
+
         },
+        onChanged: (value) {},
         style: GoogleFonts.montserrat(
           fontWeight: FontWeight.w500,
           fontSize: 17.h,
