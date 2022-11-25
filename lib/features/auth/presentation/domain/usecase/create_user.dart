@@ -5,23 +5,23 @@ import 'package:cofee/features/auth/presentation/domain/repository/coffe_reposit
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class CreateUser implements UseCase<UserIdEntiti, EndpointParams> {
+class CreateUser implements UseCase<UserIdEntiti, EndpointUserParams> {
   final CoffeeRepository coffeeRepository;
 
   CreateUser(this.coffeeRepository);
   @override
-  Future<Either<Failure, UserIdEntiti>> call(EndpointParams params) async {
+  Future<Either<Failure, UserIdEntiti>> call(EndpointUserParams params) async {
     return await coffeeRepository.createUser(
         params.endpoint, params.phone, params.organizationId);
   }
 }
 
-class EndpointParams extends Equatable {
+class EndpointUserParams extends Equatable {
   final String endpoint;
   final String phone;
   final String organizationId;
 
-  const EndpointParams({
+  const EndpointUserParams({
     required this.endpoint,
     required this.phone,
     required this.organizationId,

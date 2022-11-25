@@ -10,7 +10,7 @@ class OrganizationModel extends OrganizationEntiti {
     required final bool useUaeAddressingSystem,
     required final String version,
     required final String currencyIsoName,
-    required final int currencyMinimumDenomination,
+    required final double currencyMinimumDenomination,
     required final String countryPhoneCode,
     required final bool marketingSourceRequiredInDelivery,
     required final String defaultDeliveryCityId,

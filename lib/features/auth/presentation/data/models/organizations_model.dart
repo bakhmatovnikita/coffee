@@ -11,6 +11,9 @@ class OrganizationsModel extends OrganizationsEntiti {
   factory OrganizationsModel.fromJson(Map<String, dynamic> json) =>
       OrganizationsModel(
         organizations: List<OrganizationEntiti>.from(
-            json["organizations"].map((x) => OrganizationModel.fromJson(x))),
+          (json["organizations"] as List<dynamic>)
+              .map((x) => OrganizationModel.fromJson(x))
+              .toList(),
+        ),
       );
 }

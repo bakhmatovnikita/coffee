@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
+import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
@@ -36,9 +39,9 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Token ${BackConstants.token}',
+      'Authorization': 'Bearer ${BackConstants.token}',
     };
-    final userData = FormData.fromMap({
+    final userData = jsonEncode({
       "organizationId": organizationId,
       "phone": phone,
     });
@@ -64,9 +67,9 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Token ${BackConstants.token}',
+      'Authorization': 'Bearer ${BackConstants.token}',
     };
-    final organizationData = FormData.fromMap(
+    final organizationData = jsonEncode(
       {
         "organizationIds": organizationIds,
         "returnAdditionalInfo": true,
@@ -84,6 +87,35 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrganizationsModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<TokenModel> getToken(String endpoint) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    };
+    final apiLoginData = jsonEncode(
+      {
+        "apiLogin": "4bbdab74-a27",
+        "returnAdditionalInfo": true,
+        "includeDisabled": true
+      },
+    );
+    final response = await _dio.post(
+      endpoint,
+      data: apiLoginData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return TokenModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
