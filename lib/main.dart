@@ -1,4 +1,7 @@
+
+
 import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_page_cubit.dart';
 import 'package:cofee/rout_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +19,10 @@ void main() async {
       MultiBlocProvider(
         providers: [
           BlocProvider<ChoiceAdressCubit>(
-              create: (context) => sl<ChoiceAdressCubit>())
+              create: (context) => sl<ChoiceAdressCubit>()),
+          BlocProvider<HomePageCubit>(
+            create: (context) => sl<HomePageCubit>(),
+          )
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),

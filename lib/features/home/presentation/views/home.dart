@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/core/models/category.dart';
 import 'package:cofee/core/models/product.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_page_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_page_state.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scale_button/scale_button.dart';
@@ -167,15 +171,24 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorStyles.backgroundColor,
-      body: RectGetter(
-        key: listViewKey,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: onScrollNotification,
-          child: _body(),
-        ),
-      ),
+    return BlocBuilder<HomePageCubit, HomePageState>(
+      builder: (context, state) {
+        if (state is HomePageEmptyTokenState) {
+          context.read<HomePageCubit>().getLoginToken("access_token");
+        } else if (state is HomePageLoadedTokenState) {
+          BackConstants.token = state.tokenEntiti.token;
+        }
+        return Scaffold(
+          backgroundColor: ColorStyles.backgroundColor,
+          body: RectGetter(
+            key: listViewKey,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: onScrollNotification,
+              child: _body(),
+            ),
+          ),
+        );
+      },
     );
   }
 

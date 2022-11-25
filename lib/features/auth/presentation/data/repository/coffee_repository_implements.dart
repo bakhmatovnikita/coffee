@@ -1,7 +1,9 @@
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
+import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/organizations_entiti.dart';
+import 'package:cofee/features/auth/presentation/domain/entiti/token_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/user_id_entiti.dart';
 import 'package:cofee/core/error/failure.dart';
 import 'package:cofee/features/auth/presentation/domain/repository/coffe_repository.dart';
@@ -45,6 +47,21 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
     try {
       final organizationModel = await organization();
       return Right(organizationModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, TokenEntiti>> getToken(String endpoint) async {
+    return await _getToken(() => remoteDatasource.getToken(endpoint));
+  }
+
+  Future<Either<Failure, TokenModel>> _getToken(
+      Future<TokenModel> Function() token) async {
+    try {
+      final tokenModel = await token();
+      return Right(tokenModel);
     } catch (e) {
       return Left(ServerFailure());
     }
