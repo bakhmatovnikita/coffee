@@ -5,7 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key});
+  final Color color;
+  final TextEditingController? controller;
+  final TextInputType? type;
+  const CustomTextField({super.key, required this.color, this.controller, this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +19,13 @@ class CustomTextField extends StatelessWidget {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: ColorStyles.backgroundColor,
+        color: color,
       ),
       child: TextField(
+        controller: controller,
+        onChanged: (value){
+          print(value.length);
+        },
         style: GoogleFonts.montserrat(
           fontWeight: FontWeight.w500,
           fontSize: 17.h,
@@ -28,6 +35,7 @@ class CustomTextField extends StatelessWidget {
         inputFormatters: [
           CustomInputFormatter(),
         ],
+        keyboardType: type,
         decoration: InputDecoration.collapsed(
           hintText: '+7 (999) 999-99-99',
           hintStyle: GoogleFonts.montserrat(
