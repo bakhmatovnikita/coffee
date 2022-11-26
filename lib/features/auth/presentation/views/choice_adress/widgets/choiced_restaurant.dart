@@ -29,7 +29,7 @@ class _ChoicedRestaurantState extends State<ChoicedRestaurant> {
         border: Border.all(
           color:
               widget.isSelected ? ColorStyles.accentColor : const Color(0xffCDCDCD),
-          width: widget.isSelected ? 3.w : 1.w,
+          width: 2.w
         ),
         borderRadius: BorderRadius.circular(16.r),
       ),

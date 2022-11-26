@@ -17,11 +17,12 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  var maskFormatter = MaskTextInputFormatter(
-    mask: '+7 (###) ###-##-##',
-    filter: {"#": RegExp(r'[0-9]')},
-    type: MaskAutoCompletionType.lazy,
-  );
+  @override
+  void initState() {
+    widget.controller!.addListener(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,7 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: ColorStyles.blackColor,
         ),
         cursorColor: ColorStyles.accentColor,
-        inputFormatters: [maskFormatter],
+        inputFormatters: [CustomInputFormatter()],
         keyboardType: widget.type,
         decoration: InputDecoration.collapsed(
           hintText: '+7 (999) 999-99-99',

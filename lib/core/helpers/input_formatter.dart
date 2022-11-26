@@ -13,8 +13,8 @@ class CustomInputFormatter extends TextInputFormatter {
     if (text.isNotEmpty && text[0] == '8') {
       if (text.length == 1) {
         return oldValue.copyWith(
-          text: '$text (',
-          selection: TextSelection.collapsed(offset: text.length + 2),
+          text: '+7 (',
+          selection: TextSelection.collapsed(offset: text.length + 3),
         );
       } else if (text.length == 6) {
         return oldValue.copyWith(
@@ -38,7 +38,7 @@ class CustomInputFormatter extends TextInputFormatter {
     } else if (text.isNotEmpty && text[0] == '7' || text[0] == '+') {
       if (text.length == 1) {
         return oldValue.copyWith(
-          text: '+$text (',
+          text: '+7 (',
           selection: TextSelection.collapsed(offset: text.length + 3),
         );
       } else if (text.length == 7) {
