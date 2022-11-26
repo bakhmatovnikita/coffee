@@ -9,19 +9,21 @@ import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/choiced_restaurant.dart';
 
 class ChoiceAdressView extends StatefulWidget {
-  final String phone;
-  const ChoiceAdressView({super.key, required this.phone});
+  final String? phone;
+  const ChoiceAdressView({super.key, this.phone});
 
   @override
   State<ChoiceAdressView> createState() => _ChoiceAdressViewState();
 }
 
 class _ChoiceAdressViewState extends State<ChoiceAdressView> {
+  final storage = const FlutterSecureStorage();
   Stream<int> getIndex(int index) async* {
     yield index;
   }
@@ -33,13 +35,11 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
     return BlocBuilder<ChoiceAdressCubit, ChoiceAdressState>(
       builder: (context, state) {
         if (state is ChoiceAdressEmptyState) {
-          context
-              .read<ChoiceAdressCubit>()
-              .fetchOrganization("organizations", BackConstants.token);
+          context.read<ChoiceAdressCubit>().fetchOrganization("organizations");
         } else if (state is ChoiceAdressLoadedState) {
           return Scaffold(
             body: StreamBuilder<int>(
-              initialData: 0,
+                initialData: 0,
                 stream: streamController.stream,
                 builder: (context, snapshot) {
                   return Stack(
@@ -104,6 +104,7 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                         .organizations[index].name,
                                     adress: state.organizationsEntiti
                                         .organizations[index].restaurantAddress,
+                                        isSelected: snapshot.data! == index ? true : false,
                                   ),
                                 );
                               },
@@ -113,16 +114,22 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                               title: "Готово",
                               onTap: () {
                                 setState(() {
-                                  if (context
+                                  if (widget.phone == null) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      "/MainView",
+                                      (route) => false,
+                                    );
+                                  } else if (context
                                       .read<ChoiceAdressCubit>()
                                       .createCustomer(
                                           "loyalty/iiko/customer/create_or_update",
                                           state.organizationsEntiti
                                               .organizations[snapshot.data!].id,
-                                          widget.phone)) {
+                                          widget.phone!)) {
                                     Navigator.of(context)
                                         .pushNamedAndRemoveUntil(
-                                      "/",
+                                      "/MainView",
                                       (route) => false,
                                     );
                                   }
@@ -135,12 +142,10 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                 }),
           );
         }
-        return const SafeArea(
-          child: Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.orange,
-              ),
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
             ),
           ),
           CustomScrollView(

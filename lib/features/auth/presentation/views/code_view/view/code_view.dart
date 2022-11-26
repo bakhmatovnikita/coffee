@@ -15,6 +15,23 @@ class CodeView extends StatefulWidget {
 }
 
 class _CodeViewState extends State<CodeView> {
+  final TextEditingController controllerOne = TextEditingController();
+  final TextEditingController controllerTwo = TextEditingController();
+  final TextEditingController controllerThree = TextEditingController();
+  final TextEditingController controllerFour = TextEditingController();
+  final TextEditingController controllerFive = TextEditingController();
+  final TextEditingController controllerSix = TextEditingController();
+  @override
+  void initState() {
+    controllerOne.addListener(() {});
+    controllerTwo.addListener(() {});
+    controllerThree.addListener(() {});
+    controllerFour.addListener(() {});
+    controllerFive.addListener(() {});
+    controllerSix.addListener(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +63,14 @@ class _CodeViewState extends State<CodeView> {
                   right: 48.w,
                   left: 48.w,
                 ),
-                child: const CodeValidator(),
+                child: CodeValidator(
+                  controllerOne: controllerOne,
+                  controllerTwo: controllerTwo,
+                  controllerThree: controllerThree,
+                  controllerFour: controllerFour,
+                  controllerFive: controllerFive,
+                  controllerSix: controllerSix,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 16.h),
@@ -64,12 +88,23 @@ class _CodeViewState extends State<CodeView> {
                 padding: EdgeInsets.only(top: 32.h),
                 child: CustomButton(
                   title: 'Подтвердить',
-                  onTap: () => Navigator.of(context).pushNamed(
-                    '/ChoiceAdressView',
-                    arguments: {
-                      'phone': widget.phone,
-                    },
-                  ),
+                  onTap: () {
+                    if (controllerOne.text.isEmpty ||
+                        controllerTwo.text.isEmpty ||
+                        controllerThree.text.isEmpty ||
+                        controllerFour.text.isEmpty ||
+                        controllerFive.text.isEmpty ||
+                        controllerSix.text.isEmpty) {
+                      print("error");
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        '/ChoiceAdressView',
+                        arguments: {
+                          'phone': widget.phone,
+                        },
+                      );
+                    }
+                  },
                 ),
               )
             ],

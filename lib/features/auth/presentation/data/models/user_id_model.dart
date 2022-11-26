@@ -7,4 +7,9 @@ class UserIdModel extends UserIdEntiti {
   factory UserIdModel.fromJson(Map<String, dynamic> json) => UserIdModel(
         id: json['id'],
       );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+    };
+  }
 }

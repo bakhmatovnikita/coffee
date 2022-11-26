@@ -75,7 +75,7 @@ class Functions {
                   child: CustomButton(
                     title: 'Перейти к регистрации',
                     onTap: () {
-                      Navigator.of(context).pushNamed('/HelloView');
+                      Navigator.of(context).pushNamed('/');
                     },
                   ),
                 ),
@@ -84,7 +84,7 @@ class Functions {
                 child: Padding(
                   padding: EdgeInsets.only(top: 8.h),
                   child: CustomButton(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.of(context).pop(),
                     title: 'Вернуться назад',
                     accent: false,
                   ),

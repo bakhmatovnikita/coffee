@@ -9,4 +9,9 @@ class TokenModel extends TokenEntiti {
   factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
         token: json['token'] as String,
       );
+  Map<String, dynamic> toJson() {
+    return {
+      "token": token,
+    };
+  }
 }
