@@ -4,27 +4,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CodeValidator extends StatefulWidget {
-  const CodeValidator({super.key, });
+  final TextEditingController controllerOne;
+  final TextEditingController controllerTwo;
+  final TextEditingController controllerThree;
+  final TextEditingController controllerFour;
+  final TextEditingController controllerFive;
+  final TextEditingController controllerSix;
+  const CodeValidator({
+    super.key,
+    required this.controllerOne,
+    required this.controllerTwo,
+    required this.controllerThree,
+    required this.controllerFour,
+    required this.controllerFive,
+    required this.controllerSix,
+  });
 
   @override
   State<CodeValidator> createState() => _CodeValidatorState();
 }
 
 class _CodeValidatorState extends State<CodeValidator> {
-  final TextEditingController controllerOne = TextEditingController();
-  final TextEditingController controllerTwo = TextEditingController();
-  final TextEditingController controllerThree = TextEditingController();
-  final TextEditingController controllerFour = TextEditingController();
-  final TextEditingController controllerFive = TextEditingController();
-  final TextEditingController controllerSix = TextEditingController();
+  final FocusNode focusNodeOne = FocusNode();
+  final FocusNode focusNodeTwo = FocusNode();
   @override
   void initState() {
-    controllerOne.addListener(() {});
-    controllerTwo.addListener(() {});
-    controllerThree.addListener(() {});
-    controllerFour.addListener(() {});
-    controllerFive.addListener(() {});
-    controllerSix.addListener(() {});
+    widget.controllerOne.addListener(() {});
+    widget.controllerTwo.addListener(() {});
+    widget.controllerThree.addListener(() {});
+    widget.controllerFour.addListener(() {});
+    widget.controllerFive.addListener(() {});
+    widget.controllerSix.addListener(() {});
     super.initState();
   }
 
@@ -38,6 +48,10 @@ class _CodeValidatorState extends State<CodeValidator> {
             height: 48.h,
             width: 40.w,
             child: TextFormField(
+              autofocus: true,
+              onTap: () {
+                // focusNodeOne.requestFocus(focusNodeOne);
+              },
               showCursor: false,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
@@ -54,7 +68,7 @@ class _CodeValidatorState extends State<CodeValidator> {
                 }
                 setState(() {});
               },
-              controller: controllerOne,
+              controller: widget.controllerOne,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
@@ -64,7 +78,54 @@ class _CodeValidatorState extends State<CodeValidator> {
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: controllerOne.text.isNotEmpty
+                    color: widget.controllerOne.text.isNotEmpty
+                        ? const Color(0xff515151)
+                        : const Color(0xffCDCDCD),
+                    width: 3,
+                  ),
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xff515151),
+                    width: 3,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 48.h,
+            width: 40.w,
+            child: TextFormField(
+              focusNode: focusNodeTwo,
+              showCursor: false,
+              style: GoogleFonts.montserrat(
+                fontSize: 24,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                setState(() {});
+              },
+              onChanged: (value) {
+                if (value.length == 1) {
+                  FocusScope.of(context).nextFocus();
+                } else {
+                  FocusScope.of(context).previousFocus();
+                }
+                setState(() {});
+              },
+              controller: widget.controllerTwo,
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(1),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: widget.controllerTwo.text.isNotEmpty
                         ? const Color(0xff515151)
                         : const Color(0xffCDCDCD),
                     width: 3,
@@ -97,7 +158,7 @@ class _CodeValidatorState extends State<CodeValidator> {
                 }
                 setState(() {});
               },
-              controller: controllerTwo,
+              controller: widget.controllerThree,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
@@ -107,7 +168,7 @@ class _CodeValidatorState extends State<CodeValidator> {
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: controllerTwo.text.isNotEmpty
+                    color: widget.controllerThree.text.isNotEmpty
                         ? const Color(0xff515151)
                         : const Color(0xffCDCDCD),
                     width: 3,
@@ -140,7 +201,7 @@ class _CodeValidatorState extends State<CodeValidator> {
                 }
                 setState(() {});
               },
-              controller: controllerThree,
+              controller: widget.controllerFour,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
@@ -150,7 +211,7 @@ class _CodeValidatorState extends State<CodeValidator> {
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: controllerThree.text.isNotEmpty
+                    color: widget.controllerFour.text.isNotEmpty
                         ? const Color(0xff515151)
                         : const Color(0xffCDCDCD),
                     width: 3,
@@ -183,7 +244,7 @@ class _CodeValidatorState extends State<CodeValidator> {
                 }
                 setState(() {});
               },
-              controller: controllerFour,
+              controller: widget.controllerFive,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
@@ -193,50 +254,7 @@ class _CodeValidatorState extends State<CodeValidator> {
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: controllerFour.text.isNotEmpty
-                        ? const Color(0xff515151)
-                        : const Color(0xffCDCDCD),
-                    width: 3,
-                  ),
-                ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xff515151),
-                    width: 3,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 48.h,
-            width: 40.w,
-            child: TextFormField(
-              showCursor: false,
-              style: GoogleFonts.montserrat(
-                fontSize: 24,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                } else {
-                  FocusScope.of(context).previousFocus();
-                }
-                setState(() {});
-              },
-              controller: controllerFive,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(1),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: controllerFive.text.isNotEmpty
+                    color: widget.controllerFive.text.isNotEmpty
                         ? const Color(0xff515151)
                         : const Color(0xffCDCDCD),
                     width: 3,
@@ -269,7 +287,7 @@ class _CodeValidatorState extends State<CodeValidator> {
                 }
                 setState(() {});
               },
-              controller: controllerSix,
+              controller: widget.controllerSix,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
@@ -279,7 +297,7 @@ class _CodeValidatorState extends State<CodeValidator> {
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: controllerSix.text.isNotEmpty
+                    color: widget.controllerSix.text.isNotEmpty
                         ? const Color(0xff515151)
                         : const Color(0xffCDCDCD),
                     width: 3,

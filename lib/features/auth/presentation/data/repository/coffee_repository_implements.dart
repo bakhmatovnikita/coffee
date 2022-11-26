@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cofee/features/auth/presentation/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
@@ -11,20 +14,24 @@ import 'package:dartz/dartz.dart';
 
 class CoffeeRepositoryImpl implements CoffeeRepository {
   final RemoteDatasource remoteDatasource;
+  final LocalDatasource localDatasource;
 
-  CoffeeRepositoryImpl(this.remoteDatasource);
+  CoffeeRepositoryImpl(this.remoteDatasource, this.localDatasource);
   @override
   Future<Either<Failure, UserIdEntiti>> createUser(
       String endpoint, String phone, String organizationId) async {
     return await _createUser(
       () => remoteDatasource.createUser(endpoint, phone, organizationId),
+      phone,
     );
   }
 
   Future<Either<Failure, UserIdModel>> _createUser(
-      Future<UserIdModel> Function() user) async {
+      Future<UserIdModel> Function() user, String phone) async {
     try {
       final userModel = await user();
+      localDatasource.saveUserId(userModel);
+      localDatasource.savePhoneUser(phone);
       return Right(userModel);
     } catch (e) {
       return Left(ServerFailure());
@@ -61,6 +68,7 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       Future<TokenModel> Function() token) async {
     try {
       final tokenModel = await token();
+      localDatasource.saveToken(tokenModel.token);
       return Right(tokenModel);
     } catch (e) {
       return Left(ServerFailure());

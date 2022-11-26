@@ -3,14 +3,25 @@ import 'package:cofee/core/helpers/input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final Color color;
   final TextEditingController? controller;
   final TextInputType? type;
   const CustomTextField(
       {super.key, required this.color, this.controller, this.type});
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '+7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,24 +31,18 @@ class CustomTextField extends StatelessWidget {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: color,
+        color: widget.color,
       ),
       child: TextField(
-        controller: controller,
-        onTap: () {
-
-        },
-        onChanged: (value) {},
+        controller: widget.controller,
         style: GoogleFonts.montserrat(
           fontWeight: FontWeight.w500,
           fontSize: 17.h,
           color: ColorStyles.blackColor,
         ),
         cursorColor: ColorStyles.accentColor,
-        inputFormatters: [
-          CustomInputFormatter(),
-        ],
-        keyboardType: type,
+        inputFormatters: [maskFormatter],
+        keyboardType: widget.type,
         decoration: InputDecoration.collapsed(
           hintText: '+7 (999) 999-99-99',
           hintStyle: GoogleFonts.montserrat(

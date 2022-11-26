@@ -6,11 +6,13 @@ import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasour
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
 
 class RemoteDatasourceImplement implements RemoteDatasource {
   Dio _dio = Dio();
+  final storage = const FlutterSecureStorage();
   RemoteDatasourceImplement() {
     _dio = Dio(
       BaseOptions(
@@ -39,7 +41,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Bearer ${BackConstants.token}',
+      'Authorization': 'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
     };
     final userData = jsonEncode({
       "organizationId": organizationId,
@@ -67,7 +69,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Bearer ${BackConstants.token}',
+      'Authorization': 'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
     };
     final organizationData = jsonEncode(
       {
