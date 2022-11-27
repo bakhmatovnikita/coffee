@@ -22,6 +22,7 @@ class _CodeViewState extends State<CodeView> {
   final TextEditingController controllerFour = TextEditingController();
   final TextEditingController controllerFive = TextEditingController();
   final TextEditingController controllerSix = TextEditingController();
+  final TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _CodeViewState extends State<CodeView> {
     controllerFour.addListener(() {});
     controllerFive.addListener(() {});
     controllerSix.addListener(() {});
+    controller.addListener(() {});
     super.initState();
     listen();
   }
@@ -77,6 +79,7 @@ class _CodeViewState extends State<CodeView> {
                     left: 48.w,
                   ),
                   child: PinFieldAutoFill(
+                    controller: controller,
                     autoFocus: true,
                     keyboardType: TextInputType.number,
                     decoration: UnderlineDecoration(
@@ -108,12 +111,7 @@ class _CodeViewState extends State<CodeView> {
                 child: CustomButton(
                   title: 'Подтвердить',
                   onTap: () {
-                    if (controllerOne.text.isEmpty ||
-                        controllerTwo.text.isEmpty ||
-                        controllerThree.text.isEmpty ||
-                        controllerFour.text.isEmpty ||
-                        controllerFive.text.isEmpty ||
-                        controllerSix.text.isEmpty) {
+                    if (controller.text.isEmpty) {
                       print("error");
                     } else {
                       Navigator.of(context).pushNamed(
