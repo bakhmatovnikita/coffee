@@ -4,6 +4,7 @@ import 'package:cofee/features/auth/presentation/views/hello_view/hello_view.dar
 import 'package:cofee/features/auth/presentation/views/login_view/view/login_view.dart';
 import 'package:cofee/features/auth/presentation/views/root_screen/view/root_screen.dart';
 import 'package:cofee/features/home/presentation/views/bottom_nav_view.dart';
+import 'package:cofee/features/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
