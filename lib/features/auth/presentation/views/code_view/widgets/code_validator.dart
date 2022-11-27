@@ -27,6 +27,10 @@ class CodeValidator extends StatefulWidget {
 class _CodeValidatorState extends State<CodeValidator> {
   final FocusNode focusNodeOne = FocusNode();
   final FocusNode focusNodeTwo = FocusNode();
+  final FocusNode focusNodeThree = FocusNode();
+  final FocusNode focusNodeFour = FocusNode();
+  final FocusNode focusNodeFive = FocusNode();
+  final FocusNode focusNodeSix = FocusNode();
   @override
   void initState() {
     widget.controllerOne.addListener(() {});
@@ -49,9 +53,7 @@ class _CodeValidatorState extends State<CodeValidator> {
             width: 40.w,
             child: TextFormField(
               autofocus: true,
-              onTap: () {
-                // focusNodeOne.requestFocus(focusNodeOne);
-              },
+              focusNode: focusNodeOne,
               showCursor: false,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
@@ -59,14 +61,15 @@ class _CodeValidatorState extends State<CodeValidator> {
                 fontWeight: FontWeight.w500,
               ),
               onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                } else if (value.isEmpty) {
-                  FocusScope.of(context);
-                } else {
-                  FocusScope.of(context).previousFocus();
-                }
-                setState(() {});
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else if (value.isEmpty) {
+                    FocusScope.of(context);
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerOne,
               keyboardType: TextInputType.number,
@@ -105,15 +108,20 @@ class _CodeValidatorState extends State<CodeValidator> {
                 fontWeight: FontWeight.w500,
               ),
               onTap: () {
-                setState(() {});
+                if (widget.controllerTwo.text.isNotEmpty) {
+                  FocusScope.of(context).requestFocus(focusNodeSix);
+                } else {
+                  FocusScope.of(context).requestFocus(focusNodeOne);
+                }
               },
               onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                } else {
-                  FocusScope.of(context).previousFocus();
-                }
-                setState(() {});
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerTwo,
               keyboardType: TextInputType.number,
@@ -145,18 +153,27 @@ class _CodeValidatorState extends State<CodeValidator> {
             width: 40.w,
             child: TextFormField(
               showCursor: false,
+              focusNode: focusNodeThree,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
+              onTap: () {
+                if (widget.controllerThree.text.isNotEmpty) {
+                  FocusScope.of(context).requestFocus(focusNodeSix);
                 } else {
-                  FocusScope.of(context).previousFocus();
+                  FocusScope.of(context).requestFocus(focusNodeOne);
                 }
-                setState(() {});
+              },
+              onChanged: (value) {
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerThree,
               keyboardType: TextInputType.number,
@@ -187,19 +204,28 @@ class _CodeValidatorState extends State<CodeValidator> {
             height: 48.h,
             width: 40.w,
             child: TextFormField(
+              focusNode: focusNodeFour,
               showCursor: false,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
+              onTap: () {
+                if (widget.controllerFour.text.isNotEmpty) {
+                  FocusScope.of(context).requestFocus(focusNodeSix);
                 } else {
-                  FocusScope.of(context).previousFocus();
+                  FocusScope.of(context).requestFocus(focusNodeOne);
                 }
-                setState(() {});
+              },
+              onChanged: (value) {
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerFour,
               keyboardType: TextInputType.number,
@@ -230,19 +256,28 @@ class _CodeValidatorState extends State<CodeValidator> {
             height: 48.h,
             width: 40.w,
             child: TextFormField(
+              focusNode: focusNodeFive,
               showCursor: false,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
+              onTap: () {
+                if (widget.controllerFive.text.isNotEmpty) {
+                  FocusScope.of(context).requestFocus(focusNodeSix);
                 } else {
-                  FocusScope.of(context).previousFocus();
+                  FocusScope.of(context).requestFocus(focusNodeOne);
                 }
-                setState(() {});
+              },
+              onChanged: (value) {
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerFive,
               keyboardType: TextInputType.number,
@@ -273,19 +308,28 @@ class _CodeValidatorState extends State<CodeValidator> {
             height: 48.h,
             width: 40.w,
             child: TextFormField(
+              focusNode: focusNodeSix,
               showCursor: false,
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).unfocus();
+              onTap: () {
+                if (widget.controllerSix.text.isNotEmpty) {
+                  FocusScope.of(context).requestFocus(focusNodeSix);
                 } else {
-                  FocusScope.of(context).previousFocus();
+                  FocusScope.of(context).requestFocus(focusNodeOne);
                 }
-                setState(() {});
+              },
+              onChanged: (value) {
+                setState(() {
+                  if (value.length == 1) {
+                    FocusScope.of(context).unfocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                });
               },
               controller: widget.controllerSix,
               keyboardType: TextInputType.number,

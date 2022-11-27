@@ -1,6 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/auth/presentation/views/code_view/widgets/code_validator.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,7 @@ class _CodeViewState extends State<CodeView> {
   final TextEditingController controllerFour = TextEditingController();
   final TextEditingController controllerFive = TextEditingController();
   final TextEditingController controllerSix = TextEditingController();
+
   @override
   void initState() {
     controllerOne.addListener(() {});
@@ -30,6 +32,17 @@ class _CodeViewState extends State<CodeView> {
     controllerFive.addListener(() {});
     controllerSix.addListener(() {});
     super.initState();
+    listen();
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    super.dispose();
+  }
+
+  void listen() async {
+    await SmsAutoFill().listenForCode;
   }
 
   @override
@@ -58,20 +71,26 @@ class _CodeViewState extends State<CodeView> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                  top: 119.h,
-                  right: 48.w,
-                  left: 48.w,
-                ),
-                child: CodeValidator(
-                  controllerOne: controllerOne,
-                  controllerTwo: controllerTwo,
-                  controllerThree: controllerThree,
-                  controllerFour: controllerFour,
-                  controllerFive: controllerFive,
-                  controllerSix: controllerSix,
-                ),
-              ),
+                  padding: EdgeInsets.only(
+                    top: 119.h,
+                    right: 48.w,
+                    left: 48.w,
+                  ),
+                  child: PinFieldAutoFill(
+                    autoFocus: true,
+                    keyboardType: TextInputType.number,
+                    decoration: UnderlineDecoration(
+                      textStyle: GoogleFonts.montserrat(
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      colorBuilder: PinListenColorBuilder(
+                        const Color(0xff515151),
+                        const Color(0xffCDCDCD),
+                      ),
+                    ),
+                  )),
               Padding(
                 padding: EdgeInsets.only(top: 16.h),
                 child: Text(
