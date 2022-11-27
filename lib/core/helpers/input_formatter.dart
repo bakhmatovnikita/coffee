@@ -13,6 +13,9 @@ class CustomInputFormatter extends TextInputFormatter {
       if (i == 0) {
         if (digitsOnlyChar[0] == "7" || digitsOnlyChar[0] == "8") {
           text.add("+7 (");
+        } else {
+          text.add("+7 (");
+          text.add(digitsOnlyChar[i]);
         }
       } else if (i == 4) {
         text.add(") ");
