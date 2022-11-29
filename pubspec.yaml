@@ -54,6 +54,8 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   pinput: ^2.2.16
   sms_autofill: ^2.2.0
+  cached_network_image: ^3.2.1
+  octo_image: ^1.0.2
 
 dev_dependencies:
   flutter_test:

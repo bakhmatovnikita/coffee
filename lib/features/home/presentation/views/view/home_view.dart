@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -89,7 +91,6 @@ class _HomeViewState extends State<HomeView>
     pauseRectGetterIndex = true;
     _tabController.animateTo(
       index,
-      curve: Curves.easeInOutQuint,
       duration: const Duration(milliseconds: 1000),
     );
     await scrollController.scrollToIndex(
@@ -100,7 +101,8 @@ class _HomeViewState extends State<HomeView>
     pauseRectGetterIndex = false;
   }
 
-  bool onScrollNotification(ScrollNotification notification) {
+  bool onScrollNotification(
+      ScrollNotification notification, List<GroupsEntiti> groups) {
     if (pauseRectGetterIndex) return true;
 
     int lastTabIndex = _tabController.length;
@@ -111,11 +113,11 @@ class _HomeViewState extends State<HomeView>
         visibleItems.last == lastTabIndex;
 
     if (reachLastTabIndex) {
-      // _categoriesController.sink.add(productsEntiti.groups[lastTabIndex]);
+      _categoriesController.sink.add(groups[lastTabIndex]);
       _tabController.animateTo(
         lastTabIndex,
-        curve: Curves.easeInOutQuint,
-        duration: const Duration(milliseconds: 1000),
+        // curve: Curves.easeInOutQuint,
+        duration: const Duration(milliseconds: 2000),
       );
     } else {
       int sumIndex = visibleItems.reduce(
@@ -126,10 +128,10 @@ class _HomeViewState extends State<HomeView>
       if (_tabController.index != middleIndex) {
         _tabController.animateTo(
           middleIndex,
-          curve: Curves.easeInOutQuint,
-          duration: const Duration(milliseconds: 1000),
+          // curve: Curves.easeInOutQuint,
+          duration: const Duration(milliseconds: 2000),
         );
-        // _categoriesController.sink.add(productsEntiti.groups[middleIndex]);
+        _categoriesController.sink.add(groups[middleIndex]);
       }
     }
     return false;
@@ -154,7 +156,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void initState() {
-    _tabController = TabController(length: 10, vsync: this);
+    _tabController = TabController(length: 8, vsync: this);
     _tabController.addListener(() {
       if (VerticalScrollableTabBarStatus.isOnTap) {
         animateAndScrollTo(VerticalScrollableTabBarStatus.isOnTapIndex);
@@ -165,6 +167,8 @@ class _HomeViewState extends State<HomeView>
       if (scrollController.position.pixels > 20.h * 2) {
         if (scrollController.position.pixels < 160.h) {
           _appBarController.sink.add((scrollController.position.pixels / 2).h);
+        } else {
+          _appBarController.sink.add((160.h / 2).h);
         }
       } else {
         _appBarController.sink.add(20.h);
@@ -181,12 +185,19 @@ class _HomeViewState extends State<HomeView>
           context.read<LoginViewCubit>().saveToken("access_token");
           context.read<HomeViewCubit>().fetchProducts('nomenclature');
         } else if (state is HomeViewLoadedState) {
+          // _tabController = TabController(
+          //   length: state.productsEntiti.groups.length,
+          //   vsync: this,
+          // );
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: RectGetter(
               key: listViewKey,
               child: NotificationListener<ScrollNotification>(
-                onNotification: onScrollNotification,
+                onNotification: (scrollNotification) => onScrollNotification(
+                  scrollNotification,
+                  state.productsEntiti.groups,
+                ),
                 child: _body(state.productsEntiti),
               ),
             ),
@@ -228,7 +239,7 @@ class _HomeViewState extends State<HomeView>
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: EdgeInsets.zero,
-        itemCount: productsEntiti.products.length,
+        itemCount: productsEntiti.groups.length,
         itemBuilder: (context, index) {
           itemsKeys[index] = RectGetter.createGlobalKey();
           return _productWidget(context, index, productsEntiti);
@@ -240,7 +251,7 @@ class _HomeViewState extends State<HomeView>
   SliverAppBar _appBar() {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 145.h : 110.h,
+      toolbarHeight: Platform.isAndroid ? 145.h : 120.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,
@@ -260,7 +271,8 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  StreamBuilder<double> _tarBarView(AsyncSnapshot<GroupsEntiti> snapshot, ProductsEntiti productsEntiti) {
+  StreamBuilder<double> _tarBarView(
+      AsyncSnapshot<GroupsEntiti> snapshot, ProductsEntiti productsEntiti) {
     return StreamBuilder<double>(
         stream: _appBarController.stream,
         initialData: 20.h,
@@ -270,7 +282,7 @@ class _HomeViewState extends State<HomeView>
             toolbarHeight: newData.data!,
             pinned: true,
             flexibleSpace: AnimatedAlign(
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 1000),
               alignment: newData.data! < 160.h
                   ? Alignment.bottomCenter
                   : Alignment.topCenter,
@@ -288,7 +300,8 @@ class _HomeViewState extends State<HomeView>
                   controller: _tabController,
                   onTap: (index) {
                     VerticalScrollableTabBarStatus.setIndex(index);
-                    // _categoriesController.sink.add(_categories[index]);
+                    _categoriesController.sink
+                        .add(productsEntiti.groups[index]);
                   },
                   tabs: productsEntiti.groups.map(
                     (element) {
@@ -328,11 +341,11 @@ class _HomeViewState extends State<HomeView>
             ),
             Column(
               children: productsEntiti.products
-                  .where(
-                    (element) => element.groupId == productsEntiti.groups[index].id,
-                  )
-                  .map(
-                      (e) => _productCardWidget(context, e,))
+                  .where((element) {
+                    return element.groupId == productsEntiti.groups[index].id &&
+                        element.imageLink.isNotEmpty;
+                  })
+                  .map((e) => _productCardWidget(context, e))
                   .toList(),
             ),
           ],
@@ -359,83 +372,91 @@ class _HomeViewState extends State<HomeView>
           horizontal: 15.w,
           vertical: 7.5.h,
         ),
-        // child: Row(
-        //   children: [
-        //     ClipRRect(
-        //       borderRadius: BorderRadius.only(
-        //         topLeft: Radius.circular(16.r),
-        //         bottomLeft: Radius.circular(16.r),
-        //       ),
-        //       child: Image.network(
-        //         productEntiti.imageLink.isEmpty
-        //             ? "https://www.imagetext.ru/pics_max/images_3162.gif"
-        //             : productsEntiti.products[index].imageLink[0],
-        //         width: 160.w,
-        //       ),
-        //     ),
-        //     Padding(
-        //       padding: EdgeInsets.all(14.86.h),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Flexible(
-        //             child: SizedBox(
-        //               width: 180,
-        //               child: Text(productsEntiti.products[index].name),
-        //             ),
-        //             // child: CustomText(
-        //             //   title: productsEntiti.products[index].name,
-        //             //   fontSize: 17.h,
-        //             //   fontWeight: FontWeight.w600,
-        //             // ),
-        //           ),
-        //           SizedBox(height: 10.h),
-        //           CustomText(
-        //             title:
-        //                 '${productsEntiti.products[index].fatFullAmount.toStringAsFixed(2)} калл',
-        //             fontSize: 14.h,
-        //             fontWeight: FontWeight.w400,
-        //           ),
-        //           SizedBox(height: 4.h),
-        //           CustomText(
-        //             title: '${productsEntiti.products[index].weight.toStringAsFixed(1)} гр',
-        //             fontSize: 14.h,
-        //             fontWeight: FontWeight.w400,
-        //           ),
-        //           SizedBox(height: 4.h),
-        //           CustomText(
-        //             title:
-        //                 'БЖУ: ${productsEntiti.products[index].proteinsFullAmount.toStringAsFixed(1)}/${productsEntiti.products[index].fatFullAmount.toStringAsFixed(1)}/${productsEntiti.products[index].carbohydratesFullAmount.toStringAsFixed(1)}',
-        //             fontSize: 14.h,
-        //             fontWeight: FontWeight.w400,
-        //           ),
-        //           SizedBox(height: 10.h),
-        //           SizedBox(
-        //             width: 151.w,
-        //             child: Row(
-        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //               children: [
-        //                 CustomText(
-        //                   title:
-        //                       '${productsEntiti.products[index].sizePrices[0].price.currentPrice} ₽'
-        //                           .toUpperCase(),
-        //                   fontSize: 20.h,
-        //                   fontWeight: FontWeight.w600,
-        //                   color: ColorStyles.accentColor,
-        //                 ),
-        //                 SvgPicture.asset(
-        //                   'assets/icons/plus.svg',
-        //                   width: 16.83.h,
-        //                   height: 16.83.h,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                bottomLeft: Radius.circular(16.r),
+              ),
+              child: OctoImage(
+                image: CachedNetworkImageProvider(
+                    productEntiti.imageLink.isEmpty
+                        ? "https://www.imagetext.ru/pics_max/images_3162.gif"
+                        : productEntiti.imageLink[0]),
+                width: 155.w,
+                placeholderBuilder: OctoPlaceholder.blurHash(
+                  'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                ),
+                memCacheHeight: 1,
+                memCacheWidth: 1,
+                filterQuality: FilterQuality.low,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(14.86.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    // child: SizedBox(
+                    //   width: 180,
+                    //   child: Text(productEntiti.name),
+                    // ),
+                    child: CustomText(
+                      title: productEntiti.name,
+                      fontSize: 17.h,
+                      fontWeight: FontWeight.w600,
+                      maxLength: 13,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  CustomText(
+                    title:
+                        '${productEntiti.fatFullAmount.toStringAsFixed(2)} калл',
+                    fontSize: 14.h,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  SizedBox(height: 4.h),
+                  CustomText(
+                    title: '${productEntiti.weight.toStringAsFixed(1)} гр',
+                    fontSize: 14.h,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  SizedBox(height: 4.h),
+                  CustomText(
+                    title:
+                        'БЖУ: ${productEntiti.proteinsFullAmount.toStringAsFixed(1)}/${productEntiti.fatFullAmount.toStringAsFixed(1)}/${productEntiti.carbohydratesFullAmount.toStringAsFixed(1)}',
+                    fontSize: 14.h,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  SizedBox(height: 10.h),
+                  SizedBox(
+                    width: 151.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          title:
+                              '${productEntiti.sizePrices[0].price.currentPrice} ₽'
+                                  .toUpperCase(),
+                          fontSize: 20.h,
+                          fontWeight: FontWeight.w600,
+                          color: ColorStyles.accentColor,
+                        ),
+                        SvgPicture.asset(
+                          'assets/icons/plus.svg',
+                          width: 16.83.h,
+                          height: 16.83.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

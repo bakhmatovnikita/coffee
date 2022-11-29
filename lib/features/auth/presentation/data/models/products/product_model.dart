@@ -55,6 +55,6 @@ class ProductModel extends ProductEntiti {
                 (json["imageLinks"] as List<dynamic>).map((x) => x).toList())
             : List<String>.from(
                 (json["imageLinks"] as List<dynamic>).map((x) => x).toList()),
-        groupId: json["groupId"] ?? "",
+        groupId: json["parentGroup"] ?? "",
       );
 }
