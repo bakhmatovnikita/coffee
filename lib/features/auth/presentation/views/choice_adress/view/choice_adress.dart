@@ -58,33 +58,66 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                           ),
                         ),
                       ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 56.h,
-                              left: 25.5.w,
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 56.h,
+                                left: 25.5.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    icon: const Icon(Icons.arrow_back_ios),
+                                    color: ColorStyles.accentColor,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                IconButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  icon: const Icon(Icons.arrow_back_ios),
-                                  color: ColorStyles.accentColor,
+                            Padding(
+                              padding: EdgeInsets.only(top: 128.h),
+                              child: Text(
+                                'Выберите адрес заведения',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: ColorStyles.blackColor,
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 128.h),
-                            child: Text(
-                              'Выберите адрес заведения',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: ColorStyles.blackColor,
+                            Container(
+                              width: size.width,
+                              // height: 300.w,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 16.w, vertical: 40.h),
+                              child: Column(
+                                children: state
+                                    .organizationsEntiti.organizations
+                                    .map(
+                                      (e) => GestureDetector(
+                                        onTap: () => streamController.sink.add(
+                                          state
+                                              .organizationsEntiti.organizations
+                                              .indexOf(e),
+                                        ),
+                                        child: ChoicedRestaurant(
+                                          title: e.name,
+                                          adress: e.restaurantAddress,
+                                          isSelected: snapshot.data! ==
+                                                  state.organizationsEntiti
+                                                      .organizations
+                                                      .indexOf(e)
+                                              ? true
+                                              : false,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
                               ),
                             ),
                             CustomButton(
@@ -112,8 +145,11 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                         "/MainView",
                                         (route) => false,
                                       );
-                                    }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ошибка регистрации\\авторизации")));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Ошибка регистрации\\авторизации")));
                                     }
                                   });
                                 }),
