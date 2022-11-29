@@ -1,6 +1,7 @@
 import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:cofee/rout_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,9 @@ void main() async {
           ),
           BlocProvider<LoginViewCubit>(
             create: (context) => sl<LoginViewCubit>(),
+          ),
+          BlocProvider<HomeViewCubit>(
+            create: (context) => sl<HomeViewCubit>(),
           ),
         ],
         child: ScreenUtilInit(

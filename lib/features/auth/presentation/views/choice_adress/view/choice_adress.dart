@@ -123,6 +123,7 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                             CustomButton(
                                 title: "Готово",
                                 onTap: () {
+                                  print(widget.phone);
                                   setState(() {
                                     if (widget.phone == null) {
                                       Navigator.of(context)
@@ -144,6 +145,8 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                         "/MainView",
                                         (route) => false,
                                       );
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ошибка регистрации\\авторизации")));
                                     }
                                   });
                                 }),

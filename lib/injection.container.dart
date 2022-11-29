@@ -7,10 +7,12 @@ import 'package:cofee/features/auth/presentation/data/repository/coffee_reposito
 import 'package:cofee/features/auth/presentation/domain/repository/coffe_repository.dart';
 import 'package:cofee/features/auth/presentation/domain/usecase/create_user.dart';
 import 'package:cofee/features/auth/presentation/domain/usecase/get_organization.dart';
+import 'package:cofee/features/auth/presentation/domain/usecase/get_products.dart';
 import 'package:cofee/features/auth/presentation/domain/usecase/get_token.dart';
 import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -28,11 +30,13 @@ Future<void> init() async {
   sl.registerFactory(() => RootScreenCubit(
         localDatasource: sl(),
       ));
+  sl.registerFactory(() => HomeViewCubit(getProducts: sl()));
   sl.registerFactory(() => LoginViewCubit(getToken: sl()));
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
   sl.registerLazySingleton(() => GetToken(sl()));
+  sl.registerLazySingleton(() => GetProducts(sl()));
   //Repository
   sl.registerLazySingleton<CoffeeRepository>(
       () => CoffeeRepositoryImpl(sl(), sl()));

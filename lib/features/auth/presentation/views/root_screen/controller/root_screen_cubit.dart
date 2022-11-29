@@ -9,7 +9,6 @@ class RootScreenCubit extends Cubit<RootScreenState> {
 
   Future<void> checkAuthorization() async {
     try {
-      emit(RootScreenEmptyState());
       final phoneUser = await localDatasource.haveNumber();
       if (phoneUser != false) {
         emit(RootScreenIsAuthorized());
