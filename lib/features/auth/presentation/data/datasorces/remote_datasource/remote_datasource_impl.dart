@@ -4,6 +4,7 @@ import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
+import 'package:cofee/features/auth/presentation/data/models/products/products_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -41,7 +42,8 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
     };
     final userData = jsonEncode({
       "organizationId": organizationId,
@@ -69,7 +71,8 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      'Authorization': 'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
     };
     final organizationData = jsonEncode(
       {
@@ -118,6 +121,34 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return TokenModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ProductsModel> getProducts(String endpoint) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+    };
+    final organizationIdData = jsonEncode({
+      "organizationId": "aaf34eae-ad9d-4ea0-8dfb-5ad02d23a0b8",
+      "startRevision": 0
+    });
+    final response = await _dio.post(
+      endpoint,
+      data: organizationIdData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return ProductsModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

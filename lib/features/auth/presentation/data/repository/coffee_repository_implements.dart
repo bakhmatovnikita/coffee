@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:cofee/features/auth/presentation/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/auth/presentation/data/models/organizations_model.dart';
+import 'package:cofee/features/auth/presentation/data/models/products/products_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/token_model.dart';
 import 'package:cofee/features/auth/presentation/data/models/user_id_model.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/organizations_entiti.dart';
+import 'package:cofee/features/auth/presentation/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/token_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/user_id_entiti.dart';
 import 'package:cofee/core/error/failure.dart';
@@ -70,6 +72,21 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       final tokenModel = await token();
       localDatasource.saveToken(tokenModel.token);
       return Right(tokenModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductsEntiti>> getProducts(String endpoint) async {
+    return await _getProducts(() => remoteDatasource.getProducts(endpoint));
+  }
+
+  Future<Either<Failure, ProductsModel>> _getProducts(
+      Future<ProductsModel> Function() products) async {
+    try {
+      final productsModel = await products();
+      return Right(productsModel);
     } catch (e) {
       return Left(ServerFailure());
     }

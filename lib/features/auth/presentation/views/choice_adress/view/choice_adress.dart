@@ -87,56 +87,38 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                 color: ColorStyles.blackColor,
                               ),
                             ),
-                          ),
-                          Container(
-                            width: size.width,
-                            height: 300.w,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 40.h),
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () => streamController.sink.add(index),
-                                  child: ChoicedRestaurant(
-                                    title: state.organizationsEntiti
-                                        .organizations[index].name,
-                                    adress: state.organizationsEntiti
-                                        .organizations[index].restaurantAddress,
-                                    isSelected:
-                                        snapshot.data! == index ? true : false,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          CustomButton(
-                              title: "Готово",
-                              onTap: () {
-                                setState(() {
-                                  if (widget.phone == null) {
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                      "/MainView",
-                                      (route) => false,
-                                    );
-                                  } else if (context
-                                      .read<ChoiceAdressCubit>()
-                                      .createCustomer(
-                                          "loyalty/iiko/customer/create_or_update",
-                                          state.organizationsEntiti
-                                              .organizations[snapshot.data!].id,
-                                          widget.phone!)) {
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                      "/MainView",
-                                      (route) => false,
-                                    );
-                                  }
-                                });
-                              }),
-                        ],
+                            CustomButton(
+                                title: "Готово",
+                                onTap: () {
+                                  print(widget.phone);
+                                  setState(() {
+                                    if (widget.phone == null) {
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                        "/MainView",
+                                        (route) => false,
+                                      );
+                                    } else if (context
+                                        .read<ChoiceAdressCubit>()
+                                        .createCustomer(
+                                            "loyalty/iiko/customer/create_or_update",
+                                            state
+                                                .organizationsEntiti
+                                                .organizations[snapshot.data!]
+                                                .id,
+                                            widget.phone!)) {
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                        "/MainView",
+                                        (route) => false,
+                                      );
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ошибка регистрации\\авторизации")));
+                                    }
+                                  });
+                                }),
+                          ],
+                        ),
                       ),
                     ],
                   );

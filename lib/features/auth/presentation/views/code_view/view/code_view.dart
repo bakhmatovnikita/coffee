@@ -16,22 +16,10 @@ class CodeView extends StatefulWidget {
 }
 
 class _CodeViewState extends State<CodeView> {
-  final TextEditingController controllerOne = TextEditingController();
-  final TextEditingController controllerTwo = TextEditingController();
-  final TextEditingController controllerThree = TextEditingController();
-  final TextEditingController controllerFour = TextEditingController();
-  final TextEditingController controllerFive = TextEditingController();
-  final TextEditingController controllerSix = TextEditingController();
   final TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
-    controllerOne.addListener(() {});
-    controllerTwo.addListener(() {});
-    controllerThree.addListener(() {});
-    controllerFour.addListener(() {});
-    controllerFive.addListener(() {});
-    controllerSix.addListener(() {});
     controller.addListener(() {});
     super.initState();
     listen();
@@ -114,6 +102,7 @@ class _CodeViewState extends State<CodeView> {
                     if (controller.text.isEmpty) {
                       print("error");
                     } else {
+                      print(widget.phone);
                       Navigator.of(context).pushNamed(
                         '/ChoiceAdressView',
                         arguments: {

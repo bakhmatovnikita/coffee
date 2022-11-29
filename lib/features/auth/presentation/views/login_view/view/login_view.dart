@@ -151,7 +151,6 @@ class _LoginViewState extends State<LoginView> {
                       child: CustomButton(
                         title: 'Отправить код',
                         onTap: () {
-                          print(controller.text.length);
                           if (controller.text.length < 18 ||
                               controller.text.isEmpty) {
                             return;
