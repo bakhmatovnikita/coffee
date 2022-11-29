@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
@@ -105,7 +104,7 @@ class _HomeViewState extends State<HomeView>
         visibleItems.last == lastTabIndex;
 
     if (reachLastTabIndex) {
-      _categoriesController.sink.add(_categories[lastTabIndex]);
+      // _categoriesController.sink.add(_categories[lastTabIndex]);
       _tabController.animateTo(
         lastTabIndex,
         curve: Curves.easeInOutQuint,
@@ -123,7 +122,7 @@ class _HomeViewState extends State<HomeView>
           curve: Curves.easeInOutQuint,
           duration: const Duration(milliseconds: 1000),
         );
-        _categoriesController.sink.add(_categories[middleIndex]);
+        // _categoriesController.sink.add(_categories[middleIndex]);
       }
     }
     return false;
@@ -269,7 +268,7 @@ class _HomeViewState extends State<HomeView>
                   controller: _tabController,
                   onTap: (index) {
                     VerticalScrollableTabBarStatus.setIndex(index);
-                    _categoriesController.sink.add(_categories[index]);
+                    // _categoriesController.sink.add(_categories[index]);
                   },
                   tabs: _categories.map(
                     (element) {

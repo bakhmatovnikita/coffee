@@ -58,97 +58,85 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 56.h,
-                                left: 25.5.w,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    icon: const Icon(Icons.arrow_back_ios),
-                                    color: ColorStyles.accentColor,
-                                  ),
-                                ],
-                              ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 56.h,
+                              left: 25.5.w,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 128.h),
-                              child: Text(
-                                'Выберите адрес заведения',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorStyles.blackColor,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(Icons.arrow_back_ios),
+                                  color: ColorStyles.accentColor,
                                 ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 128.h),
+                            child: Text(
+                              'Выберите адрес заведения',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: ColorStyles.blackColor,
                               ),
                             ),
-                            Container(
-                              width: size.width,
-                              // height: 300.w,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 40.h),
-                              child: Column(
-                                children: state
-                                    .organizationsEntiti.organizations
-                                    .map(
-                                      (e) => GestureDetector(
-                                        onTap: () => streamController.sink.add(
-                                          state
-                                              .organizationsEntiti.organizations
-                                              .indexOf(e),
-                                        ),
-                                        child: ChoicedRestaurant(
-                                          title: e.name,
-                                          adress: e.restaurantAddress,
-                                          isSelected: snapshot.data! ==
-                                                  state.organizationsEntiti
-                                                      .organizations
-                                                      .indexOf(e)
-                                              ? true
-                                              : false,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
+                          ),
+                          Container(
+                            width: size.width,
+                            height: 300.w,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 40.h),
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => streamController.sink.add(index),
+                                  child: ChoicedRestaurant(
+                                    title: state.organizationsEntiti
+                                        .organizations[index].name,
+                                    adress: state.organizationsEntiti
+                                        .organizations[index].restaurantAddress,
+                                    isSelected:
+                                        snapshot.data! == index ? true : false,
+                                  ),
+                                );
+                              },
                             ),
-                            CustomButton(
-                                title: "Готово",
-                                onTap: () {
-                                  setState(() {
-                                    if (widget.phone == null) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                        "/MainView",
-                                        (route) => false,
-                                      );
-                                    } else if (context
-                                        .read<ChoiceAdressCubit>()
-                                        .createCustomer(
-                                            "loyalty/iiko/customer/create_or_update",
-                                            state
-                                                .organizationsEntiti
-                                                .organizations[snapshot.data!]
-                                                .id,
-                                            widget.phone!)) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                        "/MainView",
-                                        (route) => false,
-                                      );
-                                    }
-                                  });
-                                }),
-                          ],
-                        ),
+                          ),
+                          CustomButton(
+                              title: "Готово",
+                              onTap: () {
+                                setState(() {
+                                  if (widget.phone == null) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      "/MainView",
+                                      (route) => false,
+                                    );
+                                  } else if (context
+                                      .read<ChoiceAdressCubit>()
+                                      .createCustomer(
+                                          "loyalty/iiko/customer/create_or_update",
+                                          state.organizationsEntiti
+                                              .organizations[snapshot.data!].id,
+                                          widget.phone!)) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      "/MainView",
+                                      (route) => false,
+                                    );
+                                  }
+                                });
+                              }),
+                        ],
                       ),
                     ],
                   );
