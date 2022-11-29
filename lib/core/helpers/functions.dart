@@ -1,12 +1,10 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/auth/presentation/views/login_view/login_view.dart';
+import 'package:cofee/features/auth/presentation/views/login_view/widgets/login_bottomscheet.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import '../../features/auth/presentation/views/hello_view/hello_view.dart';
 
 class Functions {
   final BuildContext context;
@@ -77,7 +75,7 @@ class Functions {
                   child: CustomButton(
                     title: 'Перейти к регистрации',
                     onTap: () {
-                      Navigator.of(context).pushNamed('/HelloView');
+                      Navigator.of(context).pushNamed('/');
                     },
                   ),
                 ),
@@ -86,7 +84,7 @@ class Functions {
                 child: Padding(
                   padding: EdgeInsets.only(top: 8.h),
                   child: CustomButton(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.of(context).pop(),
                     title: 'Вернуться назад',
                     accent: false,
                   ),
@@ -95,6 +93,20 @@ class Functions {
             ],
           ),
         );
+      },
+    );
+  }
+
+  void showLoginBottomsheet() {
+    showMaterialModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return const LoginBottomsheet();
       },
     );
   }

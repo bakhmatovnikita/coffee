@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
-import 'package:cofee/features/home/presentation/views/body_view.dart';
-import 'package:cofee/features/home/presentation/views/cart_view.dart';
-import 'package:cofee/features/home/presentation/views/home.dart';
+import 'package:cofee/features/home/presentation/views/widgets/body_view.dart';
+import 'package:cofee/features/home/presentation/views/widgets/cart_view.dart';
+import 'package:cofee/features/home/presentation/views/view/home_view.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -116,7 +116,8 @@ class _BottomNavViewState extends State<BottomNavView>
                 BottomNavigationBarItem(
                   icon: Column(
                     children: [
-                      SvgPicture.asset( SvgImg.heart,
+                      SvgPicture.asset(
+                        SvgImg.heart,
                         width: 17.15.h,
                         height: 15.88.h,
                         color: snapshot.data! == 2

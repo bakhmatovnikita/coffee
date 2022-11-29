@@ -1,13 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/core/models/category.dart';
 import 'package:cofee/core/models/product.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scale_button/scale_button.dart';
@@ -103,7 +104,7 @@ class _HomeViewState extends State<HomeView>
         visibleItems.last == lastTabIndex;
 
     if (reachLastTabIndex) {
-      _categoriesController.sink.add(_categories[lastTabIndex]);
+      // _categoriesController.sink.add(_categories[lastTabIndex]);
       _tabController.animateTo(
         lastTabIndex,
         curve: Curves.easeInOutQuint,
@@ -121,7 +122,7 @@ class _HomeViewState extends State<HomeView>
           curve: Curves.easeInOutQuint,
           duration: const Duration(milliseconds: 1000),
         );
-        _categoriesController.sink.add(_categories[middleIndex]);
+        // _categoriesController.sink.add(_categories[middleIndex]);
       }
     }
     return false;
@@ -215,17 +216,19 @@ class _HomeViewState extends State<HomeView>
 
   SliverAppBar _appBar() {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 145.h : 100.h,
-      elevation: 1,
-      expandedHeight: 10.h,
-      // forceElevated: true,
+      toolbarHeight: 150.h,
+      elevation: 0,
       flexibleSpace: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _topInfo(),
           Padding(
-            padding: EdgeInsets.only(top: 17.h, left: 15.w, bottom: 15.h),
+            padding: EdgeInsets.only(
+              top: 17.h,
+              left: 15.w,
+            ),
             child: CustomText(
               title: 'Меню на 12 июля (Вт)',
               fontSize: 16,
@@ -244,6 +247,7 @@ class _HomeViewState extends State<HomeView>
           return SliverAppBar(
             backgroundColor: ColorStyles.backgroundColor,
             toolbarHeight: newData.data!,
+            expandedHeight: 40.h,
             pinned: true,
             flexibleSpace: AnimatedAlign(
               duration: const Duration(milliseconds: 500),
@@ -264,7 +268,7 @@ class _HomeViewState extends State<HomeView>
                   controller: _tabController,
                   onTap: (index) {
                     VerticalScrollableTabBarStatus.setIndex(index);
-                    _categoriesController.sink.add(_categories[index]);
+                    // _categoriesController.sink.add(_categories[index]);
                   },
                   tabs: _categories.map(
                     (element) {
@@ -428,8 +432,14 @@ class _HomeViewState extends State<HomeView>
       padding: EdgeInsets.only(top: 68.h, left: 15.w, right: 15.w),
       child: Row(
         children: [
-          CustomText(title: 'Меню', fontWeight: FontWeight.w600, fontSize: 40),
-          const Expanded(child: SizedBox()),
+          CustomText(
+            title: 'Меню',
+            fontWeight: FontWeight.w600,
+            fontSize: 40,
+          ),
+          const Expanded(
+            child: SizedBox(),
+          ),
           ScaleButton(
             onTap: () => Functions(context).showModalNotifications(),
             bound: 0.05,
@@ -475,7 +485,6 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

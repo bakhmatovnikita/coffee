@@ -1,5 +1,6 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
+import 'package:cofee/features/auth/presentation/views/choice_adress/view/choice_adress.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +44,6 @@ class HelloView extends StatelessWidget {
               padding: EdgeInsets.only(top: 6.h),
               child: SizedBox(
                 width: 343.w,
-                height: 160.h,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,20 +106,25 @@ class HelloView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(bottom: 190.h),
-              child: CustomButton(title: 'Войти по номеру телефона', onTap: () => Navigator.of(context).pushNamed('/LoginView'),),
+              child: CustomButton(
+                title: 'Войти по номеру телефона',
+                onTap: () => Navigator.of(context).pushNamed('/LoginView'),
+              ),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-                padding: EdgeInsets.only(
-                  top: 28.h,
-                  bottom: 137.h,
-                ),
-                child: CustomButton(
-                  title: 'Пропустить',
-                  accent: false,
-                )),
+              padding: EdgeInsets.only(
+                top: 28.h,
+                bottom: 137.h,
+              ),
+              child: CustomButton(
+                title: 'Пропустить',
+                accent: false,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChoiceAdressView()))
+              ),
+            ),
           )
         ],
       ),
