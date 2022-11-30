@@ -1,6 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/auth/presentation/views/code_view/widgets/code_validator.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +16,25 @@ class CodeView extends StatefulWidget {
 }
 
 class _CodeViewState extends State<CodeView> {
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    controller.addListener(() {});
+    super.initState();
+    listen();
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    super.dispose();
+  }
+
+  void listen() async {
+    await SmsAutoFill().listenForCode;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +61,27 @@ class _CodeViewState extends State<CodeView> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                  top: 119.h,
-                  right: 48.w,
-                  left: 48.w,
-                ),
-                child: const CodeValidator(),
-              ),
+                  padding: EdgeInsets.only(
+                    top: 119.h,
+                    right: 48.w,
+                    left: 48.w,
+                  ),
+                  child: PinFieldAutoFill(
+                    controller: controller,
+                    autoFocus: true,
+                    keyboardType: TextInputType.number,
+                    decoration: UnderlineDecoration(
+                      textStyle: GoogleFonts.montserrat(
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      colorBuilder: PinListenColorBuilder(
+                        const Color(0xff515151),
+                        const Color(0xffCDCDCD),
+                      ),
+                    ),
+                  )),
               Padding(
                 padding: EdgeInsets.only(top: 16.h),
                 child: Text(
@@ -64,12 +98,19 @@ class _CodeViewState extends State<CodeView> {
                 padding: EdgeInsets.only(top: 32.h),
                 child: CustomButton(
                   title: 'Подтвердить',
-                  onTap: () => Navigator.of(context).pushNamed(
-                    '/ChoiceAdressView',
-                    arguments: {
-                      'phone': widget.phone,
-                    },
-                  ),
+                  onTap: () {
+                    if (controller.text.isEmpty) {
+                      print("error");
+                    } else {
+                      print(widget.phone);
+                      Navigator.of(context).pushNamed(
+                        '/ChoiceAdressView',
+                        arguments: {
+                          'phone': widget.phone,
+                        },
+                      );
+                    }
+                  },
                 ),
               )
             ],

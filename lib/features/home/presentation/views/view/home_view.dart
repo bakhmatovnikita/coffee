@@ -1,16 +1,25 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/core/models/category.dart';
 import 'package:cofee/core/models/product.dart';
+import 'package:cofee/features/auth/presentation/domain/entiti/products/groups_entiti.dart';
+import 'package:cofee/features/auth/presentation/domain/entiti/products/product_entiti.dart';
+import 'package:cofee/features/auth/presentation/domain/entiti/products/products_entiti.dart';
+import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
+import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -23,13 +32,13 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final List<Category> _categories = [
-    // Category(0, 'Все'),
-    Category(1, 'Десерты и выпечка'),
-    Category(2, 'Салаты'),
-    Category(3, 'Первые блюда'),
-    Category(4, 'Вторые блюда'),
-  ];
+  // final List<Category> _categories = [
+  //   // Category(0, 'Все'),
+  //   Category(1, 'Десерты и выпечка'),
+  //   Category(2, 'Салаты'),
+  //   Category(3, 'Первые блюда'),
+  //   Category(4, 'Вторые блюда'),
+  // ];
 
   AutoScrollController scrollController = AutoScrollController();
   AutoScrollController customScrollController = AutoScrollController();
@@ -40,40 +49,40 @@ class _HomeViewState extends State<HomeView>
 
   Map<int, dynamic> itemsKeys = {};
 
-  final List<Product> _products = [
-    Product(
-        1, 'Круассан', 150, 180, '12/15/40', 200, 'assets/images/Frame 1.png'),
-    Product(
-        1, 'Круассан', 150, 180, '12/15/40', 300, 'assets/images/Frame 2.png'),
-    Product(
-        1, 'Круассан', 150, 180, '12/15/40', 400, 'assets/images/Frame 3.png'),
-    Product(
-        2, 'Круассан', 150, 180, '12/15/40', 500, 'assets/images/Frame 1.png'),
-    Product(
-        2, 'Круассан', 150, 180, '12/15/40', 600, 'assets/images/Frame 2.png'),
-    Product(
-        2, 'Круассан', 150, 180, '12/15/40', 700, 'assets/images/Frame 3.png'),
-    Product(
-        2, 'Круассан', 150, 180, '12/15/40', 800, 'assets/images/Frame 1.png'),
-    Product(
-        3, 'Круассан', 150, 180, '12/15/40', 900, 'assets/images/Frame 2.png'),
-    Product(
-        3, 'Круассан', 150, 180, '12/15/40', 1000, 'assets/images/Frame 2.png'),
-    Product(
-        3, 'Круассан', 150, 180, '12/15/40', 2000, 'assets/images/Frame 2.png'),
-    Product(
-        4, 'Круассан', 150, 180, '12/15/40', 3000, 'assets/images/Frame 2.png'),
-    Product(
-        4, 'Круассан', 150, 180, '12/15/40', 4000, 'assets/images/Frame 2.png'),
-    Product(
-        4, 'Круассан', 150, 180, '12/15/40', 5000, 'assets/images/Frame 2.png'),
-    Product(
-        4, 'Круассан', 150, 180, '12/15/40', 6000, 'assets/images/Frame 2.png'),
-    Product(
-        4, 'Круассан', 150, 180, '12/15/40', 7000, 'assets/images/Frame 2.png'),
-  ];
+  // final List<Product> _products = [
+  //   Product(
+  //       1, 'Круассан', 150, 180, '12/15/40', 200, 'assets/images/Frame 1.png'),
+  //   Product(
+  //       1, 'Круассан', 150, 180, '12/15/40', 300, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       1, 'Круассан', 150, 180, '12/15/40', 400, 'assets/images/Frame 3.png'),
+  //   Product(
+  //       2, 'Круассан', 150, 180, '12/15/40', 500, 'assets/images/Frame 1.png'),
+  //   Product(
+  //       2, 'Круассан', 150, 180, '12/15/40', 600, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       2, 'Круассан', 150, 180, '12/15/40', 700, 'assets/images/Frame 3.png'),
+  //   Product(
+  //       2, 'Круассан', 150, 180, '12/15/40', 800, 'assets/images/Frame 1.png'),
+  //   Product(
+  //       3, 'Круассан', 150, 180, '12/15/40', 900, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       3, 'Круассан', 150, 180, '12/15/40', 1000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       3, 'Круассан', 150, 180, '12/15/40', 2000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       4, 'Круассан', 150, 180, '12/15/40', 3000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       4, 'Круассан', 150, 180, '12/15/40', 4000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       4, 'Круассан', 150, 180, '12/15/40', 5000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       4, 'Круассан', 150, 180, '12/15/40', 6000, 'assets/images/Frame 2.png'),
+  //   Product(
+  //       4, 'Круассан', 150, 180, '12/15/40', 7000, 'assets/images/Frame 2.png'),
+  // ];
 
-  final _categoriesController = StreamController<Category>();
+  final _categoriesController = StreamController<GroupsEntiti>();
   final _appBarController = StreamController<double>();
 
   late TabController _tabController;
@@ -82,7 +91,6 @@ class _HomeViewState extends State<HomeView>
     pauseRectGetterIndex = true;
     _tabController.animateTo(
       index,
-      curve: Curves.easeInOutQuint,
       duration: const Duration(milliseconds: 1000),
     );
     await scrollController.scrollToIndex(
@@ -93,7 +101,8 @@ class _HomeViewState extends State<HomeView>
     pauseRectGetterIndex = false;
   }
 
-  bool onScrollNotification(ScrollNotification notification) {
+  bool onScrollNotification(
+      ScrollNotification notification, List<GroupsEntiti> groups) {
     if (pauseRectGetterIndex) return true;
 
     int lastTabIndex = _tabController.length;
@@ -104,11 +113,11 @@ class _HomeViewState extends State<HomeView>
         visibleItems.last == lastTabIndex;
 
     if (reachLastTabIndex) {
-      // _categoriesController.sink.add(_categories[lastTabIndex]);
+      _categoriesController.sink.add(groups[lastTabIndex]);
       _tabController.animateTo(
         lastTabIndex,
-        curve: Curves.easeInOutQuint,
-        duration: const Duration(milliseconds: 1000),
+        // curve: Curves.easeInOutQuint,
+        duration: const Duration(milliseconds: 2000),
       );
     } else {
       int sumIndex = visibleItems.reduce(
@@ -119,10 +128,10 @@ class _HomeViewState extends State<HomeView>
       if (_tabController.index != middleIndex) {
         _tabController.animateTo(
           middleIndex,
-          curve: Curves.easeInOutQuint,
-          duration: const Duration(milliseconds: 1000),
+          // curve: Curves.easeInOutQuint,
+          duration: const Duration(milliseconds: 2000),
         );
-        // _categoriesController.sink.add(_categories[middleIndex]);
+        _categoriesController.sink.add(groups[middleIndex]);
       }
     }
     return false;
@@ -147,7 +156,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void initState() {
-    _tabController = TabController(length: _categories.length, vsync: this);
+    _tabController = TabController(length: 8, vsync: this);
     _tabController.addListener(() {
       if (VerticalScrollableTabBarStatus.isOnTap) {
         animateAndScrollTo(VerticalScrollableTabBarStatus.isOnTapIndex);
@@ -158,6 +167,8 @@ class _HomeViewState extends State<HomeView>
       if (scrollController.position.pixels > 20.h * 2) {
         if (scrollController.position.pixels < 160.h) {
           _appBarController.sink.add((scrollController.position.pixels / 2).h);
+        } else {
+          _appBarController.sink.add((160.h / 2).h);
         }
       } else {
         _appBarController.sink.add(20.h);
@@ -168,30 +179,53 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorStyles.backgroundColor,
-      body: RectGetter(
-        key: listViewKey,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: onScrollNotification,
-          child: _body(),
-        ),
-      ),
+    return BlocBuilder<HomeViewCubit, HomeViewState>(
+      builder: (context, state) {
+        if (state is HomeViewEmptyState) {
+          context.read<LoginViewCubit>().saveToken("access_token");
+          context.read<HomeViewCubit>().fetchProducts('nomenclature');
+        } else if (state is HomeViewLoadedState) {
+          // _tabController = TabController(
+          //   length: state.productsEntiti.groups.length,
+          //   vsync: this,
+          // );
+          return Scaffold(
+            backgroundColor: ColorStyles.backgroundColor,
+            body: RectGetter(
+              key: listViewKey,
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) => onScrollNotification(
+                  scrollNotification,
+                  state.productsEntiti.groups,
+                ),
+                child: _body(state.productsEntiti),
+              ),
+            ),
+          );
+        }
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
+            ),
+          ),
+        );
+      },
     );
   }
 
-  StreamBuilder _body() {
-    return StreamBuilder<Category>(
+  StreamBuilder _body(ProductsEntiti productsEntiti) {
+    return StreamBuilder<GroupsEntiti>(
       stream: _categoriesController.stream,
-      initialData: _categories.first,
+      initialData: productsEntiti.groups.first,
       builder: (context, snapshot) {
         return CustomScrollView(
           physics: const BouncingScrollPhysics(),
           controller: scrollController,
           slivers: [
             _appBar(),
-            _tarBarView(snapshot),
-            _categoriesView(),
+            _tarBarView(snapshot, productsEntiti),
+            _categoriesView(productsEntiti),
             SliverToBoxAdapter(child: SizedBox(height: 300.h)),
           ],
         );
@@ -199,16 +233,16 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  SliverToBoxAdapter _categoriesView() {
+  SliverToBoxAdapter _categoriesView(ProductsEntiti productsEntiti) {
     return SliverToBoxAdapter(
       child: ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: EdgeInsets.zero,
-        itemCount: _categories.length,
+        itemCount: productsEntiti.groups.length,
         itemBuilder: (context, index) {
           itemsKeys[index] = RectGetter.createGlobalKey();
-          return _productWidget(context, index);
+          return _productWidget(context, index, productsEntiti);
         },
       ),
     );
@@ -216,19 +250,17 @@ class _HomeViewState extends State<HomeView>
 
   SliverAppBar _appBar() {
     return SliverAppBar(
-      automaticallyImplyLeading: false,
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: 150.h,
-      elevation: 0,
+      toolbarHeight: Platform.isAndroid ? 145.h : 120.h,
+      elevation: 1,
+      expandedHeight: 10.h,
+      // forceElevated: true,
       flexibleSpace: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _topInfo(),
           Padding(
-            padding: EdgeInsets.only(
-              top: 17.h,
-              left: 15.w,
-            ),
+            padding: EdgeInsets.only(top: 17.h, left: 15.w, bottom: 15.h),
             child: CustomText(
               title: 'Меню на 12 июля (Вт)',
               fontSize: 16,
@@ -239,7 +271,8 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  StreamBuilder<double> _tarBarView(AsyncSnapshot<Category> snapshot) {
+  StreamBuilder<double> _tarBarView(
+      AsyncSnapshot<GroupsEntiti> snapshot, ProductsEntiti productsEntiti) {
     return StreamBuilder<double>(
         stream: _appBarController.stream,
         initialData: 20.h,
@@ -247,10 +280,9 @@ class _HomeViewState extends State<HomeView>
           return SliverAppBar(
             backgroundColor: ColorStyles.backgroundColor,
             toolbarHeight: newData.data!,
-            expandedHeight: 40.h,
             pinned: true,
             flexibleSpace: AnimatedAlign(
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 1000),
               alignment: newData.data! < 160.h
                   ? Alignment.bottomCenter
                   : Alignment.topCenter,
@@ -268,9 +300,10 @@ class _HomeViewState extends State<HomeView>
                   controller: _tabController,
                   onTap: (index) {
                     VerticalScrollableTabBarStatus.setIndex(index);
-                    // _categoriesController.sink.add(_categories[index]);
+                    _categoriesController.sink
+                        .add(productsEntiti.groups[index]);
                   },
-                  tabs: _categories.map(
+                  tabs: productsEntiti.groups.map(
                     (element) {
                       return _categoryWidget(
                         element,
@@ -285,7 +318,8 @@ class _HomeViewState extends State<HomeView>
         });
   }
 
-  RectGetter _productWidget(BuildContext context, int index) {
+  RectGetter _productWidget(
+      BuildContext context, int index, ProductsEntiti productsEntiti) {
     return RectGetter(
       key: itemsKeys[index],
       child: AutoScrollTag(
@@ -301,15 +335,16 @@ class _HomeViewState extends State<HomeView>
                 top: 20.h,
               ),
               child: CustomText(
-                title: _categories[index].label,
+                title: productsEntiti.groups[index].name,
                 fontSize: 20.h,
               ),
             ),
             Column(
-              children: _products
-                  .where(
-                    (element) => element.categroryId == _categories[index].id,
-                  )
+              children: productsEntiti.products
+                  .where((element) {
+                    return element.groupId == productsEntiti.groups[index].id &&
+                        element.imageLink.isNotEmpty;
+                  })
                   .map((e) => _productCardWidget(context, e))
                   .toList(),
             ),
@@ -319,7 +354,8 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  ScaleButton _productCardWidget(BuildContext context, Product product) {
+  ScaleButton _productCardWidget(
+      BuildContext context, ProductEntiti productEntiti) {
     return ScaleButton(
       onTap: () => Functions(context).showModalNotifications(),
       bound: 0.02,
@@ -343,9 +379,18 @@ class _HomeViewState extends State<HomeView>
                 topLeft: Radius.circular(16.r),
                 bottomLeft: Radius.circular(16.r),
               ),
-              child: Image.asset(
-                product.image,
-                width: 160.w,
+              child: OctoImage(
+                image: CachedNetworkImageProvider(
+                    productEntiti.imageLink.isEmpty
+                        ? "https://www.imagetext.ru/pics_max/images_3162.gif"
+                        : productEntiti.imageLink[0]),
+                width: 155.w,
+                placeholderBuilder: OctoPlaceholder.blurHash(
+                  'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                ),
+                memCacheHeight: 1,
+                memCacheWidth: 1,
+                filterQuality: FilterQuality.low,
               ),
             ),
             Padding(
@@ -353,26 +398,35 @@ class _HomeViewState extends State<HomeView>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
-                    title: product.label,
-                    fontSize: 17.h,
-                    fontWeight: FontWeight.w600,
+                  Flexible(
+                    // child: SizedBox(
+                    //   width: 180,
+                    //   child: Text(productEntiti.name),
+                    // ),
+                    child: CustomText(
+                      title: productEntiti.name,
+                      fontSize: 17.h,
+                      fontWeight: FontWeight.w600,
+                      maxLength: 13,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   CustomText(
-                    title: '${product.callories} калл',
+                    title:
+                        '${productEntiti.fatFullAmount.toStringAsFixed(2)} калл',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(height: 4.h),
                   CustomText(
-                    title: '${product.weight} гр',
+                    title: '${productEntiti.weight.toStringAsFixed(1)} гр',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(height: 4.h),
                   CustomText(
-                    title: 'БЖУ: ${product.proteins}',
+                    title:
+                        'БЖУ: ${productEntiti.proteinsFullAmount.toStringAsFixed(1)}/${productEntiti.fatFullAmount.toStringAsFixed(1)}/${productEntiti.carbohydratesFullAmount.toStringAsFixed(1)}',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
@@ -383,7 +437,9 @@ class _HomeViewState extends State<HomeView>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          title: '${product.price} ₽'.toUpperCase(),
+                          title:
+                              '${productEntiti.sizePrices[0].price.currentPrice} ₽'
+                                  .toUpperCase(),
                           fontSize: 20.h,
                           fontWeight: FontWeight.w600,
                           color: ColorStyles.accentColor,
@@ -405,7 +461,7 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  Container _categoryWidget(Category category, bool selected) {
+  Container _categoryWidget(GroupsEntiti groupsEntiti, bool selected) {
     return Container(
       height: 40.h,
       alignment: Alignment.center,
@@ -419,7 +475,7 @@ class _HomeViewState extends State<HomeView>
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: CustomText(
-        title: category.label,
+        title: groupsEntiti.name,
         fontWeight: selected ? FontWeight.w500 : FontWeight.w500,
         color: selected ? ColorStyles.blackColor : ColorStyles.greyTitleColor,
         fontSize: 17,
@@ -432,14 +488,8 @@ class _HomeViewState extends State<HomeView>
       padding: EdgeInsets.only(top: 68.h, left: 15.w, right: 15.w),
       child: Row(
         children: [
-          CustomText(
-            title: 'Меню',
-            fontWeight: FontWeight.w600,
-            fontSize: 40,
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
+          CustomText(title: 'Меню', fontWeight: FontWeight.w600, fontSize: 40),
+          const Expanded(child: SizedBox()),
           ScaleButton(
             onTap: () => Functions(context).showModalNotifications(),
             bound: 0.05,
@@ -485,6 +535,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
+  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -497,3 +548,69 @@ class VerticalScrollableTabBarStatus {
     VerticalScrollableTabBarStatus.isOnTapIndex = index;
   }
 }
+
+// import 'package:cofee/features/auth/presentation/domain/entiti/products/groups_entiti.dart';
+// import 'package:cofee/features/auth/presentation/domain/entiti/products/product_entiti.dart';
+// import 'package:cofee/features/auth/presentation/domain/entiti/products/products_entiti.dart';
+// import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
+// import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
+// import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class HomeView extends StatefulWidget {
+//   const HomeView({super.key});
+
+//   @override
+//   State<HomeView> createState() => _HomeViewState();
+// }
+
+// class _HomeViewState extends State<HomeView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeViewCubit, HomeViewState>(builder: (context, state) {
+//       if (state is HomeViewEmptyState) {
+//         context.read<LoginViewCubit>().saveToken('access_token');
+//         context.read<HomeViewCubit>().fetchProducts('nomenclature');
+//       } else if (state is HomeViewLoadedState) {
+//         return Scaffold(
+//           body: SafeArea(
+//             child: ListView.builder(
+//               itemCount: state.productsEntiti.groups.length,
+//               itemBuilder: (context, index) {
+//                 return Column(
+//                   children: [
+//                     Container(
+//                       color: Colors.red,
+//                       child: Text(state.productsEntiti.groups[index].name),
+//                     ),
+//                     ...state.productsEntiti.products.map(
+//                       (e) => Text(e.name),
+//                     ),
+//                   ],
+//                 );
+//               },
+//             ),
+//           ),
+//         );
+//       }
+//       return const Scaffold(
+//         body: Center(
+//           child: CircularProgressIndicator(
+//             color: Colors.orange,
+//           ),
+//         ),
+//       );
+//     });
+//   }
+// }
+
+// class CategoryContent {
+//   final GroupsEntiti groupsEntiti;
+//   final List<ProductsEntiti> products;
+
+//   CategoryContent({
+//     required this.groupsEntiti,
+//     required this.products,
+//   });
+// }

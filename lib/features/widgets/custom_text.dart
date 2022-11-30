@@ -16,12 +16,14 @@ class CustomText extends StatelessWidget {
   double? fontSize;
   Color color;
   bool? centerTitle;
+  int? maxLength;
   CustomText({
     super.key,
     required this.title,
     this.fontWeight = FontWeight.w600,
     this.fontSize,
     this.fontStyle,
+    this.maxLength,
     this.centerTitle = false,
     this.color = ColorStyles.blackColor,
   });
@@ -29,7 +31,11 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      maxLength == null
+          ? title
+          : title.length < maxLength!
+              ? title
+              : title.substring(0, maxLength!),
       style: GoogleFonts.montserrat(
         fontSize: fontSize,
         fontWeight: fontWeight,

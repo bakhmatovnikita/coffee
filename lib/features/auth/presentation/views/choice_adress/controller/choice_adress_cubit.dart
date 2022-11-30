@@ -1,6 +1,7 @@
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/features/auth/presentation/domain/usecase/create_user.dart';
 import 'package:cofee/features/auth/presentation/domain/usecase/get_organization.dart';
+import 'package:cofee/features/auth/presentation/domain/usecase/get_token.dart';
 import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_state.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,12 +9,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChoiceAdressCubit extends Cubit<ChoiceAdressState> {
   final GetOrganization getOrganization;
   final CreateUser createUser;
+  final GetToken getToken;
 
   ChoiceAdressCubit({
+    required this.getToken,
     required this.getOrganization,
     required this.createUser,
   }) : super(ChoiceAdressEmptyState());
-  Future<void> fetchOrganization(String endpoint, String token) async {
+  Future<void> fetchOrganization(String endpoint) async {
     try {
       emit(ChoiceAdressEmptyState());
       final loadedOrganizationOrFailure = await getOrganization.call(
@@ -36,8 +39,7 @@ class ChoiceAdressCubit extends Cubit<ChoiceAdressState> {
     }
   }
 
-    bool createCustomer(
-      String endpoint, String organizationId, String phone) {
+  bool createCustomer(String endpoint, String organizationId, String phone) {
     try {
       createUser.call(
         EndpointUserParams(
