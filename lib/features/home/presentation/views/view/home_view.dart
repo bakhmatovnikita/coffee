@@ -15,6 +15,7 @@ import 'package:cofee/features/auth/presentation/views/login_view/controller/log
 import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -342,7 +343,8 @@ class _HomeViewState extends State<HomeView>
             Column(
               children: productsEntiti.products
                   .where((element) {
-                    return element.groupId == productsEntiti.groups[index].id &&
+                    return element.parentGroup ==
+                            productsEntiti.groups[index].id &&
                         element.imageLink.isNotEmpty;
                   })
                   .map((e) => _productCardWidget(context, e))
@@ -381,9 +383,10 @@ class _HomeViewState extends State<HomeView>
               ),
               child: OctoImage(
                 image: CachedNetworkImageProvider(
-                    productEntiti.imageLink.isEmpty
-                        ? "https://www.imagetext.ru/pics_max/images_3162.gif"
-                        : productEntiti.imageLink[0]),
+                  productEntiti.imageLink.isEmpty
+                      ? "https://www.imagetext.ru/pics_max/images_3162.gif"
+                      : productEntiti.imageLink[0],
+                ),
                 width: 155.w,
                 placeholderBuilder: OctoPlaceholder.blurHash(
                   'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
@@ -391,6 +394,7 @@ class _HomeViewState extends State<HomeView>
                 memCacheHeight: 1,
                 memCacheWidth: 1,
                 filterQuality: FilterQuality.low,
+                fit: BoxFit.cover,
               ),
             ),
             Padding(
@@ -399,10 +403,6 @@ class _HomeViewState extends State<HomeView>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    // child: SizedBox(
-                    //   width: 180,
-                    //   child: Text(productEntiti.name),
-                    // ),
                     child: CustomText(
                       title: productEntiti.name,
                       fontSize: 17.h,
@@ -444,10 +444,17 @@ class _HomeViewState extends State<HomeView>
                           fontWeight: FontWeight.w600,
                           color: ColorStyles.accentColor,
                         ),
-                        SvgPicture.asset(
-                          'assets/icons/plus.svg',
-                          width: 16.83.h,
-                          height: 16.83.h,
+                        Material(
+                          child: InkWell(
+                            onTap: () {
+                              print('object');
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/plus.svg',
+                              width: 16.83.h,
+                              height: 16.83.h,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -548,69 +555,3 @@ class VerticalScrollableTabBarStatus {
     VerticalScrollableTabBarStatus.isOnTapIndex = index;
   }
 }
-
-// import 'package:cofee/features/auth/presentation/domain/entiti/products/groups_entiti.dart';
-// import 'package:cofee/features/auth/presentation/domain/entiti/products/product_entiti.dart';
-// import 'package:cofee/features/auth/presentation/domain/entiti/products/products_entiti.dart';
-// import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
-// import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
-// import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-
-// class HomeView extends StatefulWidget {
-//   const HomeView({super.key});
-
-//   @override
-//   State<HomeView> createState() => _HomeViewState();
-// }
-
-// class _HomeViewState extends State<HomeView> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeViewCubit, HomeViewState>(builder: (context, state) {
-//       if (state is HomeViewEmptyState) {
-//         context.read<LoginViewCubit>().saveToken('access_token');
-//         context.read<HomeViewCubit>().fetchProducts('nomenclature');
-//       } else if (state is HomeViewLoadedState) {
-//         return Scaffold(
-//           body: SafeArea(
-//             child: ListView.builder(
-//               itemCount: state.productsEntiti.groups.length,
-//               itemBuilder: (context, index) {
-//                 return Column(
-//                   children: [
-//                     Container(
-//                       color: Colors.red,
-//                       child: Text(state.productsEntiti.groups[index].name),
-//                     ),
-//                     ...state.productsEntiti.products.map(
-//                       (e) => Text(e.name),
-//                     ),
-//                   ],
-//                 );
-//               },
-//             ),
-//           ),
-//         );
-//       }
-//       return const Scaffold(
-//         body: Center(
-//           child: CircularProgressIndicator(
-//             color: Colors.orange,
-//           ),
-//         ),
-//       );
-//     });
-//   }
-// }
-
-// class CategoryContent {
-//   final GroupsEntiti groupsEntiti;
-//   final List<ProductsEntiti> products;
-
-//   CategoryContent({
-//     required this.groupsEntiti,
-//     required this.products,
-//   });
-// }

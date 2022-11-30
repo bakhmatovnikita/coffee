@@ -12,6 +12,8 @@ class RootScreenCubit extends Cubit<RootScreenState> {
       final phoneUser = await localDatasource.haveNumber();
       if (phoneUser != false) {
         emit(RootScreenIsAuthorized());
+      } else if (phoneUser == false) {
+        emit(RootScreenUnauthorized());
       } else {
         emit(RootScreenEmptyState());
       }

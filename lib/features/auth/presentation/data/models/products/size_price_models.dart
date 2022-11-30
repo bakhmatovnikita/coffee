@@ -13,6 +13,6 @@ class SizePriceModels extends SizePriceEntiti {
   factory SizePriceModels.fromJson(Map<String, dynamic> json) =>
       SizePriceModels(
         sizeId: json['sizeId'],
-        price: PriceModels.fromJson(json),
+        price: PriceModels.fromJson(json["price"]),
       );
 }

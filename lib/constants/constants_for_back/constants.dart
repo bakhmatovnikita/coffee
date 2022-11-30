@@ -11,4 +11,5 @@ class BackConstants {
   static const String SAVED_PHONE_USER = 'SAVED_PHONE_USER';
   static const String baseUrl = 'https://api-ru.iiko.services/api/1/';
   static String token = ""; 
+  static const List<dynamic> cart = [];
 }
