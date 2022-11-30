@@ -5,17 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
-import 'package:cofee/core/models/category.dart';
-import 'package:cofee/core/models/product.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/products/groups_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/products/products_entiti.dart';
-import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
+import 'package:cofee/features/home/presentation/widgets/calendar_select_modal.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,12 +89,12 @@ class _HomeViewState extends State<HomeView>
     pauseRectGetterIndex = true;
     _tabController.animateTo(
       index,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(seconds: 2),
     );
     await scrollController.scrollToIndex(
       index,
       preferPosition: AutoScrollPosition.begin,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(seconds: 2),
     );
     pauseRectGetterIndex = false;
   }
@@ -118,7 +115,7 @@ class _HomeViewState extends State<HomeView>
       _tabController.animateTo(
         lastTabIndex,
         // curve: Curves.easeInOutQuint,
-        duration: const Duration(milliseconds: 2000),
+        duration: const Duration(milliseconds: 100),
       );
     } else {
       int sumIndex = visibleItems.reduce(
@@ -130,7 +127,7 @@ class _HomeViewState extends State<HomeView>
         _tabController.animateTo(
           middleIndex,
           // curve: Curves.easeInOutQuint,
-          duration: const Duration(milliseconds: 2000),
+          duration: const Duration(milliseconds: 100),
         );
         _categoriesController.sink.add(groups[middleIndex]);
       }
@@ -215,33 +212,26 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  StreamBuilder _body(ProductsEntiti productsEntiti) {
-    return StreamBuilder<GroupsEntiti>(
-      stream: _categoriesController.stream,
-      initialData: productsEntiti.groups.first,
-      builder: (context, snapshot) {
-        return CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          controller: scrollController,
-          slivers: [
-            _appBar(),
-            _tarBarView(snapshot, productsEntiti),
-            _categoriesView(productsEntiti),
-            SliverToBoxAdapter(child: SizedBox(height: 300.h)),
-          ],
-        );
-      },
+  CustomScrollView _body(ProductsEntiti productsEntiti) {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      controller: scrollController,
+      slivers: [
+        _appBar(),
+        _tarBarView(productsEntiti),
+        _categoriesView(productsEntiti),
+        SliverToBoxAdapter(child: SizedBox(height: 300.h)),
+      ],
     );
   }
 
-  SliverToBoxAdapter _categoriesView(ProductsEntiti productsEntiti) {
-    return SliverToBoxAdapter(
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: productsEntiti.groups.length,
-        itemBuilder: (context, index) {
+  SliverList _categoriesView(ProductsEntiti productsEntiti) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        addAutomaticKeepAlives: false,
+        addRepaintBoundaries: false,
+        childCount: productsEntiti.groups.length,
+        (context, index) {
           itemsKeys[index] = RectGetter.createGlobalKey();
           return _productWidget(context, index, productsEntiti);
         },
@@ -252,7 +242,7 @@ class _HomeViewState extends State<HomeView>
   SliverAppBar _appBar() {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 145.h : 120.h,
+      toolbarHeight: Platform.isAndroid ? 135.h : 150.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,
@@ -261,10 +251,37 @@ class _HomeViewState extends State<HomeView>
         children: [
           _topInfo(),
           Padding(
-            padding: EdgeInsets.only(top: 17.h, left: 15.w, bottom: 15.h),
-            child: CustomText(
-              title: 'Меню на 12 июля (Вт)',
-              fontSize: 16,
+            padding: EdgeInsets.only(top: 17.h, left: 15.w),
+            child: GestureDetector(
+              onTap: () => calendarSelectModal(
+                  context, Offset(15.w, 170.5.h), (index) {}, 0),
+              child: CustomText(
+                title: 'Меню на 12 июля (Вт)',
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15.h, left: 15.w, bottom: 15.h),
+            child: GestureDetector(
+              onTap: () => calendarSelectModal(
+                  context, Offset(15.w, 185.h), (index) {}, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.calendar_month_rounded,
+                    color: ColorStyles.accentColor,
+                    size: 16.h,
+                  ),
+                  SizedBox(width: 4.w),
+                  CustomText(
+                    title: 'Выбрать день',
+                    fontSize: 16.h,
+                    color: ColorStyles.accentColor,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -272,50 +289,56 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  StreamBuilder<double> _tarBarView(
-      AsyncSnapshot<GroupsEntiti> snapshot, ProductsEntiti productsEntiti) {
-    return StreamBuilder<double>(
-        stream: _appBarController.stream,
-        initialData: 20.h,
-        builder: (context, newData) {
-          return SliverAppBar(
-            backgroundColor: ColorStyles.backgroundColor,
-            toolbarHeight: newData.data!,
-            pinned: true,
-            flexibleSpace: AnimatedAlign(
-              duration: const Duration(milliseconds: 1000),
-              alignment: newData.data! < 160.h
-                  ? Alignment.bottomCenter
-                  : Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 15.h),
-                child: TabBar(
-                  overlayColor: MaterialStateProperty.all(
-                    Colors.transparent,
+  StreamBuilder<GroupsEntiti> _tarBarView(ProductsEntiti productsEntiti) {
+    return StreamBuilder<GroupsEntiti>(
+        stream: _categoriesController.stream,
+        initialData: productsEntiti.groups.first,
+        builder: (context, snapshot) {
+          return StreamBuilder<double>(
+              stream: _appBarController.stream,
+              initialData: 20.h,
+              builder: (context, newData) {
+                return SliverAppBar(
+                  backgroundColor: ColorStyles.backgroundColor,
+                  toolbarHeight: newData.data!,
+                  pinned: true,
+                  flexibleSpace: AnimatedAlign(
+                    duration: const Duration(milliseconds: 1000),
+                    alignment: newData.data! < 160.h
+                        ? Alignment.bottomCenter
+                        : Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 15.h),
+                      child: TabBar(
+                        overlayColor: MaterialStateProperty.all(
+                          Colors.transparent,
+                        ),
+                        indicatorPadding:
+                            EdgeInsets.symmetric(horizontal: 10.w),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.grey[700],
+                        indicator:
+                            const BoxDecoration(color: Colors.transparent),
+                        isScrollable: true,
+                        controller: _tabController,
+                        onTap: (index) {
+                          VerticalScrollableTabBarStatus.setIndex(index);
+                          _categoriesController.sink
+                              .add(productsEntiti.groups[index]);
+                        },
+                        tabs: productsEntiti.groups.map(
+                          (element) {
+                            return _categoryWidget(
+                              element,
+                              snapshot.data! == element,
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
                   ),
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.grey[700],
-                  indicator: const BoxDecoration(color: Colors.transparent),
-                  isScrollable: true,
-                  controller: _tabController,
-                  onTap: (index) {
-                    VerticalScrollableTabBarStatus.setIndex(index);
-                    _categoriesController.sink
-                        .add(productsEntiti.groups[index]);
-                  },
-                  tabs: productsEntiti.groups.map(
-                    (element) {
-                      return _categoryWidget(
-                        element,
-                        snapshot.data! == element,
-                      );
-                    },
-                  ).toList(),
-                ),
-              ),
-            ),
-          );
+                );
+              });
         });
   }
 
@@ -340,15 +363,22 @@ class _HomeViewState extends State<HomeView>
                 fontSize: 20.h,
               ),
             ),
-            Column(
-              children: productsEntiti.products
-                  .where((element) {
-                    return element.parentGroup ==
-                            productsEntiti.groups[index].id &&
-                        element.imageLink.isNotEmpty;
-                  })
-                  .map((e) => _productCardWidget(context, e))
-                  .toList(),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemExtent: 170.71.h,
+              shrinkWrap: true,
+              addAutomaticKeepAlives: false,
+              padding: EdgeInsets.zero,
+              addRepaintBoundaries: false,
+              itemCount: productsEntiti.products.where((element) {
+                return element.parentGroup == productsEntiti.groups[index].id;
+              }).length,
+              itemBuilder: (context, indexS) {
+                var e = productsEntiti.products.where((element) {
+                  return element.parentGroup == productsEntiti.groups[index].id;
+                }).toList()[indexS];
+                return _productCardWidget(context, e);
+              },
             ),
           ],
         ),
@@ -359,7 +389,8 @@ class _HomeViewState extends State<HomeView>
   ScaleButton _productCardWidget(
       BuildContext context, ProductEntiti productEntiti) {
     return ScaleButton(
-      onTap: () => Functions(context).showModalNotifications(),
+      onTap: () =>
+          Functions(context).showProductEntityBottomsheet(productEntiti),
       bound: 0.02,
       duration: const Duration(milliseconds: 100),
       child: Container(
@@ -381,21 +412,30 @@ class _HomeViewState extends State<HomeView>
                 topLeft: Radius.circular(16.r),
                 bottomLeft: Radius.circular(16.r),
               ),
-              child: OctoImage(
-                image: CachedNetworkImageProvider(
-                  productEntiti.imageLink.isEmpty
-                      ? "https://www.imagetext.ru/pics_max/images_3162.gif"
-                      : productEntiti.imageLink[0],
-                ),
-                width: 155.w,
-                placeholderBuilder: OctoPlaceholder.blurHash(
-                  'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
-                ),
-                memCacheHeight: 1,
-                memCacheWidth: 1,
-                filterQuality: FilterQuality.low,
-                fit: BoxFit.cover,
-              ),
+              child: productEntiti.imageLink.isNotEmpty
+                  ? OctoImage(
+                      image: CachedNetworkImageProvider(
+                        productEntiti.imageLink.isEmpty
+                            ? "https://www.imagetext.ru/pics_max/images_3162.gif"
+                            : productEntiti.imageLink[0],
+                      ),
+                      width: 155.w,
+                      placeholderBuilder: OctoPlaceholder.blurHash(
+                        'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                      ),
+                      memCacheHeight: 0,
+                      memCacheWidth: 0,
+                      filterQuality: FilterQuality.low,
+                      fit: BoxFit.cover,
+                    )
+                  : SizedBox(
+                      width: 155.w,
+                      child: Image.asset(
+                        'assets/images/splash.png',
+                        width: 155.w / 2,
+                        height: 155.w / 2,
+                      ),
+                    ),
             ),
             Padding(
               padding: EdgeInsets.all(14.86.h),
@@ -444,16 +484,14 @@ class _HomeViewState extends State<HomeView>
                           fontWeight: FontWeight.w600,
                           color: ColorStyles.accentColor,
                         ),
-                        Material(
-                          child: InkWell(
-                            onTap: () {
-                              print('object');
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/plus.svg',
-                              width: 16.83.h,
-                              height: 16.83.h,
-                            ),
+                        GestureDetector(
+                          onTap: () {
+                            print('object');
+                          },
+                          child: SvgPicture.asset(
+                            'assets/icons/plus.svg',
+                            width: 16.83.h,
+                            height: 16.83.h,
                           ),
                         ),
                       ],
