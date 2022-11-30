@@ -3,6 +3,7 @@ static const String dish = "assets/images/dish.png";
 static const String backgroundImg = "assets/images/backgroundImg.png";
 static const String berry = "assets/images/Berry.png";
 static const String Empty = "assets/images/pusto.png";
+static const String Splash = "assets/images/splash.png";
 }
 
 abstract class SvgImg{

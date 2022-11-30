@@ -1,3 +1,4 @@
+import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/auth/presentation/views/hello_view/hello_view.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/view/login_view.dart';
 import 'package:cofee/features/auth/presentation/views/root_screen/controller/root_screen_cubit.dart';
@@ -20,10 +21,18 @@ class _RootScreenState extends State<RootScreen> {
       builder: (context, state) {
         if (state is RootScreenIsAuthorized) {
           return const BottomNavView();
-        } else {
+        } else if (state is RootScreenEmptyState) {
           context.read<RootScreenCubit>().checkAuthorization();
+        } else {
+          return const HelloView();
         }
-        return const HelloView();
+        return const Scaffold(
+          body: Center(
+            child: Image(
+              image: AssetImage(Img.Splash),
+            ),
+          ),
+        );
       },
     );
   }

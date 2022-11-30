@@ -2,7 +2,7 @@ import 'package:cofee/features/auth/presentation/domain/entiti/products/price_en
 
 class PriceModels extends PriceEntiti {
   PriceModels({
-    required final int currentPrice,
+    required final double currentPrice,
   }) : super(
           currentPrice: currentPrice,
         );

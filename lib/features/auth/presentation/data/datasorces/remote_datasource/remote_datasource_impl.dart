@@ -20,7 +20,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
         baseUrl: BackConstants.baseUrl,
       ),
     );
-    initializeInterceptor();
+    // initializeInterceptor();
   }
   initializeInterceptor() {
     _dio.interceptors.add(

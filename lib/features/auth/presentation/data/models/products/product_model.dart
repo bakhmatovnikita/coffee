@@ -16,7 +16,7 @@ class ProductModel extends ProductEntiti {
     required final List<SizePriceEntiti> sizePrices,
     required final List<String> imageLink,
     required final String name,
-    required final String groupId,
+    required final String parentGroup,
   }) : super(
             fatAmount: fatAmount,
             proteinsAmount: proteinsAmount,
@@ -30,7 +30,7 @@ class ProductModel extends ProductEntiti {
             sizePrices: sizePrices,
             name: name,
             imageLink: imageLink,
-            groupId: groupId);
+            parentGroup: parentGroup);
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         fatAmount: json['fatAmount'],
         proteinsAmount: json['proteinsAmount'],
@@ -41,20 +41,16 @@ class ProductModel extends ProductEntiti {
         carbohydratesFullAmount: json['carbohydratesFullAmount'],
         energyFullAmount: json['energyFullAmount'],
         weight: json['weight'],
-        sizePrices: List<SizePriceEntiti>.from(
-          (json["sizePrices"] as List<dynamic>)
-              .map((x) => SizePriceModels.fromJson(x))
-              .toList(),
-        ),
+        sizePrices: List<SizePriceEntiti>.from(json["sizePrices"].map((x) => SizePriceModels.fromJson(x))),
         name: json['name'],
         imageLink: List<String>.from((json["imageLinks"] as List<dynamic>)
-                    .map((x) => x)
+                    .map((x) => x) 
                     .toList()) ==
                 0
             ? List<String>.from(
                 (json["imageLinks"] as List<dynamic>).map((x) => x).toList())
             : List<String>.from(
                 (json["imageLinks"] as List<dynamic>).map((x) => x).toList()),
-        groupId: json["parentGroup"] ?? "",
+        parentGroup: json["parentGroup"] ?? "",
       );
 }

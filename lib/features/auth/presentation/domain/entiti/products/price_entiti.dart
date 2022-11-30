@@ -1,5 +1,5 @@
 class PriceEntiti {
-  final int currentPrice;
+  final double currentPrice;
 
   PriceEntiti({
     required this.currentPrice,
