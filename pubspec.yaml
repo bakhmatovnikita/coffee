@@ -56,6 +56,8 @@ dependencies:
   sms_autofill: ^2.2.0
   cached_network_image: ^3.2.1
   octo_image: ^1.0.2
+  intl: ^0.17.0
+  flutter_smart_dialog: ^4.7.1
 
 dev_dependencies:
   flutter_test:

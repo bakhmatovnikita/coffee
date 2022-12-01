@@ -11,5 +11,30 @@ class BackConstants {
   static const String SAVED_PHONE_USER = 'SAVED_PHONE_USER';
   static const String baseUrl = 'https://api-ru.iiko.services/api/1/';
   static String token = ""; 
-  static const List<dynamic> cart = [];
+  static List<int> cart = [];
+  static final List<String> months = [
+    '',
+    'Япнваря',
+    'Фервраля',
+    'Марта',
+    'Апреля',
+    'Мая',
+    'Июня',
+    'Июля',
+    'Августа',
+    'Сентября',
+    'Октября',
+    'Ноября',
+    'Декабря',
+  ];
+  static final List<String> weekDays = [
+    '',
+    'Пн',
+    'Вт',
+    'Ср',
+    'Чт',
+    'Пт',
+    'Сб',
+    'Вс',
+  ];
 }

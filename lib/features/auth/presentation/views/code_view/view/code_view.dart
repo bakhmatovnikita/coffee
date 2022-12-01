@@ -1,6 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
-import 'package:cofee/features/auth/presentation/views/code_view/widgets/code_validator.dart';
+import 'package:cofee/features/widgets/push_error.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +100,19 @@ class _CodeViewState extends State<CodeView> {
                 child: CustomButton(
                   title: 'Подтвердить',
                   onTap: () {
-                    if (controller.text.isEmpty) {
-                      print("error");
+                    if (controller.text.isEmpty || controller.text != "123456") {
+                      SmartDialog.show(
+                              animationType: SmartAnimationType.fade,
+                              maskColor: Colors.transparent,
+                              builder: (context) => const SafeArea(
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: PushError(
+                                    title: 'Введен неверный код',
+                                  ),
+                                ),
+                              ),
+                            );
                     } else {
                       print(widget.phone);
                       Navigator.of(context).pushNamed(

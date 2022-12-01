@@ -1,7 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/widgets/login_bottomscheet.dart';
-import 'package:cofee/features/home/presentation/widgets/entity_popup.dart';
+import 'package:cofee/features/home/presentation/views/widgets/entity_popup.dart';
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';

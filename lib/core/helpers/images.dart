@@ -17,5 +17,5 @@ abstract class SvgImg{
   static const String cartFillFull = "assets/icons/cart.fill.full.svg";
   static const String houseNotFill = "assets/icons/house.notfill.svg";
   static const String cartFill = "assets/icons/cart.fill.svg";
-
+  static const String error = 'assets/icons/error.svg';
 }
