@@ -12,6 +12,7 @@ import 'package:cofee/features/auth/presentation/domain/usecase/get_token.dart';
 import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/auth/presentation/views/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/home/presentation/views/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -32,6 +33,7 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => HomeViewCubit(getProducts: sl()));
   sl.registerFactory(() => LoginViewCubit(getToken: sl()));
+  sl.registerFactory(() => BottomNavigationBarCubit());
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));

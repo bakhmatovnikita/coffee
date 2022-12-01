@@ -10,7 +10,11 @@ class DayOfWeek {
   bool selected;
   bool today;
 
-  DayOfWeek({required this.day, required this.selected, required this.today});
+  DayOfWeek({
+    required this.day,
+    required this.selected,
+    required this.today,
+  });
 }
 
 void calendarSelectModal(
@@ -24,10 +28,10 @@ void calendarSelectModal(
       barrierColor: Colors.transparent,
       context: context,
       builder: (context) {
-        bool isInit = false;
-        bool isInitOpacity = false;
-        ScrollController scrollController = ScrollController(
-            initialScrollOffset: iconIndex == 0 ? 0 : (57.h * (iconIndex - 1)));
+        // bool isInit = false;
+        // bool isInitOpacity = false;
+        // ScrollController scrollController = ScrollController(
+        //     initialScrollOffset: iconIndex == 0 ? 0 : (57.h * (iconIndex - 1)));
         return AlertDialog(
           insetPadding: EdgeInsets.only(top: offset.dy, left: offset.dx),
           alignment: Alignment.topLeft,
@@ -157,13 +161,41 @@ class CalendarView extends StatelessWidget {
 
   // ignore: prefer_final_fields
   List<DayOfWeek> _daysOfWeek = [
-    DayOfWeek(day: 'ПН', selected: false, today: true),
-    DayOfWeek(day: 'ВТ', selected: true, today: false),
-    DayOfWeek(day: 'СР', selected: false, today: false),
-    DayOfWeek(day: 'ЧТ', selected: false, today: false),
-    DayOfWeek(day: 'ПТ', selected: false, today: false),
-    DayOfWeek(day: 'СБ', selected: false, today: false),
-    DayOfWeek(day: 'ВС', selected: false, today: false),
+    DayOfWeek(
+      day: 'ПН',
+      selected: DateTime.now().weekday == 1 ? true : false,
+      today: DateTime.now().weekday == 1 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'ВТ',
+      selected: DateTime.now().weekday == 2 ? true : false,
+      today: DateTime.now().weekday == 2 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'СР',
+      selected: DateTime.now().weekday == 3 ? true : false,
+      today: DateTime.now().weekday == 3 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'ЧТ',
+      selected: DateTime.now().weekday == 4 ? true : false,
+      today: DateTime.now().weekday == 4 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'ПТ',
+      selected: DateTime.now().weekday == 5 ? true : false,
+      today: DateTime.now().weekday == 5 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'СБ',
+      selected: DateTime.now().weekday == 6 ? true : false,
+      today: DateTime.now().weekday == 6 ? true : false,
+    ),
+    DayOfWeek(
+      day: 'ВС',
+      selected: DateTime.now().weekday == 7 ? true : false,
+      today: DateTime.now().weekday == 7 ? true : false,
+    ),
   ];
 
   Widget _dayWidget(DayOfWeek dayOfWeek, bool selected) {

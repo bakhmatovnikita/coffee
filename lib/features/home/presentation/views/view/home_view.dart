@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/features/auth/presentation/domain/entiti/products/groups_entiti.dart';
@@ -11,7 +12,7 @@ import 'package:cofee/features/auth/presentation/domain/entiti/products/products
 import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
 import 'package:cofee/features/home/presentation/views/controller/home_view_state.dart';
-import 'package:cofee/features/home/presentation/widgets/calendar_select_modal.dart';
+import 'package:cofee/features/home/presentation/views/widgets/calendar_select_modal.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,13 +31,9 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  // final List<Category> _categories = [
-  //   // Category(0, 'Все'),
-  //   Category(1, 'Десерты и выпечка'),
-  //   Category(2, 'Салаты'),
-  //   Category(3, 'Первые блюда'),
-  //   Category(4, 'Вторые блюда'),
-  // ];
+  final day = DateTime.now().day;
+  final month = BackConstants.months[DateTime.now().month];
+  final weekDay = BackConstants.weekDays[DateTime.now().weekday];
 
   AutoScrollController scrollController = AutoScrollController();
   AutoScrollController customScrollController = AutoScrollController();
@@ -46,39 +43,6 @@ class _HomeViewState extends State<HomeView>
   final listViewKey = RectGetter.createGlobalKey();
 
   Map<int, dynamic> itemsKeys = {};
-
-  // final List<Product> _products = [
-  //   Product(
-  //       1, 'Круассан', 150, 180, '12/15/40', 200, 'assets/images/Frame 1.png'),
-  //   Product(
-  //       1, 'Круассан', 150, 180, '12/15/40', 300, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       1, 'Круассан', 150, 180, '12/15/40', 400, 'assets/images/Frame 3.png'),
-  //   Product(
-  //       2, 'Круассан', 150, 180, '12/15/40', 500, 'assets/images/Frame 1.png'),
-  //   Product(
-  //       2, 'Круассан', 150, 180, '12/15/40', 600, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       2, 'Круассан', 150, 180, '12/15/40', 700, 'assets/images/Frame 3.png'),
-  //   Product(
-  //       2, 'Круассан', 150, 180, '12/15/40', 800, 'assets/images/Frame 1.png'),
-  //   Product(
-  //       3, 'Круассан', 150, 180, '12/15/40', 900, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       3, 'Круассан', 150, 180, '12/15/40', 1000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       3, 'Круассан', 150, 180, '12/15/40', 2000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       4, 'Круассан', 150, 180, '12/15/40', 3000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       4, 'Круассан', 150, 180, '12/15/40', 4000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       4, 'Круассан', 150, 180, '12/15/40', 5000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       4, 'Круассан', 150, 180, '12/15/40', 6000, 'assets/images/Frame 2.png'),
-  //   Product(
-  //       4, 'Круассан', 150, 180, '12/15/40', 7000, 'assets/images/Frame 2.png'),
-  // ];
 
   final _categoriesController = StreamController<GroupsEntiti>();
   final _appBarController = StreamController<double>();
@@ -242,7 +206,7 @@ class _HomeViewState extends State<HomeView>
   SliverAppBar _appBar() {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 135.h : 150.h,
+      toolbarHeight: Platform.isAndroid ? 180.h : 150.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,
@@ -256,7 +220,7 @@ class _HomeViewState extends State<HomeView>
               onTap: () => calendarSelectModal(
                   context, Offset(15.w, 170.5.h), (index) {}, 0),
               child: CustomText(
-                title: 'Меню на 12 июля (Вт)',
+                title: 'Меню на $day $month ($weekDay)',
                 fontSize: 16,
               ),
             ),
@@ -415,9 +379,7 @@ class _HomeViewState extends State<HomeView>
               child: productEntiti.imageLink.isNotEmpty
                   ? OctoImage(
                       image: CachedNetworkImageProvider(
-                        productEntiti.imageLink.isEmpty
-                            ? "https://www.imagetext.ru/pics_max/images_3162.gif"
-                            : productEntiti.imageLink[0],
+                        productEntiti.imageLink[0],
                       ),
                       width: 155.w,
                       placeholderBuilder: OctoPlaceholder.blurHash(
