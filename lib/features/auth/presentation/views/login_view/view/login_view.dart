@@ -5,10 +5,12 @@ import 'package:cofee/features/auth/presentation/views/login_view/controller/log
 import 'package:cofee/features/widgets/custom_button.dart';
 import 'package:cofee/features/widgets/custom_text.dart';
 import 'package:cofee/features/widgets/custom_text_field.dart';
+import 'package:cofee/features/widgets/push_error.dart';
 import 'package:cofee/features/widgets/switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -153,7 +155,18 @@ class _LoginViewState extends State<LoginView> {
                         onTap: () {
                           if (controller.text.length < 18 ||
                               controller.text.isEmpty) {
-                            return;
+                            SmartDialog.show(
+                              animationType: SmartAnimationType.fade,
+                              maskColor: Colors.transparent,
+                              builder: (context) => const SafeArea(
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: PushError(
+                                    title: 'Введен неверный номер',
+                                  ),
+                                ),
+                              ),
+                            );
                           } else {
                             Navigator.of(context).pushNamed(
                               '/CodeView',
