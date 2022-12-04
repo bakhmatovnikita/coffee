@@ -1,8 +1,9 @@
-import 'package:cofee/features/auth/presentation/views/choice_adress/controller/choice_adress_cubit.dart';
-import 'package:cofee/features/auth/presentation/views/login_view/controller/login_view_cubit.dart';
-import 'package:cofee/features/auth/presentation/views/root_screen/controller/root_screen_cubit.dart';
-import 'package:cofee/features/home/presentation/views/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
-import 'package:cofee/features/home/presentation/views/controller/home_view_cubit.dart';
+import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
+import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
+import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
+import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/rout_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +13,9 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'injection.container.dart' as di;
 import 'injection.container.dart';
 
-void main() async {
-  await di.init();
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
     runApp(
@@ -33,7 +34,10 @@ void main() async {
           ),
           BlocProvider<BottomNavigationBarCubit>(
             create: (context) => sl<BottomNavigationBarCubit>(),
-          )
+          ),
+          BlocProvider<CartCubit>(
+            create: (context) => sl<CartCubit>(),
+          ),
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),

@@ -4,6 +4,7 @@ static const String backgroundImg = "assets/images/backgroundImg.png";
 static const String berry = "assets/images/Berry.png";
 static const String Empty = "assets/images/pusto.png";
 static const String Splash = "assets/images/splash.png";
+static const String cart = "assets/images/cart.png";
 }
 
 abstract class SvgImg{
