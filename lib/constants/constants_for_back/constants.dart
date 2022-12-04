@@ -1,4 +1,8 @@
 import 'package:cofee/core/services/auth_config/auth_config.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/data/models/products/product_model.dart';
+import 'package:cofee/features/data/models/products/products_model.dart';
+import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/injection.container.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -8,10 +12,11 @@ class BackConstants {
   static const String CACHED_FAILURE_MESSAGE = 'Cache Failure';
   static const String SAVED_USER_ID = 'SAVED_USER_ID';
   static const String SAVED_TOKEN = 'SAVED_TOKEN';
+  static const String SAVED_CARTS_ITEMS = "SAVED_CARTS_ITEMS";
   static const String SAVED_PHONE_USER = 'SAVED_PHONE_USER';
   static const String baseUrl = 'https://api-ru.iiko.services/api/1/';
-  static String token = ""; 
-  static List<int> cart = [];
+  static String token = "";
+  static List<CartModel> cart = [];
   static final List<String> months = [
     '',
     'Япнваря',
@@ -36,5 +41,15 @@ class BackConstants {
     'Пт',
     'Сб',
     'Вс',
+  ];
+  static final List<String> weekFullDays = [
+    '',
+    'Понедельник',
+    'Вторник',
+    'Среда',
+    'Четверг',
+    'Пятница',
+    'Суббота',
+    'Воскресение',
   ];
 }
