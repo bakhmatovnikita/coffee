@@ -1,9 +1,4 @@
-import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/data/models/products/product_model.dart';
-import 'package:cofee/features/data/models/products/products_model.dart';
-import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
-import 'package:cofee/injection.container.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class BackConstants {

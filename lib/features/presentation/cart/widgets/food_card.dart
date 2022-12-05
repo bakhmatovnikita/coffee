@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class FoodCard extends StatefulWidget {
   final String name;
@@ -11,7 +9,7 @@ class FoodCard extends StatefulWidget {
   final String proteinsFullAmount;
   final String carbohydratesFullAmount;
   final double sizePrices;
-  final List<String> imageLink;
+  final List<dynamic> imageLink;
   const FoodCard({
     super.key,
     required this.name,
@@ -35,9 +33,9 @@ class _FoodCardState extends State<FoodCard> {
         children: [
           Row(
             children: [
-              CachedNetworkImage(
-                imageUrl: widget.imageLink[0],
-              ),
+              // CachedNetworkImage(
+              //   imageUrl: widget.imageLink[0],
+              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

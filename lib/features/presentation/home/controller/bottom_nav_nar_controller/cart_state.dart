@@ -6,20 +6,24 @@ abstract class CartState extends Equatable {
   List<Object?> get props => [];
 }
 
-class CartStateEmptyState extends CartState {
+class CartEmptyState extends CartState {
   @override
   List<Object?> get props => [];
 }
 
-class CartHaveItemState extends CartState {
-  final List<CartModel> cartModel;
+class HaveCartState extends CartState {
+  final int countCart;
+  List<CartModel>? cartModel;
 
-  CartHaveItemState(this.cartModel);
+  HaveCartState({
+    required this.countCart,
+    this.cartModel,
+  });
   @override
-  List<Object?> get props => [cartModel];
+  List<Object?> get props => [countCart, cartModel];
 }
 
-class CartNotHaveItemState extends CartState {
+class NotHaveCartState extends CartState {
   @override
   List<Object?> get props => [];
 }

@@ -1,11 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
-import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/bottom_nav_bar_state.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
+
+import '../controller/bottom_nav_nar_controller/cart_cubit.dart';
+import '../controller/bottom_nav_nar_controller/cart_state.dart';
 
 class EntityPopup extends StatefulWidget {
   final ProductEntiti productEntiti;
@@ -25,7 +24,7 @@ class EntityPopup extends StatefulWidget {
 class _EntityPopupState extends State<EntityPopup> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BottomNavigationBarCubit, BottomNavigationBarState>(
+    return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
         return ClipRRect(
           borderRadius: BorderRadius.only(
@@ -165,7 +164,7 @@ class _EntityPopupState extends State<EntityPopup> {
                   CustomButton(
                     title: 'Добавить в корзину',
                     onTap: () {
-                      context.read<BottomNavigationBarCubit>().addToCartItem(
+                      context.read<CartCubit>().addToCartItem(
                             CartModel(
                               name: widget.productEntiti.name,
                               fatFullAmount: widget.productEntiti.fatFullAmount

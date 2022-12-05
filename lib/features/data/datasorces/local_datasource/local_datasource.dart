@@ -1,7 +1,5 @@
 
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/data/models/products/product_model.dart';
-import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
 

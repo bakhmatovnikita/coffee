@@ -1,8 +1,7 @@
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
-import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
+import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/rout_generator.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +31,8 @@ Future<void> main() async {
           BlocProvider<HomeViewCubit>(
             create: (context) => sl<HomeViewCubit>(),
           ),
-          BlocProvider<BottomNavigationBarCubit>(
-            create: (context) => sl<BottomNavigationBarCubit>(),
+          BlocProvider<CartCubit>(
+            create: (context) => sl<CartCubit>(),
           ),
           BlocProvider<CartCubit>(
             create: (context) => sl<CartCubit>(),

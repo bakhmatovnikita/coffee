@@ -5,11 +5,8 @@ import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/data/models/products/product_model.dart';
-import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
-import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
