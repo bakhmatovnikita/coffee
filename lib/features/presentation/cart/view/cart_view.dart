@@ -84,31 +84,51 @@ class _CartViewState extends State<CartView> {
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    width: size.width,
-                    height: 500.h,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: state.countCart,
-                      itemBuilder: (context, index) {
-                        return FoodCard(
-                          name: state.cartModel![index].name,
-                          fatFullAmount: state.cartModel![index].fatFullAmount,
-                          weight: state.cartModel![index].weight,
-                          proteinsFullAmount:
-                              state.cartModel![index].proteinsFullAmount, 
-                          carbohydratesFullAmount:
-                              state.cartModel![index].carbohydratesFullAmount,
-                          sizePrices: state.cartModel![index].sizePrices,
-                          imageLink: state.cartModel![index].imageLink,
-                          index: index,
-                          onTap: () => context.read<CartCubit>().deteteItemInCart(index),
-                        );
-                      },
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: state.countCart,
+                    (context, index) => FoodCard(
+                      name: state.cartModel![index].name,
+                      fatFullAmount: state.cartModel![index].fatFullAmount,
+                      weight: state.cartModel![index].weight,
+                      proteinsFullAmount:
+                          state.cartModel![index].proteinsFullAmount,
+                      carbohydratesFullAmount:
+                          state.cartModel![index].carbohydratesFullAmount,
+                      sizePrices: state.cartModel![index].sizePrices,
+                      imageLink: state.cartModel![index].imageLink,
+                      index: index,
+                      onTap: () =>
+                          context.read<CartCubit>().deteteItemInCart(index),
                     ),
                   ),
                 ),
+                // SliverToBoxAdapter(
+                //   child: SizedBox(
+                //     width: size.width,
+                //     height: 500.h,
+                //     child: ListView.builder(
+                //       physics: const NeverScrollableScrollPhysics(),
+                //       itemCount: state.countCart,
+                //       itemBuilder: (context, index) {
+                //         return FoodCard(
+                //           name: state.cartModel![index].name,
+                //           fatFullAmount: state.cartModel![index].fatFullAmount,
+                //           weight: state.cartModel![index].weight,
+                //           proteinsFullAmount:
+                //               state.cartModel![index].proteinsFullAmount,
+                //           carbohydratesFullAmount:
+                //               state.cartModel![index].carbohydratesFullAmount,
+                //           sizePrices: state.cartModel![index].sizePrices,
+                //           imageLink: state.cartModel![index].imageLink,
+                //           index: index,
+                //           onTap: () =>
+                //               context.read<CartCubit>().deteteItemInCart(index),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
                 SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
