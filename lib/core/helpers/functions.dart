@@ -1,7 +1,9 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/auth/presentation/views/login_view/widgets/login_bottomscheet.dart';
-import 'package:cofee/features/widgets/custom_button.dart';
-import 'package:cofee/features/widgets/custom_text.dart';
+import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
+import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
+import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
+import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -107,6 +109,22 @@ class Functions {
       context: context,
       builder: (BuildContext context) {
         return const LoginBottomsheet();
+      },
+    );
+  }
+
+  void showProductEntityBottomsheet(ProductEntiti productEntiti) {
+    showMaterialModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return EntityPopup(
+          productEntiti: productEntiti,
+        );
       },
     );
   }

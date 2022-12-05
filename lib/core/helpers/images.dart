@@ -3,6 +3,8 @@ static const String dish = "assets/images/dish.png";
 static const String backgroundImg = "assets/images/backgroundImg.png";
 static const String berry = "assets/images/Berry.png";
 static const String Empty = "assets/images/pusto.png";
+static const String Splash = "assets/images/splash.png";
+static const String cart = "assets/images/cart.png";
 }
 
 abstract class SvgImg{
@@ -16,5 +18,5 @@ abstract class SvgImg{
   static const String cartFillFull = "assets/icons/cart.fill.full.svg";
   static const String houseNotFill = "assets/icons/house.notfill.svg";
   static const String cartFill = "assets/icons/cart.fill.svg";
-
+  static const String error = 'assets/icons/error.svg';
 }
