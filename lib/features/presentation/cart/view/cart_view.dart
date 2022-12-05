@@ -59,9 +59,7 @@ class _CartViewState extends State<CartView> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            context
-                                .read<CartCubit>()
-                                .deleteCart();
+                            context.read<CartCubit>().deleteCart();
                             context.read<CartCubit>().getItemsCart();
                           },
                           child: Container(
@@ -91,21 +89,53 @@ class _CartViewState extends State<CartView> {
                     width: size.width,
                     height: 500.h,
                     child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: state.countCart,
                       itemBuilder: (context, index) {
                         return FoodCard(
                           name: state.cartModel![index].name,
-                          fatFullAmount: state
-                            .cartModel![index].fatFullAmount,
+                          fatFullAmount: state.cartModel![index].fatFullAmount,
                           weight: state.cartModel![index].weight,
-                          proteinsFullAmount: state.cartModel![index].proteinsFullAmount,
-                          carbohydratesFullAmount: state.
-                              cartModel![index].carbohydratesFullAmount,
+                          proteinsFullAmount:
+                              state.cartModel![index].proteinsFullAmount, 
+                          carbohydratesFullAmount:
+                              state.cartModel![index].carbohydratesFullAmount,
                           sizePrices: state.cartModel![index].sizePrices,
                           imageLink: state.cartModel![index].imageLink,
+                          index: index,
+                          onTap: () => context.read<CartCubit>().deteteItemInCart(index),
                         );
                       },
                     ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
+                        child: CustomText(
+                          title: 'Итого:',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
+                        child: CustomText(
+                          title: '400 ₽ · 300 Ккал',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16.h),
+                        child: CustomButton(title: 'Оформить заказ'),
+                      )
+                    ],
                   ),
                 ),
               ],

@@ -28,11 +28,27 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  void deteteItemInCart(int index){
+    try {
+      BackConstants.cart.removeAt(index);
+      localDatasource.saveToCart(BackConstants.cart);
+      final int itemCountCart = localDatasource.getLengthCart();
+      final list = localDatasource.getSavedCart();
+      print(BackConstants.cart.length);
+      if (list.isEmpty) {
+        emit(NotHaveCartState());
+      }else{
+      emit(HaveCartState(countCart: itemCountCart, cartModel: list));
+
+      }
+    } catch (_) {
+      emit(NotHaveCartState());
+    }
+  }
+
   void getItemsCart() async {
     try {
-      await Future.delayed(Duration(milliseconds: 200));
-      // emit(CartEmptyState());
-      // final List<CartModel> list = localDatasource.getSavedCart();
+      await Future.delayed(const Duration(milliseconds: 200));
       emit(HaveCartState(
           countCart: localDatasource.getSavedCart().length,
           cartModel: localDatasource.getSavedCart()));
