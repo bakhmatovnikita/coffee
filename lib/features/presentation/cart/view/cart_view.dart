@@ -1,23 +1,20 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
-import 'package:cofee/features/presentation/auth/login_view/view/login_view.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
-import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
-import 'package:cofee/features/presentation/cart/controller/cart_state.dart';
 import 'package:cofee/features/presentation/cart/widgets/food_card.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/bottom_nav_bar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../home/controller/bottom_nav_nar_controller/cart_cubit.dart';
+import '../../home/controller/bottom_nav_nar_controller/cart_state.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -36,9 +33,9 @@ class _CartViewState extends State<CartView> {
 
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
-        if (state is CartStateEmptyState) {
+        if (state is CartEmptyState) {
           context.read<CartCubit>().getItemsCart();
-        } else if (state is CartHaveItemState) {
+        } else if (state is HaveCartState) {
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: CustomScrollView(
@@ -62,9 +59,7 @@ class _CartViewState extends State<CartView> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            context
-                                .read<BottomNavigationBarCubit>()
-                                .deleteCart();
+                            context.read<CartCubit>().deleteCart();
                             context.read<CartCubit>().getItemsCart();
                           },
                           child: Container(
@@ -94,21 +89,53 @@ class _CartViewState extends State<CartView> {
                     width: size.width,
                     height: 500.h,
                     child: ListView.builder(
-                      itemCount: context.read<CartCubit>().getLengthCart(),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: state.countCart,
                       itemBuilder: (context, index) {
                         return FoodCard(
-                          name: state.cartModel[index].name,
-                          fatFullAmount: state
-                            .cartModel[index].fatFullAmount,
-                          weight: state.cartModel[index].weight,
-                          proteinsFullAmount: state.cartModel[index].proteinsFullAmount,
-                          carbohydratesFullAmount: state.
-                              cartModel[index].carbohydratesFullAmount,
-                          sizePrices: state.cartModel[index].sizePrices,
-                          imageLink: state.cartModel[index].imageLink,
+                          name: state.cartModel![index].name,
+                          fatFullAmount: state.cartModel![index].fatFullAmount,
+                          weight: state.cartModel![index].weight,
+                          proteinsFullAmount:
+                              state.cartModel![index].proteinsFullAmount, 
+                          carbohydratesFullAmount:
+                              state.cartModel![index].carbohydratesFullAmount,
+                          sizePrices: state.cartModel![index].sizePrices,
+                          imageLink: state.cartModel![index].imageLink,
+                          index: index,
+                          onTap: () => context.read<CartCubit>().deteteItemInCart(index),
                         );
                       },
                     ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
+                        child: CustomText(
+                          title: 'Итого:',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
+                        child: CustomText(
+                          title: '400 ₽ · 300 Ккал',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16.h),
+                        child: CustomButton(title: 'Оформить заказ'),
+                      )
+                    ],
                   ),
                 ),
               ],

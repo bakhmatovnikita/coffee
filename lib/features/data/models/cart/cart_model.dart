@@ -5,7 +5,7 @@ class CartModel {
   final String proteinsFullAmount;
   final String carbohydratesFullAmount;
   final double sizePrices;
-  final List<String> imageLink;
+  final List<dynamic> imageLink;
 
   CartModel(
       {required this.name,
