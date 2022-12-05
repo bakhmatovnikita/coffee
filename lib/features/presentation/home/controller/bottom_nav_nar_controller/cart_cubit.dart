@@ -30,6 +30,7 @@ class CartCubit extends Cubit<CartState> {
 
   void getItemsCart() async {
     try {
+      await Future.delayed(Duration(milliseconds: 200));
       // emit(CartEmptyState());
       // final List<CartModel> list = localDatasource.getSavedCart();
       emit(HaveCartState(
