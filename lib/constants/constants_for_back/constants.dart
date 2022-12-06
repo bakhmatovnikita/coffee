@@ -12,6 +12,8 @@ class BackConstants {
   static const String baseUrl = 'https://api-ru.iiko.services/api/1/';
   static String token = "";
   static List<CartModel> cart = [];
+  static int amountPrice = 1;
+  static int amountWeight = 1;
   static final List<String> months = [
     '',
     'Япнваря',

@@ -13,7 +13,7 @@ class CartEmptyState extends CartState {
 
 class HaveCartState extends CartState {
   final int countCart;
-  List<CartModel>? cartModel;
+  final List<CartModel>? cartModel;
 
   HaveCartState({
     required this.countCart,

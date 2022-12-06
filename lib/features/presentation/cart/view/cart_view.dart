@@ -6,6 +6,7 @@ import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/presentation/cart/widgets/food_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,15 +28,35 @@ class _CartViewState extends State<CartView> {
   final day = DateTime.now().day;
   final month = BackConstants.months[DateTime.now().month];
   final weekDay = BackConstants.weekFullDays[DateTime.now().weekday];
+  double totalAmount = 0;
+  double totalWeigth = 0;
+
+  void calculateTotalAmount(List<CartModel> list) {
+    double result = 0;
+
+    list.forEach((element) {
+      result = result + element.sizePrices * element.count;
+    });
+    totalAmount = result;
+  }
+
+  void calculateTotalWeight(List<CartModel> list) {
+    double result = 0;
+    list.forEach((element) {
+      result = result + element.weight * element.count;
+    });
+    totalWeigth = result;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
         if (state is CartEmptyState) {
           context.read<CartCubit>().getItemsCart();
         } else if (state is HaveCartState) {
+          calculateTotalWeight(state.cartModel!);
+          calculateTotalAmount(state.cartModel!);
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: CustomScrollView(
@@ -60,6 +81,7 @@ class _CartViewState extends State<CartView> {
                         GestureDetector(
                           onTap: () {
                             context.read<CartCubit>().deleteCart();
+                            
                             context.read<CartCubit>().getItemsCart();
                           },
                           child: Container(
@@ -87,48 +109,121 @@ class _CartViewState extends State<CartView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     childCount: state.countCart,
-                    (context, index) => FoodCard(
-                      name: state.cartModel![index].name,
-                      fatFullAmount: state.cartModel![index].fatFullAmount,
-                      weight: state.cartModel![index].weight,
-                      proteinsFullAmount:
-                          state.cartModel![index].proteinsFullAmount,
-                      carbohydratesFullAmount:
-                          state.cartModel![index].carbohydratesFullAmount,
-                      sizePrices: state.cartModel![index].sizePrices,
-                      imageLink: state.cartModel![index].imageLink,
-                      index: index,
-                      onTap: () =>
-                          context.read<CartCubit>().deteteItemInCart(index),
+                    (context, index) => Column(
+                      children: [
+                        FoodCard(
+                          cartModel: state.cartModel![index],
+                          index: index,
+                          onTap: () =>
+                              context.read<CartCubit>().deteteItemInCart(index),
+                          onUpdatePrice: () =>
+                              calculateTotalAmount(state.cartModel!),
+                          onUpdateWeight: () =>
+                              calculateTotalWeight(state.cartModel!),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 12.h, bottom: 5.w, left: 16.w, right: 16.w),
+                          child: Row(
+                            children: [
+                              CustomText(
+                                title: 'Количество порций',
+                                fontSize: 17,
+                                color: ColorStyles.blackColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                height: 40.h,
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (state.cartModel![index].count <
+                                              2) {
+                                            state.cartModel![index].count = 1;
+                                          } else {
+                                            state.cartModel![index].count--;
+                                          }
+                                          calculateTotalAmount(
+                                              state.cartModel!);
+                                          calculateTotalWeight(
+                                              state.cartModel!);
+                                          context
+                                              .read<CartCubit>()
+                                              .saveToCart(state.cartModel!);
+                                          context
+                                              .read<CartCubit>()
+                                              .getItemsCart();
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SvgPicture.asset(
+                                            SvgImg.minus,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: 30.w,
+                                      child: CustomText(
+                                        title: state.cartModel![index].count
+                                            .toString(),
+                                        fontSize: 17,
+                                        color: ColorStyles.blackColor,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        state.cartModel![index].count++;
+                                        calculateTotalAmount(state.cartModel!);
+                                        calculateTotalWeight(state.cartModel!);
+                                        context
+                                            .read<CartCubit>()
+                                            .saveToCart(state.cartModel!);
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SvgPicture.asset(
+                                            SvgImg.plus,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // SliverToBoxAdapter(
-                //   child: SizedBox(
-                //     width: size.width,
-                //     height: 500.h,
-                //     child: ListView.builder(
-                //       physics: const NeverScrollableScrollPhysics(),
-                //       itemCount: state.countCart,
-                //       itemBuilder: (context, index) {
-                //         return FoodCard(
-                //           name: state.cartModel![index].name,
-                //           fatFullAmount: state.cartModel![index].fatFullAmount,
-                //           weight: state.cartModel![index].weight,
-                //           proteinsFullAmount:
-                //               state.cartModel![index].proteinsFullAmount,
-                //           carbohydratesFullAmount:
-                //               state.cartModel![index].carbohydratesFullAmount,
-                //           sizePrices: state.cartModel![index].sizePrices,
-                //           imageLink: state.cartModel![index].imageLink,
-                //           index: index,
-                //           onTap: () =>
-                //               context.read<CartCubit>().deteteItemInCart(index),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
                 SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +241,8 @@ class _CartViewState extends State<CartView> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
                         child: CustomText(
-                          title: '400 ₽ · 300 Ккал',
+                          title:
+                              '${totalAmount.toString()} ₽ · ${totalWeigth.toStringAsFixed(2)} Ккал',
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
                         ),
@@ -229,7 +325,7 @@ class _CartViewState extends State<CartView> {
   SliverAppBar _appBar(BuildContext context) {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 80.h : 66.h,
+      toolbarHeight: Platform.isAndroid ? 90.h : 66.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,

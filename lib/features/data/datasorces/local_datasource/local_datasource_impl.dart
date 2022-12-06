@@ -95,7 +95,8 @@ class LocalDatasourceImplement implements LocalDatasource {
   @override
   int getLengthCart() {
     return sharedPreferences
-        .getStringList(BackConstants.SAVED_CARTS_ITEMS)!.length; 
+        .getStringList(BackConstants.SAVED_CARTS_ITEMS)!
+        .length;
   }
 
   @override
@@ -107,6 +108,8 @@ class LocalDatasourceImplement implements LocalDatasource {
       return jsonCartList
           .map((cart) => CartModel.fromJson(json.decode(cart)))
           .toList();
+    } else if (jsonCartList == null) {
+      return [];
     } else {
       throw CacheException();
     }

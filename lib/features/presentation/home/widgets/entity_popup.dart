@@ -169,8 +169,7 @@ class _EntityPopupState extends State<EntityPopup> {
                               name: widget.productEntiti.name,
                               fatFullAmount: widget.productEntiti.fatFullAmount
                                   .toStringAsFixed(2),
-                              weight: widget.productEntiti.weight
-                                  .toStringAsFixed(1),
+                              weight: widget.productEntiti.weight,
                               proteinsFullAmount: widget
                                   .productEntiti.proteinsFullAmount
                                   .toStringAsFixed(1),
@@ -180,6 +179,7 @@ class _EntityPopupState extends State<EntityPopup> {
                               sizePrices: widget.productEntiti.sizePrices[0]
                                   .price.currentPrice,
                               imageLink: widget.productEntiti.imageLink,
+                              count: 1
                             ),
                           );
                       context.read<CartCubit>().getItemsCart();

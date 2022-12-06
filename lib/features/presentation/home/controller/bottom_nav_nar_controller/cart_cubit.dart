@@ -9,13 +9,36 @@ class CartCubit extends Cubit<CartState> {
   CartCubit(this.localDatasource) : super(CartEmptyState());
   void addToCartItem(CartModel productModel) {
     try {
-      BackConstants.cart.add(productModel);
-      localDatasource.saveToCart(BackConstants.cart);
-      final int itemCountCart = localDatasource.getLengthCart();
-      print(BackConstants.cart.length);
-      emit(HaveCartState(countCart: itemCountCart));
+      List<CartModel> cart = localDatasource.getSavedCart();
+      bool haveEquelsItem = false;
+      for (var i = 0; i < cart.length; i++) {
+        if (productModel.name == cart[i].name) {
+          cart[i].count++;
+          localDatasource.saveToCart(cart);
+          haveEquelsItem = true;
+          emit(HaveCartState(countCart: cart.length, cartModel: cart));
+        }
+      }
+      if (haveEquelsItem == false) {
+        cart.add(productModel);
+        localDatasource.saveToCart(cart);
+        emit(HaveCartState(countCart: cart.length, cartModel: cart));
+      }
     } catch (_) {
       emit(NotHaveCartState());
+    }
+  }
+
+  void saveToCart(List<CartModel> cartModel) {
+    try {
+      if (cartModel.isEmpty) {
+        emit(NotHaveCartState());
+      } else {
+        localDatasource.saveToCart(cartModel);
+        emit(HaveCartState(countCart: cartModel.length, cartModel: cartModel));
+      }
+    } catch (e) {
+      emit(CartEmptyState());
     }
   }
 
@@ -28,18 +51,15 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  void deteteItemInCart(int index){
+  void deteteItemInCart(int index) {
     try {
-      BackConstants.cart.removeAt(index);
-      localDatasource.saveToCart(BackConstants.cart);
-      final int itemCountCart = localDatasource.getLengthCart();
-      final list = localDatasource.getSavedCart();
-      print(BackConstants.cart.length);
-      if (list.isEmpty) {
+      List<CartModel> cart = localDatasource.getSavedCart();
+      cart.removeAt(index);
+      localDatasource.saveToCart(cart);
+      if (cart.isEmpty) {
         emit(NotHaveCartState());
-      }else{
-      emit(HaveCartState(countCart: itemCountCart, cartModel: list));
-
+      } else {
+        emit(HaveCartState(countCart: cart.length, cartModel: cart));
       }
     } catch (_) {
       emit(NotHaveCartState());
@@ -49,9 +69,15 @@ class CartCubit extends Cubit<CartState> {
   void getItemsCart() async {
     try {
       await Future.delayed(const Duration(milliseconds: 200));
-      emit(HaveCartState(
-          countCart: localDatasource.getSavedCart().length,
-          cartModel: localDatasource.getSavedCart()));
+      final cart = localDatasource.getSavedCart();
+      if (cart.isEmpty) {
+        emit(NotHaveCartState());
+      } else {
+        emit(HaveCartState(
+          countCart: cart.length,
+          cartModel: cart,
+        ));
+      }
     } catch (e) {
       emit(NotHaveCartState());
     }
