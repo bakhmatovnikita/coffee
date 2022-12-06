@@ -81,9 +81,7 @@ class _CartViewState extends State<CartView> {
                         GestureDetector(
                           onTap: () {
                             context.read<CartCubit>().deleteCart();
-                            context
-                                .read<CartCubit>()
-                                .saveToCart(state.cartModel!);
+                            
                             context.read<CartCubit>().getItemsCart();
                           },
                           child: Container(
@@ -152,6 +150,9 @@ class _CartViewState extends State<CartView> {
                                               state.cartModel!);
                                           calculateTotalWeight(
                                               state.cartModel!);
+                                          context
+                                              .read<CartCubit>()
+                                              .saveToCart(state.cartModel!);
                                           context
                                               .read<CartCubit>()
                                               .getItemsCart();

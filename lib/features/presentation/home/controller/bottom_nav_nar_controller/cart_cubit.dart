@@ -31,8 +31,12 @@ class CartCubit extends Cubit<CartState> {
 
   void saveToCart(List<CartModel> cartModel) {
     try {
-      localDatasource.saveToCart(cartModel);
-      emit(HaveCartState(countCart: cartModel.length, cartModel: cartModel));
+      if (cartModel.isEmpty) {
+        emit(NotHaveCartState());
+      } else {
+        localDatasource.saveToCart(cartModel);
+        emit(HaveCartState(countCart: cartModel.length, cartModel: cartModel));
+      }
     } catch (e) {
       emit(CartEmptyState());
     }
@@ -65,9 +69,15 @@ class CartCubit extends Cubit<CartState> {
   void getItemsCart() async {
     try {
       await Future.delayed(const Duration(milliseconds: 200));
-      emit(HaveCartState(
-          countCart: localDatasource.getSavedCart().length,
-          cartModel: localDatasource.getSavedCart()));
+      final cart = localDatasource.getSavedCart();
+      if (cart.isEmpty) {
+        emit(NotHaveCartState());
+      } else {
+        emit(HaveCartState(
+          countCart: cart.length,
+          cartModel: cart,
+        ));
+      }
     } catch (e) {
       emit(NotHaveCartState());
     }
