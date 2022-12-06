@@ -7,22 +7,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CartCubit extends Cubit<CartState> {
   final LocalDatasource localDatasource;
   CartCubit(this.localDatasource) : super(CartEmptyState());
-  
   void addToCartItem(CartModel productModel) {
-    bool haveEquelsItem = false;
     try {
       List<CartModel> cart = localDatasource.getSavedCart();
-       for (var i = 0; i < cart.length; i++) {
+      bool haveEquelsItem = false;
+      for (var i = 0; i < cart.length; i++) {
         if (productModel.name == cart[i].name) {
           cart[i].count++;
           localDatasource.saveToCart(cart);
           haveEquelsItem = true;
+          emit(HaveCartState(countCart: cart.length, cartModel: cart));
         }
       }
       if (haveEquelsItem == false) {
         cart.add(productModel);
         localDatasource.saveToCart(cart);
-        emit(HaveCartState(countCart: cart.length));
+        emit(HaveCartState(countCart: cart.length, cartModel: cart));
       }
     } catch (_) {
       emit(NotHaveCartState());

@@ -56,7 +56,6 @@ class _CartViewState extends State<CartView> {
           context.read<CartCubit>().getItemsCart();
         } else if (state is HaveCartState) {
           calculateTotalWeight(state.cartModel!);
-          // const Duration(milliseconds: 200);
           calculateTotalAmount(state.cartModel!);
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
