@@ -6,10 +6,12 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/groups_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
 import 'package:cofee/features/presentation/home/widgets/calendar_select_modal.dart';
@@ -448,7 +450,26 @@ class _HomeViewState extends State<HomeView>
                         ),
                         GestureDetector(
                           onTap: () {
-                            print('object');
+                            setState(() {
+                              context.read<CartCubit>().addToCartItem(
+                                    CartModel(
+                                      name: productEntiti.name,
+                                      fatFullAmount: productEntiti.fatFullAmount
+                                          .toStringAsFixed(2),
+                                      weight: productEntiti.weight,
+                                      proteinsFullAmount: productEntiti
+                                          .proteinsFullAmount
+                                          .toStringAsFixed(2),
+                                      carbohydratesFullAmount: productEntiti
+                                          .carbohydratesFullAmount
+                                          .toStringAsFixed(2),
+                                      sizePrices: productEntiti
+                                          .sizePrices[0].price.currentPrice,
+                                      imageLink: productEntiti.imageLink,
+                                      count: 1,
+                                    ),
+                                  );
+                            });
                           },
                           child: SvgPicture.asset(
                             'assets/icons/plus.svg',

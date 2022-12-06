@@ -90,7 +90,7 @@ class BodyView extends StatelessWidget {
   SliverAppBar _appBar(BuildContext context) {
     return SliverAppBar(
       backgroundColor: ColorStyles.backgroundColor,
-      toolbarHeight: Platform.isAndroid ? 80.h : 66.h,
+      toolbarHeight: Platform.isAndroid ? 90.h : 66.h,
       elevation: 1,
       expandedHeight: 10.h,
       // forceElevated: true,
