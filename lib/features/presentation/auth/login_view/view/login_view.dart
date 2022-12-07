@@ -157,6 +157,9 @@ class _LoginViewState extends State<LoginView> {
                             SmartDialog.show(
                               animationType: SmartAnimationType.fade,
                               maskColor: Colors.transparent,
+                              displayTime: const Duration(seconds: 3),
+                              clickMaskDismiss: false,
+                              usePenetrate: true,
                               builder: (context) => const SafeArea(
                                 child: Align(
                                   alignment: Alignment.topCenter,

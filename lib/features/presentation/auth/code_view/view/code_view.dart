@@ -100,19 +100,23 @@ class _CodeViewState extends State<CodeView> {
                 child: CustomButton(
                   title: 'Подтвердить',
                   onTap: () {
-                    if (controller.text.isEmpty || controller.text != "123456") {
+                    if (controller.text.isEmpty ||
+                        controller.text != "123456") {
                       SmartDialog.show(
-                              animationType: SmartAnimationType.fade,
-                              maskColor: Colors.transparent,
-                              builder: (context) => const SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: PushError(
-                                    title: 'Введен неверный код',
-                                  ),
-                                ),
-                              ),
-                            );
+                        animationType: SmartAnimationType.fade,
+                        maskColor: Colors.transparent,
+                        displayTime: const Duration(seconds: 3),
+                        clickMaskDismiss: false,
+                        usePenetrate: true,
+                        builder: (context) => const SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: PushError(
+                              title: 'Введен неверный код',
+                            ),
+                          ),
+                        ),
+                      );
                     } else {
                       print(widget.phone);
                       Navigator.of(context).pushNamed(

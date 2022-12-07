@@ -42,6 +42,7 @@ class _HomeViewState extends State<HomeView>
 
   AutoScrollController scrollController = AutoScrollController();
   AutoScrollController customScrollController = AutoScrollController();
+  SmartDialogController smartDialogController = SmartDialogController();
 
   bool pauseRectGetterIndex = false;
 
@@ -451,64 +452,72 @@ class _HomeViewState extends State<HomeView>
                           fontWeight: FontWeight.w600,
                           color: ColorStyles.accentColor,
                         ),
-                        Material(
-                          shape: const RoundedRectangleBorder(),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              try {
-                                context.read<CartCubit>().addToCartItem(
-                                      CartModel(
-                                        name: productEntiti.name,
-                                        fatFullAmount: productEntiti
-                                            .fatFullAmount
-                                            .toStringAsFixed(2),
-                                        weight: productEntiti.weight,
-                                        proteinsFullAmount: productEntiti
-                                            .proteinsFullAmount
-                                            .toStringAsFixed(2),
-                                        carbohydratesFullAmount: productEntiti
-                                            .carbohydratesFullAmount
-                                            .toStringAsFixed(2),
-                                        sizePrices: productEntiti
-                                            .sizePrices[0].price.currentPrice,
-                                        imageLink: productEntiti.imageLink,
-                                        count: 1,
-                                      ),
-                                    );
-                                SmartDialog.show(
-                                  animationType: SmartAnimationType.fade,
-                                  maskColor: Colors.transparent,
-                                  builder: (context) => const SafeArea(
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: PushAccess(
-                                        title: 'Товар добавлен в корзину',
-                                        subTitle: 'Вы можете оформить заказ!',
-                                      ),
+                        GestureDetector(
+                          onTap: () {
+                            try {
+                              context.read<CartCubit>().addToCartItem(
+                                    CartModel(
+                                      name: productEntiti.name,
+                                      fatFullAmount: productEntiti.fatFullAmount
+                                          .toStringAsFixed(2),
+                                      weight: productEntiti.weight,
+                                      proteinsFullAmount: productEntiti
+                                          .proteinsFullAmount
+                                          .toStringAsFixed(2),
+                                      carbohydratesFullAmount: productEntiti
+                                          .carbohydratesFullAmount
+                                          .toStringAsFixed(2),
+                                      sizePrices: productEntiti
+                                          .sizePrices[0].price.currentPrice,
+                                      imageLink: productEntiti.imageLink,
+                                      count: 1,
+                                    ),
+                                  );
+                              SmartDialog.show(
+                                animationType: SmartAnimationType.fade,
+                                maskColor: Colors.transparent,
+                                controller: smartDialogController,
+                                displayTime: const Duration(seconds: 3),
+                                clickMaskDismiss: false,
+                                usePenetrate: true,
+                                builder: (context) => const SafeArea(
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: PushAccess(
+                                      title: 'Товар добавлен в корзину',
+                                      subTitle: 'Вы можете оформить заказ!',
                                     ),
                                   ),
-                                );
-                              } catch (e) {
-                                SmartDialog.show(
-                                  animationType: SmartAnimationType.fade,
-                                  maskColor: Colors.transparent,
-                                  builder: (context) => const SafeArea(
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: PushError(
-                                        title: 'Что-то пошло не так',
-                                      ),
+                                ),
+                              );
+                            } catch (e) {
+                              SmartDialog.show(
+                                animationType: SmartAnimationType.fade,
+                                maskColor: Colors.transparent,
+                                displayTime: const Duration(seconds: 3),
+                                clickMaskDismiss: false,
+                                usePenetrate: true,
+                                builder: (context) => const SafeArea(
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: PushError(
+                                      title: 'Что-то пошло не так',
                                     ),
                                   ),
-                                );
-                              }
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/plus.svg',
-                              width: 16.83.h,
-                              height: 16.83.h,
+                                ),
+                              );
+                            }
+                          },
+                          child: SizedBox(
+                            height: 30.h,
+                            width: 30.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/plus.svg',
+                                width: 16.83.h,
+                                height: 16.83.h,
+                              ),
                             ),
                           ),
                         ),
