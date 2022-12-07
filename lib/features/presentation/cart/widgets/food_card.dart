@@ -6,6 +6,7 @@ import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:octo_image/octo_image.dart';
 
 class FoodCard extends StatefulWidget {
   CartModel cartModel;
@@ -41,11 +42,19 @@ class _FoodCardState extends State<FoodCard> {
                 widget.cartModel.imageLink.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.cartModel.imageLink[0],
+                        child: OctoImage(
+                          image: CachedNetworkImageProvider(
+                            widget.cartModel.imageLink[0],
+                          ),
                           height: 130.h,
                           width: 130.w,
+                          placeholderBuilder: OctoPlaceholder.blurHash(
+                            'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                          ),
                           fit: BoxFit.cover,
+                          memCacheHeight: 0,
+                          memCacheWidth: 0,
+                          filterQuality: FilterQuality.low,
                         ),
                       )
                     : SizedBox(
