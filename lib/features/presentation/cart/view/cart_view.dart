@@ -81,7 +81,6 @@ class _CartViewState extends State<CartView> {
                         GestureDetector(
                           onTap: () {
                             context.read<CartCubit>().deleteCart();
-                            
                             context.read<CartCubit>().getItemsCart();
                           },
                           child: Container(

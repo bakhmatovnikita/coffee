@@ -6,6 +6,8 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
+import 'package:cofee/custom_widgets/push_access.dart';
+import 'package:cofee/custom_widgets/push_error.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/groups_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
@@ -19,6 +21,7 @@ import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
@@ -448,33 +451,65 @@ class _HomeViewState extends State<HomeView>
                           fontWeight: FontWeight.w600,
                           color: ColorStyles.accentColor,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              context.read<CartCubit>().addToCartItem(
-                                    CartModel(
-                                      name: productEntiti.name,
-                                      fatFullAmount: productEntiti.fatFullAmount
-                                          .toStringAsFixed(2),
-                                      weight: productEntiti.weight,
-                                      proteinsFullAmount: productEntiti
-                                          .proteinsFullAmount
-                                          .toStringAsFixed(2),
-                                      carbohydratesFullAmount: productEntiti
-                                          .carbohydratesFullAmount
-                                          .toStringAsFixed(2),
-                                      sizePrices: productEntiti
-                                          .sizePrices[0].price.currentPrice,
-                                      imageLink: productEntiti.imageLink,
-                                      count: 1,
+                        Material(
+                          shape: const RoundedRectangleBorder(),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(10),
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              try {
+                                context.read<CartCubit>().addToCartItem(
+                                      CartModel(
+                                        name: productEntiti.name,
+                                        fatFullAmount: productEntiti
+                                            .fatFullAmount
+                                            .toStringAsFixed(2),
+                                        weight: productEntiti.weight,
+                                        proteinsFullAmount: productEntiti
+                                            .proteinsFullAmount
+                                            .toStringAsFixed(2),
+                                        carbohydratesFullAmount: productEntiti
+                                            .carbohydratesFullAmount
+                                            .toStringAsFixed(2),
+                                        sizePrices: productEntiti
+                                            .sizePrices[0].price.currentPrice,
+                                        imageLink: productEntiti.imageLink,
+                                        count: 1,
+                                      ),
+                                    );
+                                SmartDialog.show(
+                                  animationType: SmartAnimationType.fade,
+                                  maskColor: Colors.transparent,
+                                  builder: (context) => const SafeArea(
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: PushAccess(
+                                        title: 'Товар добавлен в корзину',
+                                        subTitle: 'Вы можете оформить заказ!',
+                                      ),
                                     ),
-                                  );
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            'assets/icons/plus.svg',
-                            width: 16.83.h,
-                            height: 16.83.h,
+                                  ),
+                                );
+                              } catch (e) {
+                                SmartDialog.show(
+                                  animationType: SmartAnimationType.fade,
+                                  maskColor: Colors.transparent,
+                                  builder: (context) => const SafeArea(
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: PushError(
+                                        title: 'Что-то пошло не так',
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/plus.svg',
+                              width: 16.83.h,
+                              height: 16.83.h,
+                            ),
                           ),
                         ),
                       ],
