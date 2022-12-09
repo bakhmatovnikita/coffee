@@ -40,3 +40,105 @@ class CustomInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+class CustomCartInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digitsOnly = newValue.text.replaceAll(RegExp(r'[^\d]+'), '');
+    final digitsOnlyChar = digitsOnly.split('');
+    List<String> text = <String>[];
+    for (var i = 0; i < digitsOnlyChar.length; i++) {
+      if (i == 0) {
+        text.add(digitsOnlyChar[i]);
+      } else if (i == 4) {
+        text.add("-");
+        text.add(digitsOnlyChar[i]);
+      } else if (i == 8) {
+        text.add("-");
+        text.add(digitsOnlyChar[i]);
+      } else if (i == 12) {
+        text.add("-");
+        text.add(digitsOnlyChar[i]);
+      } else if (i > 15) {
+        break;
+      } else {
+        text.add(digitsOnlyChar[i]);
+      }
+    }
+
+    final resultText = text.join('');
+
+    return TextEditingValue(
+      text: resultText,
+      selection: TextSelection.collapsed(
+        offset: resultText.length,
+      ),
+    );
+  }
+}
+
+class CustomCartInputDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digitsOnly = newValue.text.replaceAll(RegExp(r'[^\d]+'), '');
+    final digitsOnlyChar = digitsOnly.split('');
+    List<String> text = <String>[];
+    for (var i = 0; i < digitsOnlyChar.length; i++) {
+      if (i == 0) {
+        text.add(digitsOnlyChar[i]);
+      } else if (i == 2) {
+        text.add("/");
+        text.add(digitsOnlyChar[i]);
+      } else if (i > 3) {
+        break;
+      } else {
+        text.add(digitsOnlyChar[i]);
+      }
+    }
+
+    final resultText = text.join('');
+
+    return TextEditingValue(
+      text: resultText,
+      selection: TextSelection.collapsed(
+        offset: resultText.length,
+      ),
+    );
+  }
+}
+
+class CustomCartInputCvvFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digitsOnly = newValue.text.replaceAll(RegExp(r'[^\d]+'), '');
+    final digitsOnlyChar = digitsOnly.split('');
+    List<String> text = <String>[];
+    for (var i = 0; i < digitsOnlyChar.length; i++) {
+      if (i == 0) {
+        text.add(digitsOnlyChar[i]);
+      } else if (i > 2) {
+        break;
+      } else {
+        text.add(digitsOnlyChar[i]);
+      }
+    }
+
+    final resultText = text.join('');
+
+    return TextEditingValue(
+      text: resultText,
+      selection: TextSelection.collapsed(
+        offset: resultText.length,
+      ),
+    );
+  }
+}

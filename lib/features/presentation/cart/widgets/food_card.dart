@@ -93,14 +93,13 @@ class _FoodCardState extends State<FoodCard> {
                         color: const Color(0xff515151),
                       ),
                       CustomText(
-                        title:
-                            'БЖУ: ${widget.cartModel.proteinsFullAmount}/${widget.cartModel.weight.toStringAsFixed(2)}/${widget.cartModel.carbohydratesFullAmount}',
+                        title: 'БЖУ: ${widget.cartModel.proteinsFullAmount}/${widget.cartModel.weight.toStringAsFixed(2)}/${widget.cartModel.carbohydratesFullAmount}',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: const Color(0xff515151),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 10.h),
+                        padding: EdgeInsets.only(top: 5.h),
                         child: CustomText(
                           title: '${widget.cartModel.sizePrices.toString()} ₽',
                           fontSize: 20,
@@ -117,9 +116,11 @@ class _FoodCardState extends State<FoodCard> {
                       widget.onTap();
                     });
                   },
-                  child: SizedBox(
-                    height: 20,
-                    width: 20,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
                     child: SvgPicture.asset(SvgImg.cross),
                   ),
                 ),

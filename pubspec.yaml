@@ -59,6 +59,7 @@ dependencies:
   intl: ^0.17.0
   flutter_smart_dialog: ^4.7.1
   shared_preferences: ^2.0.15
+  native_ios_dialog: ^0.1.0
 
 dev_dependencies:
   flutter_test:

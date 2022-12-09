@@ -23,9 +23,6 @@ class ChoiceAdressView extends StatefulWidget {
 
 class _ChoiceAdressViewState extends State<ChoiceAdressView> {
   final storage = const FlutterSecureStorage();
-  Stream<int> getIndex(int index) async* {
-    yield index;
-  }
 
   final streamController = StreamController<int>();
   @override
@@ -91,7 +88,6 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                             ),
                             Container(
                               width: size.width,
-                              // height: 300.w,
                               margin: EdgeInsets.symmetric(
                                   horizontal: 16.w, vertical: 40.h),
                               child: Column(

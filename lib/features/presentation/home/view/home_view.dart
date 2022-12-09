@@ -409,6 +409,7 @@ class _HomeViewState extends State<HomeView>
               padding: EdgeInsets.all(14.86.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Flexible(
                     child: CustomText(
@@ -418,27 +419,23 @@ class _HomeViewState extends State<HomeView>
                       maxLength: 13,
                     ),
                   ),
-                  SizedBox(height: 10.h),
                   CustomText(
                     title:
                         '${productEntiti.fatFullAmount.toStringAsFixed(2)} калл',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 4.h),
                   CustomText(
                     title: '${productEntiti.weight.toStringAsFixed(1)} гр',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 4.h),
                   CustomText(
                     title:
                         'БЖУ: ${productEntiti.proteinsFullAmount.toStringAsFixed(1)}/${productEntiti.fatFullAmount.toStringAsFixed(1)}/${productEntiti.carbohydratesFullAmount.toStringAsFixed(1)}',
                     fontSize: 14.h,
                     fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 10.h),
                   SizedBox(
                     width: 151.w,
                     child: Row(

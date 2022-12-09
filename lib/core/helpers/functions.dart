@@ -1,6 +1,9 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_cart/view/added_cart.dart';
 import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -127,5 +130,46 @@ class Functions {
         );
       },
     );
+  }
+
+  void showCheckoutBottomsheet(
+      List<CartModel> cartModel, double totalAmount, double totalWeigth) {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CheckoutBottomsheet(
+            cartModel: cartModel,
+            totalAmount: totalAmount,
+            totalWeigth: totalWeigth,
+          );
+        });
+  }
+
+  void showCartAddedBottomsheet() {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 758.h,
+            decoration: BoxDecoration(
+              color: const Color(0xffF3F3F3),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16.r),
+                topLeft: Radius.circular(16.r),
+              ),
+            ),
+            child: const AddedCart(),
+          );
+        });
   }
 }

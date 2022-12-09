@@ -248,7 +248,12 @@ class _CartViewState extends State<CartView> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 16.h),
-                        child: CustomButton(title: 'Оформить заказ'),
+                        child: CustomButton(
+                          title: 'Оформить заказ',
+                          onTap: () => Functions(context)
+                              .showCheckoutBottomsheet(
+                                  state.cartModel!, totalAmount, totalWeigth),
+                        ),
                       )
                     ],
                   ),
@@ -327,7 +332,6 @@ class _CartViewState extends State<CartView> {
       toolbarHeight: Platform.isAndroid ? 90.h : 66.h,
       elevation: 1,
       expandedHeight: 10.h,
-      // forceElevated: true,
       flexibleSpace: _topInfo(context),
     );
   }
