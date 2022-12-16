@@ -35,7 +35,7 @@ class _OrderUserState extends State<OrderUser> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: CustomText(
-                title: 'Шаг 3',
+                title: 'Шаг 5',
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w500,
                 color: ColorStyles.greyTitleColor,
@@ -168,7 +168,6 @@ class _OrderUserState extends State<OrderUser> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: SizedBox(
-                height: 63,
                 child: Row(
                   children: [
                     Column(

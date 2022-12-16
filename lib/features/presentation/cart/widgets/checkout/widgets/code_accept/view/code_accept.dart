@@ -29,7 +29,7 @@ class _CodeAcceptState extends State<CodeAccept> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                title: 'Шаг 2',
+                title: 'Шаг 4',
                 color: ColorStyles.greyTitleColor,
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w500,

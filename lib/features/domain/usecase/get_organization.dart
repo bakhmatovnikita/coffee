@@ -27,7 +27,7 @@ class EndpointParams extends Equatable {
   final bool includeDisabled;
   final String endpoint;
 
-  const EndpointParams({
+  const EndpointParams( {
     required this.organizationIds,
     required this.returnAdditionalInfo,
     required this.includeDisabled,

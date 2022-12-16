@@ -179,6 +179,7 @@ class _EntityPopupState extends State<EntityPopup> {
                               sizePrices: widget.productEntiti.sizePrices[0]
                                   .price.currentPrice,
                               imageLink: widget.productEntiti.imageLink,
+                              productId: widget.productEntiti.id,
                               count: 1
                             ),
                           );

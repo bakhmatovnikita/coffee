@@ -2,8 +2,10 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/custom_text_field.dart';
+import 'package:cofee/custom_widgets/push_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class NumberAccept extends StatefulWidget {
   final PageController pageController;
@@ -26,7 +28,7 @@ class _NumberAcceptState extends State<NumberAccept> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                title: 'Шаг 2',
+                title: 'Шаг 3',
                 color: ColorStyles.greyTitleColor,
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w500,
@@ -63,10 +65,29 @@ class _NumberAcceptState extends State<NumberAccept> {
           onTap: () {
             setState(
               () {
-                widget.pageController.nextPage(
-                  duration: const Duration(milliseconds: 600),
-                  curve: Curves.easeInOutQuint,
-                );
+                if (textEditingController.text.length < 18 ||
+                    textEditingController.text.isEmpty) {
+                  SmartDialog.show(
+                    animationType: SmartAnimationType.fade,
+                    maskColor: Colors.transparent,
+                    displayTime: const Duration(seconds: 3),
+                    clickMaskDismiss: false,
+                    usePenetrate: true,
+                    builder: (context) => const SafeArea(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: PushError(
+                          title: 'Введен неверный номер',
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  widget.pageController.nextPage(
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeInOutQuint,
+                  );
+                }
               },
             );
           },

@@ -14,6 +14,7 @@ class ProductEntiti {
   final String name;
   final List<String> imageLink;
   final String parentGroup;
+  final String id;
   ProductEntiti({
     required this.fatAmount,
     required this.proteinsAmount,
@@ -28,5 +29,6 @@ class ProductEntiti {
     required this.name,
     required this.imageLink,
     required this.parentGroup,
+    required this.id,
   });
 }

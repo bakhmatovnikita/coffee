@@ -118,6 +118,14 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                             CustomButton(
                                 title: "Готово",
                                 onTap: () {
+                                  context
+                                      .read<ChoiceAdressCubit>()
+                                      .fetchTerminalGroup(
+                                          'terminal_groups',
+                                          state
+                                              .organizationsEntiti
+                                              .organizations[snapshot.data!]
+                                              .id);
                                   print(widget.phone);
                                   setState(() {
                                     if (widget.phone == null) {

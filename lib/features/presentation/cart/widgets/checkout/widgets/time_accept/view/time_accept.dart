@@ -90,7 +90,7 @@ class _TimeAcceptState extends State<TimeAccept> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      title: 'Шаг 2',
+                      title: 'Шаг 1',
                       color: ColorStyles.greyTitleColor,
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w500,

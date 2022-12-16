@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ffi';
+
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
@@ -49,7 +49,7 @@ class _WayOfObtainingState extends State<WayOfObtaining> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    title: 'Шаг 1',
+                    title: 'Шаг 2',
                     color: ColorStyles.greyTitleColor,
                     fontSize: 17.sp,
                     fontWeight: FontWeight.w500,

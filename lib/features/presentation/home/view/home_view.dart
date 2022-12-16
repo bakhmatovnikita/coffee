@@ -153,10 +153,6 @@ class _HomeViewState extends State<HomeView>
           context.read<LoginViewCubit>().saveToken("access_token");
           context.read<HomeViewCubit>().fetchProducts('nomenclature');
         } else if (state is HomeViewLoadedState) {
-          // _tabController = TabController(
-          //   length: state.productsEntiti.groups.length,
-          //   vsync: this,
-          // );
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: RectGetter(
@@ -468,6 +464,7 @@ class _HomeViewState extends State<HomeView>
                                           .sizePrices[0].price.currentPrice,
                                       imageLink: productEntiti.imageLink,
                                       count: 1,
+                                      productId: productEntiti.id
                                     ),
                                   );
                               SmartDialog.show(

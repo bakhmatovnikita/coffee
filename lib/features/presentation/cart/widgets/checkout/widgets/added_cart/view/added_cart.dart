@@ -9,7 +9,6 @@ import 'package:cofee/custom_widgets/not_have_day.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:native_ios_dialog/native_ios_dialog.dart';
 
 class AddedCart extends StatefulWidget {
   const AddedCart({super.key});
@@ -25,7 +24,6 @@ class _AddedCartState extends State<AddedCart> {
   int currentDialogStyle = 0;
   @override
   Widget build(BuildContext context) {
-    final NativeIosDialogStyle style = NativeIosDialogStyle.alert;
 
     return Padding(
       padding: EdgeInsets.only(top: 20.h),

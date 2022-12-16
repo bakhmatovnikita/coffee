@@ -36,6 +36,9 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
   }
 
   late List<dynamic> listPages = [
+    TimeAccept(
+      pageController: pageController,
+    ),
     WayOfObtaining(
       pageController: pageController,
     ),
@@ -43,9 +46,6 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
       pageController: pageController,
     ),
     CodeAccept(
-      pageController: pageController,
-    ),
-    TimeAccept(
       pageController: pageController,
     ),
     OrderUser(
@@ -57,6 +57,7 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
     SelectCart(
       totalAmount: widget.totalAmount,
       pageController: pageController,
+      cartModel: widget.cartModel,
     ),
     const Congratulations(),
   ];

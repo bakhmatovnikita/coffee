@@ -5,6 +5,7 @@ import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -121,6 +122,31 @@ class LocalDatasourceImplement implements LocalDatasource {
       sharedPreferences.remove(BackConstants.SAVED_CARTS_ITEMS);
       BackConstants.cart.clear();
     } catch (e) {
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<void> saveOrganizationId(String organizationId) async {
+    storage.write(
+        key: BackConstants.SAVED_ORGANIZATIONID, value: organizationId);
+  }
+
+  @override
+  Future<void> saveTerminalGroup(TerminalGroupModel terminalGroupModel) async {
+    final String terminalGroup = terminalGroupModel.toString();
+    print(terminalGroup);
+    sharedPreferences.setString(
+        BackConstants.SAVED_TERMINAL_GROUP, terminalGroup);
+  }
+
+  @override
+  Future<String> getOrganizatuonId() async {
+    final organizationId =
+        await storage.read(key: BackConstants.SAVED_ORGANIZATIONID);
+    if (organizationId != null) {
+      return organizationId;
+    } else {
       throw CacheException();
     }
   }
