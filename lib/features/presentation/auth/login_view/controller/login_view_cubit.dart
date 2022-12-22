@@ -7,8 +7,9 @@ class LoginViewCubit extends Cubit<LoginViewState>{
   final GetToken getToken;
   LoginViewCubit({required this.getToken}):super(LoginViewEmptyState());
   Future<void> saveToken(String endpoint) async {
+    emit(LoginViewBlankState());
     try {
-      getToken.call(EndpointTokenParams(endpoint: endpoint));
+      await getToken.call(EndpointTokenParams(endpoint: endpoint));
       emit(LoginViewSavedState());
     } catch (e) {
       throw CacheException();

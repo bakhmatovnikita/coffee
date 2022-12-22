@@ -131,6 +131,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
 
   @override
   Future<ProductsModel> getProducts(String endpoint) async {
+    print('TOKEN IS: ${await storage.read(key: BackConstants.SAVED_TOKEN)}');
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",

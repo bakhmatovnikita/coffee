@@ -77,6 +77,7 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
     try {
       final tokenModel = await token();
       localDatasource.saveToken(tokenModel.token);
+      print('SAVE TOKEN: ${tokenModel.token}');
       return Right(tokenModel);
     } catch (e) {
       return Left(ServerFailure());

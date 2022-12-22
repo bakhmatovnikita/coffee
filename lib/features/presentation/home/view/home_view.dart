@@ -13,6 +13,7 @@ import 'package:cofee/features/domain/entiti/products/groups_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
@@ -147,12 +148,14 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewCubit, HomeViewState>(
-      builder: (context, state) {
+    return BlocConsumer<HomeViewCubit, HomeViewState>(
+      listener:(context, state) {
         if (state is HomeViewEmptyState) {
           context.read<LoginViewCubit>().saveToken("access_token");
-          context.read<HomeViewCubit>().fetchProducts('nomenclature');
-        } else if (state is HomeViewLoadedState) {
+        } 
+      },
+      builder: (context, state) {
+        if (state is HomeViewLoadedState) {
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: RectGetter(
@@ -167,10 +170,19 @@ class _HomeViewState extends State<HomeView>
             ),
           );
         }
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(
-              color: Colors.orange,
+        print('BUILD');
+        return Scaffold(
+          body: BlocListener<LoginViewCubit, LoginViewState>(
+            listener: (context2, state2) {
+              print('STATE2: ${state2}');
+              if(state2 is LoginViewSavedState && state is HomeViewEmptyState){
+                context.read<HomeViewCubit>().fetchProducts('nomenclature');
+              }
+            },
+            child: const Center(
+              child: CircularProgressIndicator(
+                color: Colors.orange,
+              ),
             ),
           ),
         );
