@@ -309,12 +309,7 @@ class _CartViewState extends State<CartView> {
                   child: CustomButton(
                     title: 'Выбрать блюдо',
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const LoginView(),
-                      //   ),
-                      // );
+                      Functions(context).showMenuBottomsheet();
                     },
                   ),
                 ),

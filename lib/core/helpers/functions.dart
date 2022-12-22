@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../features/presentation/cart/widgets/menu_bottomsheet.dart';
+
 class Functions {
   final BuildContext context;
 
@@ -169,6 +171,30 @@ class Functions {
               ),
             ),
             child: const AddedCart(),
+          );
+        });
+  }
+
+
+  void showMenuBottomsheet() {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 758.h,
+            decoration: BoxDecoration(
+              color: const Color(0xffF3F3F3),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16.r),
+                topLeft: Radius.circular(16.r),
+              ),
+            ),
+            child: const MenuBottomsheet(),
           );
         });
   }
