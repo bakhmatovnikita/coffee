@@ -5,6 +5,11 @@ class LoginViewState extends Equatable {
   List<Object?> get props => [];
 }
 
+class LoginViewBlankState extends LoginViewState {
+  @override
+  List<Object?> get props => [];
+}
+
 class LoginViewEmptyState extends LoginViewState {
   @override
   List<Object?> get props => [];
