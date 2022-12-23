@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
+import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/core/helpers/rect_getter.dart';
+import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/push_access.dart';
 import 'package:cofee/custom_widgets/push_error.dart';
@@ -11,6 +14,8 @@ import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widgets/list_view_modal_cart.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
@@ -24,7 +29,7 @@ import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../../../domain/entiti/products/groups_entiti.dart';
+import '../../../../../../../domain/entiti/products/groups_entiti.dart';
 
 class MenuBottomsheet extends StatefulWidget {
   const MenuBottomsheet({super.key});
@@ -38,6 +43,10 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
   AutoScrollController scrollController = AutoScrollController();
   AutoScrollController customScrollController = AutoScrollController();
   SmartDialogController smartDialogController = SmartDialogController();
+
+  final day = DateTime.now().day;
+  final month = BackConstants.months[DateTime.now().month];
+  final weekDay = BackConstants.weekDaysForMenu[DateTime.now().weekday];
 
   bool pauseRectGetterIndex = false;
 
@@ -139,6 +148,7 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
     super.initState();
   }
 
+//TODO Использовать cartCubit в отдельном кдассе для Корзины в модальном меню
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewCubit, HomeViewState>(
@@ -158,11 +168,12 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
             ),
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
+              controller: scrollController,
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: 27.h, bottom: 45.h, left: 25.5.w, right: 16.w),
+                        top: 27.h, bottom: 31.h, left: 25.5.w, right: 16.w),
                     child: Stack(
                       children: [
                         Align(
@@ -185,6 +196,19 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
                           ),
                         )
                       ],
+                    ),
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: ListViewModalCart(),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 16.w, bottom: 16.h, top: 24.h, right: 16.w),
+                    child: CustomText(
+                      title: 'Меню на $weekDay ( $day $month)',
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -429,7 +453,7 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
                         GestureDetector(
                           onTap: () {
                             try {
-                              context.read<CartCubit>().addToCartItem(
+                              context.read<ListViewCubit>().addToModalCart(
                                     CartModel(
                                         name: productEntiti.name,
                                         fatFullAmount: productEntiti
@@ -511,4 +535,15 @@ class _MenuBottomsheetState extends State<MenuBottomsheet>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  
+}
+class VerticalScrollableTabBarStatus {
+  static bool isOnTap = false;
+  static int isOnTapIndex = 0;
+
+  static void setIndex(int index) {
+    VerticalScrollableTabBarStatus.isOnTap = true;
+    VerticalScrollableTabBarStatus.isOnTapIndex = index;
+  }
 }

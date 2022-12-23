@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../features/presentation/cart/widgets/menu_bottomsheet.dart';
+import '../../features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/view/menu_bottomsheet.dart';
 
 class Functions {
   final BuildContext context;
@@ -184,6 +184,7 @@ class Functions {
         duration: const Duration(milliseconds: 600),
         backgroundColor: Colors.transparent,
         context: context,
+        enableDrag: false,
         builder: (context) {
           return Container(
             height: 758.h,

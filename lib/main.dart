@@ -1,6 +1,7 @@
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/rout_generator.dart';
@@ -37,6 +38,9 @@ Future<void> main() async {
           BlocProvider<CartCubit>(
             create: (context) => sl<CartCubit>(),
           ),
+          BlocProvider<ListViewCubit>(
+            create: (context) => sl<ListViewCubit>(),
+          )
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),
