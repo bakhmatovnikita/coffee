@@ -41,7 +41,9 @@ class _ListViewModalCartState extends State<ListViewModalCart> {
                   children: [
                     ModalMenuFoodCard(
                       index: index,
-                      onTap: () {},
+                      onTap: () {
+                        context.read<ListViewCubit>().deleteOneInModalCart(index);
+                      },
                       onUpdatePrice: () {},
                       onUpdateWeight: () {},
                       cartModel: state.cart[index],

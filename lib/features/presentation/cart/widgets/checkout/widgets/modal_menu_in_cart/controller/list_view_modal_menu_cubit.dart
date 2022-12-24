@@ -8,8 +8,23 @@ class ListViewCubit extends Cubit<ListViewState> {
   Future<void> addToModalCart(CartModel cartModal) async {
     try {
       emit(EmptyListViewState());
-      BackConstants.modalCart.add(cartModal);
-      emit(HaveListViewState(cart: BackConstants.modalCart));
+      bool isHaveEquelsProduct = false;
+      List<CartModel> list = BackConstants.modalCart;
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name == cartModal.name) {
+          list[i].count++;
+          isHaveEquelsProduct = true;
+          emit(HaveListViewState(cart: list));
+        }
+      }
+      if (isHaveEquelsProduct == false) {
+        BackConstants.modalCart.add(cartModal);
+        if (BackConstants.modalCart.isEmpty) {
+          emit(HaveListViewState(cart: BackConstants.modalCart));
+        } else {
+          emit(HaveListViewState(cart: list));
+        }
+      }
     } catch (e) {
       print(e);
     }
@@ -20,6 +35,20 @@ class ListViewCubit extends Cubit<ListViewState> {
       emit(EmptyListViewState());
       BackConstants.modalCart.clear();
       emit(NotHaveListViewState());
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteOneInModalCart(int index) async {
+    try {
+      emit(EmptyListViewState());
+      BackConstants.modalCart.removeAt(index);
+      if (BackConstants.modalCart.isEmpty) {
+        emit(NotHaveListViewState());
+      } else {
+        emit(HaveListViewState(cart: BackConstants.modalCart));
+      }
     } catch (e) {
       print(e);
     }
