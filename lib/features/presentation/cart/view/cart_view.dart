@@ -247,7 +247,7 @@ class _CartViewState extends State<CartView> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 16.h),
+                        padding: EdgeInsets.only(top: 16.h, bottom: 20.h),
                         child: CustomButton(
                           title: 'Оформить заказ',
                           onTap: () => Functions(context)
