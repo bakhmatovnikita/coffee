@@ -14,17 +14,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
+import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
 
 class SelectCart extends StatefulWidget {
   final PageController pageController;
   final double totalAmount;
   final List<CartModel> cartModel;
-  const SelectCart(
-      {super.key,
-      required this.totalAmount,
-      required this.pageController,
-      required this.cartModel,
-      });
+  const SelectCart({
+    super.key,
+    required this.totalAmount,
+    required this.pageController,
+    required this.cartModel,
+  });
 
   @override
   State<SelectCart> createState() => _SelectCartState();
@@ -32,6 +34,58 @@ class SelectCart extends StatefulWidget {
 
 class _SelectCartState extends State<SelectCart> {
   final streamController = StreamController<int>();
+
+  SberbankAcquiring acquiring = SberbankAcquiring(
+    SberbankAcquiringConfig.token(
+      token: 'YRF3C5RFICWISEWFR6GJ',
+      isDebugMode: true,
+    ),
+  );
+  OrderStatus? orderStatus;
+
+  Future<void> webviewPayment() async {
+    final RegisterResponse register = await acquiring.register(
+      RegisterRequest(
+        amount: 1000,
+        returnUrl: 'https://www.youtube.com/',
+        failUrl: 'https://www.youtube.com/',
+        orderNumber: 'test',
+        pageView: 'MOBILE',
+      ),
+    );
+    final String? formUrl = register.formUrl;
+    if (!register.hasError && formUrl != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => Scaffold(
+            body: WebViewPayment(
+              logger: acquiring.logger,
+              formUrl: formUrl,
+              returnUrl: 'https://www.youtube.com/',
+              failUrl: 'https://www.youtube.com/',
+              onLoad: (bool v) {
+                debugPrint('WebView load: $v');
+              },
+              onError: () {
+                debugPrint('WebView Error');
+              },
+              onFinished: (String? v) async {
+                final GetOrderStatusExtendedResponse status =
+                    await acquiring.getOrderStatusExtended(
+                  GetOrderStatusExtendedRequest(orderId: v),
+                );
+
+                orderStatus = status.orderStatus;
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   List<Map<String, dynamic>> listCart = [
     {
       'title': "Visa Gold (#9523)",
@@ -228,32 +282,33 @@ class _SelectCartState extends State<SelectCart> {
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 96.h),
                       child: CustomButton(
-                        title: 'Оплатить',
-                        onTap: () => setState(
-                          () {
-                            context.read<CartCubit>().createClientOrder(
-                                  'order/create',
-                                  List.generate(
-                                    widget.cartModel.length,
-                                    (index) => Item(
-                                      type: 'Product',
-                                      amount: widget.cartModel[index].count,
-                                      productSizeId:
-                                          "b4513563-032a-4dbc-8894-4b05c402f7de",
-                                      comment: 'comment',
-                                      productId:
-                                          widget.cartModel[index].productId,
-                                    ),
-                                  ),
-                                  
+                          title: 'Оплатить',
+                          onTap: () async {
+                            await webviewPayment();
+                            setState(
+                              () {
+                                context.read<CartCubit>().createClientOrder(
+                                      'order/create',
+                                      List.generate(
+                                        widget.cartModel.length,
+                                        (index) => Item(
+                                          type: 'Product',
+                                          amount: widget.cartModel[index].count,
+                                          productSizeId:
+                                              "b4513563-032a-4dbc-8894-4b05c402f7de",
+                                          comment: 'comment',
+                                          productId:
+                                              widget.cartModel[index].productId,
+                                        ),
+                                      ),
+                                    );
+                                widget.pageController.nextPage(
+                                  duration: const Duration(milliseconds: 600),
+                                  curve: Curves.easeInOutQuint,
                                 );
-                            widget.pageController.nextPage(
-                              duration: const Duration(milliseconds: 600),
-                              curve: Curves.easeInOutQuint,
+                              },
                             );
-                          },
-                        ),
-                      ),
+                          }),
                     ),
                   )
                 ],

@@ -21,6 +21,10 @@ class _AddedCartState extends State<AddedCart> {
   final TextEditingController controller = TextEditingController();
   final TextEditingController controllerDate = TextEditingController();
   final TextEditingController controllerCvv = TextEditingController();
+  
+
+
+
   int currentDialogStyle = 0;
   @override
   Widget build(BuildContext context) {
@@ -180,7 +184,7 @@ class _AddedCartState extends State<AddedCart> {
             padding: EdgeInsets.only(top: 32.h, left: 16.w, right: 16.w),
             child: CustomText(
               title:
-                  'ВАША КАРТА БУДЕТ ОТОБРОЖПТЬСЯ В ЛИЧНОМ КАБИНЕТЕ, В РАЗДЕЛЕ "СПОСОБЫ ОПЛЫТЫ"',
+                  'ВАША КАРТА БУДЕТ ОТОБРОЖАТЬСЯ В ЛИЧНОМ КАБИНЕТЕ, В РАЗДЕЛЕ "СПОСОБЫ ОПЛЫТЫ"',
               color: ColorStyles.greyTitleColor,
               fontSize: 12,
               fontWeight: FontWeight.w600,
