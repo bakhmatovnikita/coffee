@@ -40,46 +40,77 @@ class _SelectCartState extends State<SelectCart> {
       token: 'YRF3C5RFICWISEWFR6GJ',
       isDebugMode: true,
     ),
+    // SberbankAcquiringConfig.credential(
+    //   userName: 'RdrnMyvqg5',
+    //   password: 'RdrnMyvqg5',
+    //   isDebugMode: true,
+    // ),
   );
   OrderStatus? orderStatus;
 
   Future<void> webviewPayment() async {
     final RegisterResponse register = await acquiring.register(
       RegisterRequest(
-        amount: 1000,
-        returnUrl: 'https://www.youtube.com/',
-        failUrl: 'https://www.youtube.com/',
+        amount: widget.totalAmount.toInt() * 100,
+        returnUrl:
+            'https://3dsec.sberbank.ru/payment/merchants/mobile_payment_ru.html?mdOrder=0126e5c7-8673-720a-88a0-c84500001bc1',
+        failUrl: 'https://test.ru/fail.html',
         orderNumber: 'test',
         pageView: 'MOBILE',
       ),
     );
-    final String? formUrl = register.formUrl;
+    final String? formUrl =
+        register.formUrl!.replaceAll('www.3dsec.sberbank.ru/', '');
+    print(formUrl);
     if (!register.hasError && formUrl != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => Scaffold(
-            body: WebViewPayment(
-              logger: acquiring.logger,
-              formUrl: formUrl,
-              returnUrl: 'https://www.youtube.com/',
-              failUrl: 'https://www.youtube.com/',
-              onLoad: (bool v) {
-                debugPrint('WebView load: $v');
-              },
-              onError: () {
-                debugPrint('WebView Error');
-              },
-              onFinished: (String? v) async {
-                final GetOrderStatusExtendedResponse status =
-                    await acquiring.getOrderStatusExtended(
-                  GetOrderStatusExtendedRequest(orderId: v),
-                );
+      Functions(context).showCustomBottomSheet(
+        Container(
+          height: MediaQuery.of(context).size.height - 200,
+          child: WebViewPayment(
+            logger: acquiring.logger,
+            formUrl: formUrl,
+            returnUrl:
+                'https://3dsec.sberbank.ru/payment/merchants/mobile_payment_ru.html?mdOrder=0126e5c7-8673-720a-88a0-c84500001bc1',
+            failUrl: 'https://test.ru/fail.html',
+            onLoad: (bool v) {
+              debugPrint('WebView load: $v');
+            },
+            onError: () {
+              debugPrint('WebView Error');
+            },
+            onFinished: (String? v) async {
+              final GetOrderStatusExtendedResponse status =
+                  await acquiring.getOrderStatusExtended(
+                GetOrderStatusExtendedRequest(orderId: v),
+              );
 
-                orderStatus = status.orderStatus;
-                setState(() {});
-                Navigator.of(context).pop();
-              },
-            ),
+              orderStatus = status.orderStatus;
+              print(status);
+              setState(() {});
+              setState(
+                () {
+                  context.read<CartCubit>().createClientOrder(
+                        'order/create',
+                        List.generate(
+                          widget.cartModel.length,
+                          (index) => Item(
+                            type: 'Product',
+                            amount: widget.cartModel[index].count,
+                            productSizeId:
+                                "b4513563-032a-4dbc-8894-4b05c402f7de",
+                            comment: 'comment',
+                            productId: widget.cartModel[index].productId,
+                          ),
+                        ),
+                      );
+                  widget.pageController.nextPage(
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeInOutQuint,
+                  );
+                },
+              );
+              Navigator.pop(context);
+            },
           ),
         ),
       );
@@ -285,29 +316,29 @@ class _SelectCartState extends State<SelectCart> {
                           title: 'Оплатить',
                           onTap: () async {
                             await webviewPayment();
-                            setState(
-                              () {
-                                context.read<CartCubit>().createClientOrder(
-                                      'order/create',
-                                      List.generate(
-                                        widget.cartModel.length,
-                                        (index) => Item(
-                                          type: 'Product',
-                                          amount: widget.cartModel[index].count,
-                                          productSizeId:
-                                              "b4513563-032a-4dbc-8894-4b05c402f7de",
-                                          comment: 'comment',
-                                          productId:
-                                              widget.cartModel[index].productId,
-                                        ),
-                                      ),
-                                    );
-                                widget.pageController.nextPage(
-                                  duration: const Duration(milliseconds: 600),
-                                  curve: Curves.easeInOutQuint,
-                                );
-                              },
-                            );
+                            // setState(
+                            //   () {
+                            //     context.read<CartCubit>().createClientOrder(
+                            //           'order/create',
+                            //           List.generate(
+                            //             widget.cartModel.length,
+                            //             (index) => Item(
+                            //               type: 'Product',
+                            //               amount: widget.cartModel[index].count,
+                            //               productSizeId:
+                            //                   "b4513563-032a-4dbc-8894-4b05c402f7de",
+                            //               comment: 'comment',
+                            //               productId:
+                            //                   widget.cartModel[index].productId,
+                            //             ),
+                            //           ),
+                            //         );
+                            //     widget.pageController.nextPage(
+                            //       duration: const Duration(milliseconds: 600),
+                            //       curve: Curves.easeInOutQuint,
+                            //     );
+                            //   },
+                            // );
                           }),
                     ),
                   )

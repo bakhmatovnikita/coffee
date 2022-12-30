@@ -118,6 +118,19 @@ class Functions {
     );
   }
 
+  void showCustomBottomSheet(Widget customWidget) {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return customWidget;
+        });
+  }
+
   void showProductEntityBottomsheet(ProductEntiti productEntiti) {
     showMaterialModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
@@ -174,7 +187,6 @@ class Functions {
           );
         });
   }
-
 
   void showMenuBottomsheet() {
     showMaterialModalBottomSheet(

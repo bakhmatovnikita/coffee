@@ -38,7 +38,7 @@ void calendarSelectModal(
           contentPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconColor: Colors.transparent,
+          // iconColor: Colors.transparent,
           content: CalendarView(),
         );
       },
