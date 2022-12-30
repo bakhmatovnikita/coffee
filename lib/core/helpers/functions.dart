@@ -1,10 +1,17 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/auth/presentation/views/login_view/widgets/login_bottomscheet.dart';
-import 'package:cofee/features/widgets/custom_button.dart';
-import 'package:cofee/features/widgets/custom_text.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
+import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_cart/view/added_cart.dart';
+import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
+import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../../features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/view/menu_bottomsheet.dart';
 
 class Functions {
   final BuildContext context;
@@ -109,5 +116,99 @@ class Functions {
         return const LoginBottomsheet();
       },
     );
+  }
+
+  void showCustomBottomSheet(Widget customWidget) {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return customWidget;
+        });
+  }
+
+  void showProductEntityBottomsheet(ProductEntiti productEntiti) {
+    showMaterialModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return EntityPopup(
+          productEntiti: productEntiti,
+        );
+      },
+    );
+  }
+
+  void showCheckoutBottomsheet(
+      List<CartModel> cartModel, double totalAmount, double totalWeigth) {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CheckoutBottomsheet(
+            cartModel: cartModel,
+            totalAmount: totalAmount,
+            totalWeigth: totalWeigth,
+          );
+        });
+  }
+
+  void showCartAddedBottomsheet() {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 758.h,
+            decoration: BoxDecoration(
+              color: const Color(0xffF3F3F3),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16.r),
+                topLeft: Radius.circular(16.r),
+              ),
+            ),
+            child: const AddedCart(),
+          );
+        });
+  }
+
+  void showMenuBottomsheet() {
+    showMaterialModalBottomSheet(
+        animationCurve: Curves.easeInOutQuint,
+        elevation: 12,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+        duration: const Duration(milliseconds: 600),
+        backgroundColor: Colors.transparent,
+        context: context,
+        enableDrag: false,
+        builder: (context) {
+          return Container(
+            height: 758.h,
+            decoration: BoxDecoration(
+              color: const Color(0xffF3F3F3),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16.r),
+                topLeft: Radius.circular(16.r),
+              ),
+            ),
+            child: const MenuBottomsheet(),
+          );
+        });
   }
 }

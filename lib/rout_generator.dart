@@ -1,9 +1,9 @@
-import 'package:cofee/features/auth/presentation/views/choice_adress/view/choice_adress.dart';
-import 'package:cofee/features/auth/presentation/views/code_view/view/code_view.dart';
-import 'package:cofee/features/auth/presentation/views/hello_view/hello_view.dart';
-import 'package:cofee/features/auth/presentation/views/login_view/view/login_view.dart';
-import 'package:cofee/features/auth/presentation/views/root_screen/view/root_screen.dart';
-import 'package:cofee/features/home/presentation/views/widgets/bottom_nav_view.dart';
+import 'package:cofee/features/presentation/auth/choice_adress/view/choice_adress.dart';
+import 'package:cofee/features/presentation/auth/code_view/view/code_view.dart';
+import 'package:cofee/features/presentation/auth/hello_view/hello_view.dart';
+import 'package:cofee/features/presentation/auth/login_view/view/login_view.dart';
+import 'package:cofee/features/presentation/auth/root_screen/view/root_screen.dart';
+import 'package:cofee/features/presentation/home/widgets/bottom_nav_view.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {

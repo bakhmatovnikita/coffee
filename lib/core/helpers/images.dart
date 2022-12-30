@@ -1,11 +1,18 @@
-abstract class Img{
-static const String dish = "assets/images/dish.png";
-static const String backgroundImg = "assets/images/backgroundImg.png";
-static const String berry = "assets/images/Berry.png";
-static const String Empty = "assets/images/pusto.png";
+abstract class Img {
+  static const String dish = "assets/images/dish.png";
+  static const String backgroundImg = "assets/images/backgroundImg.png";
+  static const String berry = "assets/images/Berry.png";
+  static const String Empty = "assets/images/pusto.png";
+  static const String Splash = "assets/images/splash.png";
+  static const String cart = "assets/images/cart.png";
+  static const String congratulations = 'assets/images/congratulations.png';
+  static const String visa = 'assets/images/visa.png';
+  static const String masterCart = 'assets/images/masterCard.png';
+  static const String masterCartBlack = 'assets/images/masterCartBlack.png';
+  static const String world = 'assets/images/world.png';
 }
 
-abstract class SvgImg{
+abstract class SvgImg {
   static const String bell = "assets/icons/bell.svg";
   static const String cart = "assets/icons/cart.svg";
   static const String heart = "assets/icons/heart.svg";
@@ -16,5 +23,11 @@ abstract class SvgImg{
   static const String cartFillFull = "assets/icons/cart.fill.full.svg";
   static const String houseNotFill = "assets/icons/house.notfill.svg";
   static const String cartFill = "assets/icons/cart.fill.svg";
-
+  static const String error = 'assets/icons/error.svg';
+  static const String cross = 'assets/icons/cross.svg';
+  static const String minus = 'assets/icons/minus.svg';
+  static const String visa = 'assets/icons/visa.svg';
+  static const String masterCart = 'assets/icons/masterCart.svg';
+  static const String masterCartBlack = 'assets/icons/masterCartBlack.svg';
+  static const String world = 'assets/icons/world.svg';
 }
