@@ -19,7 +19,7 @@ class BackConstants {
   static int amountWeight = 1;
   static final List<String> months = [
     '',
-    'Япнваря',
+    'Января',
     'Фервраля',
     'Марта',
     'Апреля',

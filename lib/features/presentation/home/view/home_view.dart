@@ -147,14 +147,12 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeViewCubit, HomeViewState>(
-      listener:(context, state) {
+    return BlocBuilder<HomeViewCubit, HomeViewState>(
+      builder: (context, state) {
         if (state is HomeViewEmptyState) {
           context.read<LoginViewCubit>().saveToken("access_token");
-        } 
-      },
-      builder: (context, state) {
-        if (state is HomeViewLoadedState) {
+          context.read<HomeViewCubit>().fetchProducts('nomenclature');
+        } else if (state is HomeViewLoadedState) {
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: RectGetter(
@@ -169,13 +167,14 @@ class _HomeViewState extends State<HomeView>
             ),
           );
         }
-        print('BUILD');
         return Scaffold(
           body: BlocListener<LoginViewCubit, LoginViewState>(
-            listener: (context2, state2) {
+            listener: (context2, state2) async {
               print('STATE2: ${state2}');
-              if(state2 is LoginViewSavedState && state is HomeViewEmptyState){
-                context.read<HomeViewCubit>().fetchProducts('nomenclature');
+              if (state2 is LoginViewSavedState &&
+                  state is HomeViewEmptyState) {
+                await context.read<LoginViewCubit>().saveToken("access_token");
+                await context.read<HomeViewCubit>().fetchProducts('nomenclature');
               }
             },
             child: const Center(
@@ -461,22 +460,22 @@ class _HomeViewState extends State<HomeView>
                             try {
                               context.read<CartCubit>().addToCartItem(
                                     CartModel(
-                                      name: productEntiti.name,
-                                      fatFullAmount: productEntiti.fatFullAmount
-                                          .toStringAsFixed(2),
-                                      weight: productEntiti.weight,
-                                      proteinsFullAmount: productEntiti
-                                          .proteinsFullAmount
-                                          .toStringAsFixed(2),
-                                      carbohydratesFullAmount: productEntiti
-                                          .carbohydratesFullAmount
-                                          .toStringAsFixed(2),
-                                      sizePrices: productEntiti
-                                          .sizePrices[0].price.currentPrice,
-                                      imageLink: productEntiti.imageLink,
-                                      count: 1,
-                                      productId: productEntiti.id
-                                    ),
+                                        name: productEntiti.name,
+                                        fatFullAmount: productEntiti
+                                            .fatFullAmount
+                                            .toStringAsFixed(2),
+                                        weight: productEntiti.weight,
+                                        proteinsFullAmount: productEntiti
+                                            .proteinsFullAmount
+                                            .toStringAsFixed(2),
+                                        carbohydratesFullAmount: productEntiti
+                                            .carbohydratesFullAmount
+                                            .toStringAsFixed(2),
+                                        sizePrices: productEntiti
+                                            .sizePrices[0].price.currentPrice,
+                                        imageLink: productEntiti.imageLink,
+                                        count: 1,
+                                        productId: productEntiti.id),
                                   );
                               SmartDialog.show(
                                 animationType: SmartAnimationType.fade,
@@ -588,7 +587,7 @@ class _HomeViewState extends State<HomeView>
           ),
           SizedBox(width: 16.w),
           ScaleButton(
-            onTap: () => Functions(context).showModalNotifications(),
+            onTap: () => Functions(context).showProfileUserBottomSheet(),
             bound: 0.05,
             duration: const Duration(milliseconds: 100),
             child: Container(

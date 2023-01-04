@@ -7,6 +7,8 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_
 import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/presentation/profile/%20personal_area/view/profile_page.dart';
+import 'package:cofee/features/presentation/profile/history/view/history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -210,5 +212,33 @@ class Functions {
             child: const MenuBottomsheet(),
           );
         });
+  }
+
+  void showProfileUserBottomSheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) {
+        return const ProfilePage();
+      },
+    );
+  }
+
+  void showUserHistoryBottomSheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) {
+        return const HistoryPage();
+      },
+    );
   }
 }
