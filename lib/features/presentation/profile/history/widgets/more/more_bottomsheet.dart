@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -276,6 +277,7 @@ class _MorePageState extends State<MorePage> {
                 ),
               ),
               ScaleButton(
+                onTap: () => Functions(context).showComplaintPageBottomSheet(),
                 bound: 0.02,
                 duration: const Duration(milliseconds: 100),
                 child: Container(

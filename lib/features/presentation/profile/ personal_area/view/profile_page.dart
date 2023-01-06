@@ -134,6 +134,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               ScaleButton(
+                onTap: () =>
+                    Functions(context).showEditProfilePageBottomSheet(),
                 bound: 0.02,
                 duration: const Duration(milliseconds: 100),
                 child: Container(
@@ -286,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 16.w,
                   left: 16.w,
                 ),
-                padding: const EdgeInsets.all(16),
+
                 // height: 228.h,
                 width: size.width.w,
                 decoration: BoxDecoration(
@@ -301,9 +303,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         Functions(context).showUserHistoryBottomSheet();
                       },
                       child: Container(
+                        color: Colors.transparent,
                         padding: index == 4
-                            ? EdgeInsets.only(bottom: 0.h)
-                            : EdgeInsets.only(bottom: 10.h),
+                            ? EdgeInsets.only(
+                                bottom: 16.h,
+                                top: 16.h,
+                                right: 16.w,
+                                left: 16.w)
+                            : EdgeInsets.only(
+                                top: 16.h, right: 16.w, left: 16.w),
                         child: Column(
                           children: [
                             Padding(
