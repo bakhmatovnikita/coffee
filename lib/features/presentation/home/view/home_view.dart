@@ -149,10 +149,7 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewCubit, HomeViewState>(
       builder: (context, state) {
-        if (state is HomeViewEmptyState) {
-          context.read<LoginViewCubit>().saveToken("access_token");
-          context.read<HomeViewCubit>().fetchProducts('nomenclature');
-        } else if (state is HomeViewLoadedState) {
+       if (state is HomeViewLoadedState) {
           return Scaffold(
             backgroundColor: ColorStyles.backgroundColor,
             body: RectGetter(

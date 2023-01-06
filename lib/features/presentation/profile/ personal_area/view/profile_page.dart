@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/switch_button.dart';
@@ -15,6 +16,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List<Map<String, dynamic>> settings = [
+    {
+      "icon": SvgImg.clock,
+      "title": "История заказов",
+    },
+    {
+      "icon": SvgImg.slider,
+      "title": "Настройки фильтров",
+    },
+    {
+      "icon": SvgImg.forkKnife,
+      "title": "Автозаказ",
+    },
+    {
+      "icon": SvgImg.forkKnife,
+      "title": "Автозаказ",
+    },
+    {
+      "icon": SvgImg.forkKnife,
+      "title": "Автозаказ",
+    },
+  ];
+
   bool switchValue = true;
   @override
   Widget build(BuildContext context) {
@@ -150,11 +174,76 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 16.w,
                   left: 16.w,
                 ),
+                padding: const EdgeInsets.all(16),
                 height: 146.h,
                 width: size.width.w,
                 decoration: BoxDecoration(
                   color: ColorStyles.whiteColor,
                   borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CustomText(
+                          title: 'Адрес ресторана',
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        const Spacer(),
+                        Container(
+                          alignment: Alignment.center,
+                          width: 95.w,
+                          height: 32.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(46.r),
+                            border: Border.all(
+                                color: ColorStyles.accentColor, width: 2.w),
+                          ),
+                          child: CustomText(
+                            title: 'Изменить',
+                            color: ColorStyles.accentColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 10.h,
+                          width: 10.w,
+                          margin: EdgeInsets.only(right: 7.w),
+                          decoration: const BoxDecoration(
+                            color: ColorStyles.accentColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 7.w,
+                        ),
+                        CustomText(
+                          title: 'Ели-Млели в Ростове',
+                          color: ColorStyles.accentColor,
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    CustomText(
+                      title:
+                          'Доломановский переулок, 70ДБЦ Гвардейский, этаж 1',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: ColorStyles.greyTitleColor,
+                    ),
+                  ],
                 ),
               ),
               Container(
@@ -197,11 +286,61 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 16.w,
                   left: 16.w,
                 ),
-                height: 228.h,
+                padding: const EdgeInsets.all(16),
+                // height: 228.h,
                 width: size.width.w,
                 decoration: BoxDecoration(
                   color: ColorStyles.whiteColor,
                   borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: List.generate(
+                    settings.length,
+                    (index) => GestureDetector(
+                      onTap: () {
+                        Functions(context).showUserHistoryBottomSheet();
+                      },
+                      child: Container(
+                        padding: index == 4
+                            ? EdgeInsets.only(bottom: 0.h)
+                            : EdgeInsets.only(bottom: 10.h),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: index == 4
+                                  ? EdgeInsets.only(bottom: 0.h)
+                                  : EdgeInsets.only(bottom: 10.h),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 15.w),
+                                    child: SvgPicture.asset(
+                                      settings[index]["icon"],
+                                    ),
+                                  ),
+                                  CustomText(
+                                    title: settings[index]["title"],
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorStyles.blackColor,
+                                  ),
+                                  const Spacer(),
+                                  SvgPicture.asset(SvgImg.goto),
+                                ],
+                              ),
+                            ),
+                            index == 4
+                                ? Container()
+                                : Container(
+                                    height: 1.h,
+                                    width: size.width,
+                                    color: Colors.grey[300],
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

@@ -9,6 +9,7 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/view/profile_page.dart';
 import 'package:cofee/features/presentation/profile/history/view/history.dart';
+import 'package:cofee/features/presentation/profile/history/widgets/more/more_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -238,6 +239,19 @@ class Functions {
       context: context,
       builder: (context) {
         return const HistoryPage();
+      },
+    );
+  }
+  void showMorePageBottomSheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) {
+        return const MorePage();
       },
     );
   }
