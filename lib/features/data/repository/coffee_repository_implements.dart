@@ -113,6 +113,7 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       localDatasource.saveTerminalGroup(terminalGroupModel);
       return Right(terminalGroupModel);
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }

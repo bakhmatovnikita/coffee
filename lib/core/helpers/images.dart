@@ -10,6 +10,8 @@ abstract class Img {
   static const String masterCart = 'assets/images/masterCard.png';
   static const String masterCartBlack = 'assets/images/masterCartBlack.png';
   static const String world = 'assets/images/world.png';
+  static const String avatar = 'assets/images/avatar.png';
+  static const String bonusCard = 'assets/images/BonusCard.png';
 }
 
 abstract class SvgImg {
@@ -30,4 +32,12 @@ abstract class SvgImg {
   static const String masterCart = 'assets/icons/masterCart.svg';
   static const String masterCartBlack = 'assets/icons/masterCartBlack.svg';
   static const String world = 'assets/icons/world.svg';
+  static const String edit = 'assets/icons/highlighter.svg';
+  static const String clock = 'assets/icons/clock.svg';
+  static const String forkKnife = 'assets/icons/fork.knife.svg';
+  static const String slider = 'assets/icons/slider.vertical.svg';
+  static const String goto = 'assets/icons/chevron.forward.svg';
+  static const String goBackk = 'assets/icons/chevron.backward.svg';
+  static const String star = 'assets/icons/star.leadinghalf.filled.svg';
+  static const String info = 'assets/icons/questionmark.circle.svg';
 }
