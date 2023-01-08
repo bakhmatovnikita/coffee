@@ -40,4 +40,5 @@ abstract class SvgImg {
   static const String goBackk = 'assets/icons/chevron.backward.svg';
   static const String star = 'assets/icons/star.leadinghalf.filled.svg';
   static const String info = 'assets/icons/questionmark.circle.svg';
+  static const String creditCard = 'assets/icons/creditcard.svg';
 }

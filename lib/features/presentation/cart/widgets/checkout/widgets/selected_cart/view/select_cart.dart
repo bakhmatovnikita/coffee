@@ -46,39 +46,51 @@ class _SelectCartState extends State<SelectCart> {
   Future<void> webviewPayment() async {
     final RegisterResponse register = await acquiring.register(
       RegisterRequest(
-        amount: 1000,
-        returnUrl: 'https://www.youtube.com/',
-        failUrl: 'https://www.youtube.com/',
+        amount: widget.totalAmount.toInt() * 100,
+        returnUrl:
+            'https://3dsec.sberbank.ru/sbersafe/anonymous/order/finishTds',
+        failUrl: 'https://www.yandex.ru/',
         orderNumber: 'test',
         pageView: 'MOBILE',
       ),
     );
-    final String? formUrl = register.formUrl;
+    final String? formUrl =
+        register.formUrl?.replaceFirst('/www.3dsec.sberbank.ru', '');
     if (!register.hasError && formUrl != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => Scaffold(
-            body: WebViewPayment(
-              logger: acquiring.logger,
-              formUrl: formUrl,
-              returnUrl: 'https://www.youtube.com/',
-              failUrl: 'https://www.youtube.com/',
-              onLoad: (bool v) {
-                debugPrint('WebView load: $v');
-              },
-              onError: () {
-                debugPrint('WebView Error');
-              },
-              onFinished: (String? v) async {
-                final GetOrderStatusExtendedResponse status =
-                    await acquiring.getOrderStatusExtended(
-                  GetOrderStatusExtendedRequest(orderId: v),
-                );
+      Functions(context).showCustomBottomSheet(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(15.r),
+          child: Container(
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15.r)),
+            height: 700.h,
+            child: Scaffold(
+              body: WebViewPayment(
+                logger: acquiring.logger,
+                formUrl: formUrl,
+                returnUrl:
+                    'https://3dsec.sberbank.ru/sbersafe/anonymous/order/finishTds',
+                failUrl: 'https://www.yandex.ru/',
+                onLoad: (bool v) {
+                  debugPrint('WebView load: $v');
+                },
+                onError: () {
+                  debugPrint('WebView Error');
+                },
+                onFinished: (String? v) async {
+                  print('finished!!!!');
+                  final GetOrderStatusExtendedResponse status =
+                      await acquiring.getOrderStatusExtended(
+                    GetOrderStatusExtendedRequest(orderId: v),
+                  );
+                  _successPaid();
 
-                orderStatus = status.orderStatus;
-                setState(() {});
-                Navigator.of(context).pop();
-              },
+                  orderStatus = status.orderStatus;
+                  setState(() {});
+
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
         ),
@@ -284,29 +296,7 @@ class _SelectCartState extends State<SelectCart> {
                       child: CustomButton(
                           title: 'Оплатить',
                           onTap: () async {
-                            setState(
-                              () {
-                                context.read<CartCubit>().createClientOrder(
-                                      'order/create',
-                                      List.generate(
-                                        widget.cartModel.length,
-                                        (index) => Item(
-                                          type: 'Product',
-                                          amount: widget.cartModel[index].count,
-                                          productSizeId:
-                                              "b4513563-032a-4dbc-8894-4b05c402f7de",
-                                          comment: 'comment',
-                                          productId:
-                                              widget.cartModel[index].productId,
-                                        ),
-                                      ),
-                                    );
-                                widget.pageController.nextPage(
-                                  duration: const Duration(milliseconds: 600),
-                                  curve: Curves.easeInOutQuint,
-                                );
-                              },
-                            );
+                            webviewPayment();
                           }),
                     ),
                   )
@@ -314,6 +304,31 @@ class _SelectCartState extends State<SelectCart> {
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  void _successPaid() {
+    setState(
+      () {
+        webviewPayment();
+        context.read<CartCubit>().createClientOrder(
+              'order/create',
+              List.generate(
+                widget.cartModel.length,
+                (index) => Item(
+                  type: 'Product',
+                  amount: widget.cartModel[index].count,
+                  productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
+                  comment: 'comment',
+                  productId: widget.cartModel[index].productId,
+                ),
+              ),
+            );
+        widget.pageController.nextPage(
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutQuint,
         );
       },
     );

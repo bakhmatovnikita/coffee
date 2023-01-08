@@ -30,12 +30,12 @@ class _ProfilePageState extends State<ProfilePage> {
       "title": "Автозаказ",
     },
     {
-      "icon": SvgImg.forkKnife,
-      "title": "Автозаказ",
+      "icon": SvgImg.creditCard,
+      "title": "Способы оплаты",
     },
     {
-      "icon": SvgImg.forkKnife,
-      "title": "Автозаказ",
+      "icon": SvgImg.info,
+      "title": "О нас",
     },
   ];
 
