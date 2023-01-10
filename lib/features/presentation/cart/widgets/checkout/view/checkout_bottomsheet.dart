@@ -41,6 +41,9 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
     ),
     WayOfObtaining(
       pageController: pageController,
+      cartModel: widget.cartModel,
+      totalAmount: widget.totalAmount,
+      totalWeigth: widget.totalWeigth,
     ),
     NumberAccept(
       pageController: pageController,

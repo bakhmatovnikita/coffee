@@ -1,17 +1,25 @@
 import 'dart:async';
 
-
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/shipping_options.dart';
 
 class WayOfObtaining extends StatefulWidget {
+  final List<CartModel> cartModel;
+  final double totalAmount;
+  final double totalWeigth;
   final PageController pageController;
-  const WayOfObtaining({Key? key, required this.pageController})
+  const WayOfObtaining(
+      {Key? key,
+      required this.pageController,
+      required this.cartModel,
+      required this.totalAmount,
+      required this.totalWeigth})
       : super(key: key);
 
   @override
@@ -84,12 +92,20 @@ class _WayOfObtainingState extends State<WayOfObtaining> {
               child: CustomButton(
                   title: 'Далее',
                   onTap: () {
-                    setState(() {
-                      widget.pageController.nextPage(
-                        duration: const Duration(milliseconds: 600),
-                        curve: Curves.easeInOutQuint,
-                      );
-                    });
+                    if (wayOfObtaining[2]['isSelected']) {
+                      Navigator.pushNamed(context, '/MapView', arguments: {
+                        'cartModel': widget.cartModel,
+                        "totalWeigth": widget.totalWeigth,
+                        "totalAmount": widget.totalAmount,
+                      });
+                    } else {
+                      setState(() {
+                        widget.pageController.nextPage(
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeInOutQuint,
+                        );
+                      });
+                    }
                   }),
             )
           ],

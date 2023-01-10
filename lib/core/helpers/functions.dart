@@ -4,6 +4,7 @@ import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_cart/view/added_cart.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/delivery/delivery_bottomsheet.dart';
 import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -272,6 +273,7 @@ class Functions {
       },
     );
   }
+
   void showEditProfilePageBottomSheet() {
     showCupertinoModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
@@ -282,6 +284,24 @@ class Functions {
       context: context,
       builder: (context) {
         return const EditProfilePage();
+      },
+    );
+  }
+
+  void showDeliveryBottomSheet(
+      List<CartModel> cartModel, double totalAmount, double totalWeigth) {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) {
+        return DeliveryBottomsheet(
+            cartModel: cartModel,
+            totalAmount: totalAmount,
+            totalWeigth: totalWeigth);
       },
     );
   }

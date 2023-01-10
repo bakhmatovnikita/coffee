@@ -288,8 +288,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 16.w,
                   left: 16.w,
                 ),
-
-                // height: 228.h,
                 width: size.width.w,
                 decoration: BoxDecoration(
                   color: ColorStyles.whiteColor,
