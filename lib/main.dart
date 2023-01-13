@@ -10,10 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'injection.container.dart' as di;
 import 'injection.container.dart';
 
 Future<void> main() async {
+  AndroidYandexMap.useAndroidViewSurface = false;
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

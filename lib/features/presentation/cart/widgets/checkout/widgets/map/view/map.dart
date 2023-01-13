@@ -8,6 +8,8 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/map/wi
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:yandex_geocoder/yandex_geocoder.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../../../../../data/models/cart/cart_model.dart';
 import '../widgets/user_data_card.dart';
@@ -27,6 +29,25 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  // getCurrentPosition()  async {
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if(permission == LocationPermission.denied  permission == LocationPermission.deniedForever  !isLocationEnabled){
+  //     permission = await Geolocator.requestPermission();
+  //   }
+  //   if(permission != LocationPermission.denied && permission != LocationPermission.deniedForever){
+  //     if(isLocationEnabled){
+  //       Position _position = await Geolocator.getCurrentPosition();
+
+  //       yandexMapController!.moveCamera(
+  //         yandexMap.CameraUpdate.newCameraPosition(
+  //           yandexMap.CameraPosition(target: yandexMap.Point(latitude: _position.latitude, longitude: _position.longitude))
+  //         )
+  //       );
+  //     }
+  //   }
+  // }
+
   final TextEditingController controllerKv = TextEditingController();
   final TextEditingController controllerPod = TextEditingController();
   final TextEditingController controllerFloor = TextEditingController();
@@ -96,10 +117,9 @@ class _MapPageState extends State<MapPage> {
                   margin: EdgeInsets.symmetric(horizontal: 8.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(17.r),
-                    image: const DecorationImage(
-                      image: AssetImage(Img.mapCard),
-                      fit: BoxFit.fill,
-                    ),
+                    
+                  ),
+                  child: const YandexMap(
                   ),
                 ),
                 Container(
@@ -301,13 +321,16 @@ class _MapPageState extends State<MapPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 73.h, bottom: 31.h),
                   child: CustomButton(
-                    title: 'Готово',
-                    onTap: () => Functions(context).showDeliveryBottomSheet(
-                      widget.cartModel,
-                      widget.totalAmount,
-                      widget.totalWeigth,
-                    ),
-                  ),
+                      title: 'Готово',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        Functions(context).showDeliveryBottomSheet(
+                          widget.cartModel,
+                          widget.totalAmount,
+                          widget.totalWeigth,
+                        );
+                      }),
                 )
               ],
             ),

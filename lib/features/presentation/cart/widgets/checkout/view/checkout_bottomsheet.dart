@@ -27,7 +27,7 @@ class CheckoutBottomsheet extends StatefulWidget {
 }
 
 class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
-  static PageController pageController = PageController();
+  static PageController pageController = PageController(keepPage: true);
 
   @override
   void initState() {

@@ -4,6 +4,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
+import 'package:cofee/features/presentation/home/view/main_home.dart';
 import 'package:cofee/features/presentation/home/widgets/body_view.dart';
 import 'package:cofee/features/presentation/cart/view/cart_view.dart';
 import 'package:cofee/features/presentation/home/view/home_view.dart';
@@ -46,7 +47,7 @@ class _BottomNavViewState extends State<BottomNavView>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const HomeView(),
+                const MainHome(),
                 const CartView(),
                 BodyView(
                   onChangeView: (index) {
@@ -184,7 +185,7 @@ class _BottomNavViewState extends State<BottomNavView>
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              const HomeView(),
+              const MainHome(),
               const CartView(),
               BodyView(
                 onChangeView: (index) {

@@ -26,6 +26,7 @@ class _UserDataCardState extends State<UserDataCard> {
     return Container(
       width: 63.w,
       height: 36.h,
+      padding: EdgeInsets.only(top: 4.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
         color: ColorStyles.whiteColor,

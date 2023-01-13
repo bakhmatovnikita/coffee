@@ -39,7 +39,7 @@ class _UserCommentsWidgetState extends State<UserCommentsWidget> {
       child: Center(
         child: TextField(
           controller: widget.controller,
-          textAlign: onTap ? TextAlign.start : TextAlign.center,
+          textAlign: TextAlign.center,
           style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w500,
             fontSize: 17.h,
