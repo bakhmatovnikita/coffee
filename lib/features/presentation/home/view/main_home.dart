@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../../../constants/constants_for_back/constants.dart';
 import '../widgets/calendar_select_modal.dart';
 import '../widgets/main_view_widgets/product_card_widget.dart';
@@ -66,6 +63,12 @@ class _MainHomeState extends State<MainHome> {
     //   duration: const Duration(milliseconds: 600),
     //   curve: Curves.easeInOut,
     // );
+  }
+
+  Future<void> feetchMenu(
+      Function() accessToken, Function() nomenclature) async {
+    await accessToken();
+    await nomenclature();
   }
 
   @override
@@ -244,7 +247,7 @@ class _MainHomeState extends State<MainHome> {
                                               duration: const Duration(
                                                   milliseconds: 600),
                                               curve: Curves.easeInOut);
-                                              stream.sink.add(index);
+                                          stream.sink.add(index);
                                         },
                                         child: CategoryCardWidget(
                                           groupsEntiti: state
@@ -323,18 +326,16 @@ class _MainHomeState extends State<MainHome> {
               ),
             ),
           );
+        } else if (state is HomeViewErrorState) {
+          feetchMenu(
+              () => context.read<LoginViewCubit>().saveToken('access_token'),
+              () =>
+                  context.read<HomeViewCubit>().fetchProducts('nomenclature'));
         }
-        return BlocListener<HomeViewCubit, HomeViewState>(
-          listener: (context, state) {
-            if (state is HomeViewEmptyState) {
-              context.read<LoginViewCubit>().saveToken('access_token');
-            }
-          },
-          child: const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.orange,
-              ),
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
             ),
           ),
         );

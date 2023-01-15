@@ -6,7 +6,7 @@ import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yandex_geocoder/yandex_geocoder.dart';
+// import 'package:yandex_geocoder/yandex_geocoder.dart';
 
 import '../widgets/shipping_options.dart';
 
@@ -96,24 +96,24 @@ class _WayOfObtainingState extends State<WayOfObtaining> {
                     String address = 'null';
                     String latLong = 'null';
                     setState(() {});
-                    final YandexGeocoder geocoder = YandexGeocoder(
-                        apiKey: '280d67e0-e9e9-428f-baee-cd11699581f7');
-                    final GeocodeResponse geocodeFromPoint =
-                        await geocoder.getGeocode(GeocodeRequest(
-                      geocode: PointGeocode(
-                          latitude: 55.771899, longitude: 37.597576),
-                      lang: Lang.enEn,
-                    ));
-                    address =
-                        geocodeFromPoint.firstAddress?.formatted ?? 'null';
-                    final GeocodeResponse _latLong = await geocoder.getGeocode(
-                      GeocodeRequest(
-                        geocode: AddressGeocode(
-                          address: 'Москва, 4-я Тверская-Ямская улица, 7',
-                        ),
-                      ),
-                    );
-                    latLong = _latLong.firstPoint?.pos ?? 'null';
+                    // final YandexGeocoder geocoder = YandexGeocoder(
+                    //     apiKey: '280d67e0-e9e9-428f-baee-cd11699581f7');
+                    // final GeocodeResponse geocodeFromPoint =
+                    //     await geocoder.getGeocode(GeocodeRequest(
+                    //   geocode: PointGeocode(
+                    //       latitude: 55.771899, longitude: 37.597576),
+                    //   lang: Lang.enEn,
+                    // ));
+                    // address =
+                    //     geocodeFromPoint.firstAddress?.formatted ?? 'null';
+                    // final GeocodeResponse _latLong = await geocoder.getGeocode(
+                    //   GeocodeRequest(
+                    //     geocode: AddressGeocode(
+                    //       address: 'Москва, 4-я Тверская-Ямская улица, 7',
+                    //     ),
+                    //   ),
+                    // );
+                    // latLong = _latLong.firstPoint?.pos ?? 'null';
 
                     setState(() {});
                     // if (geocodeFromPoint

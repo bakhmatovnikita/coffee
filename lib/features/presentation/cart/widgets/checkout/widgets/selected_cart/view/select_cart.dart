@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class SelectCart extends StatefulWidget {
   final PageController pageController;
@@ -309,28 +310,24 @@ class _SelectCartState extends State<SelectCart> {
     );
   }
 
-  void _successPaid() {
-    setState(
-      () {
-        webviewPayment();
-        context.read<CartCubit>().createClientOrder(
-              'order/create',
-              List.generate(
-                widget.cartModel.length,
-                (index) => Item(
-                  type: 'Product',
-                  amount: widget.cartModel[index].count,
-                  productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
-                  comment: 'comment',
-                  productId: widget.cartModel[index].productId,
-                ),
-              ),
-            );
-        widget.pageController.nextPage(
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.easeInOutQuint,
+  void _successPaid() async {
+    await context.read<CartCubit>().createClientOrder(
+          'order/create',
+          List.generate(
+            widget.cartModel.length,
+            (index) => Item(
+              type: 'Product',
+              amount: widget.cartModel[index].count,
+              productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
+              comment: 'comment',
+              productId: widget.cartModel[index].productId,
+            ),
+          ),
         );
-      },
+    widget.pageController.nextPage(
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutQuint,
     );
+    setState(() {});
   }
 }

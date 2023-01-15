@@ -18,7 +18,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   Dio _dio = Dio();
   final storage = const FlutterSecureStorage();
 
-  RemoteDatasourceImplement(){
+  RemoteDatasourceImplement() {
     _dio = Dio(
       BaseOptions(
         baseUrl: BackConstants.baseUrl,
@@ -39,6 +39,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       ),
     );
   }
+
   @override
   Future<UserIdModel> createUser(
       String endpoint, String phone, String organizationId) async {
@@ -189,7 +190,8 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   }
 
   @override
-  Future<OrderModel> createOrder(String endpoint, List<Item> item, String phone, String organizationId) async {
+  Future<OrderModel> createOrder(String endpoint, List<Item> item, String phone,
+      String organizationId) async {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -213,6 +215,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
         headers: headers,
       ),
     );
+    print(response.statusCode);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrderModel.fromJson(response.data);
     } else {

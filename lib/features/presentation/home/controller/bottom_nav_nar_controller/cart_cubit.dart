@@ -87,6 +87,7 @@ class CartCubit extends Cubit<CartState> {
 
   Future<void> createClientOrder(String endpoint, List<Item> item) async {
     try {
+      print(await localDatasource.getPhoneUser());
       createOrder.call(
         CresteOrderParams(
           endpoint: endpoint,

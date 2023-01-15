@@ -8,8 +8,8 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/map/wi
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:yandex_geocoder/yandex_geocoder.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
+// import 'package:yandex_geocoder/yandex_geocoder.dart';
+// import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../../../../../data/models/cart/cart_model.dart';
 import '../widgets/user_data_card.dart';
@@ -112,16 +112,16 @@ class _MapPageState extends State<MapPage> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 207.h,
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17.r),
+                // Container(
+                //   height: 207.h,
+                //   margin: EdgeInsets.symmetric(horizontal: 8.w),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(17.r),
                     
-                  ),
-                  child: const YandexMap(
-                  ),
-                ),
+                //   ),
+                //   child: const YandexMap(
+                //   ),
+                // ),
                 Container(
                   margin: EdgeInsets.only(right: 8.w, left: 8.w, top: 3.h),
                   decoration: BoxDecoration(
