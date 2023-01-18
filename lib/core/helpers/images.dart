@@ -13,6 +13,7 @@ abstract class Img {
   static const String avatar = 'assets/images/avatar.png';
   static const String bonusCard = 'assets/images/BonusCard.png';
   static const String mapCard = 'assets/images/map.png';
+  static const String thinking = 'assets/images/thinking.png';
 }
 
 abstract class SvgImg {

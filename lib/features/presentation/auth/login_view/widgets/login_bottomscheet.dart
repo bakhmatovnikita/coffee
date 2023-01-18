@@ -14,6 +14,7 @@ class LoginBottomsheet extends StatefulWidget {
 }
 
 class _LoginBottomsheetState extends State<LoginBottomsheet> {
+  final TextEditingController controller = TextEditingController();
   bool switchValue = true;
   @override
   Widget build(BuildContext context) {
@@ -54,8 +55,9 @@ class _LoginBottomsheetState extends State<LoginBottomsheet> {
           ),
           Padding(
             padding: EdgeInsets.only(top: 87.h, left: 16.h, right: 16.h),
-            child: const CustomTextField(
+            child: CustomTextField(
               color: Colors.white,
+              controller: controller,
             ),
           ),
           Padding(

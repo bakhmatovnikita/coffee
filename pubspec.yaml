@@ -64,8 +64,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   extended_image: ^6.3.4
   anchor_scroll_controller: ^0.4.2
-  # yandex_geocoder: ^2.0.2
-  # yandex_mapkit: ^3.2.0
+  yandex_geocoder: ^2.0.2
+  yandex_mapkit: ^3.2.0
   permission_handler: ^10.2.0
 
 dev_dependencies:

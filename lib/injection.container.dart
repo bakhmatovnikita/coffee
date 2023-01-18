@@ -7,6 +7,7 @@ import 'package:cofee/features/data/repository/coffee_repository_implements.dart
 import 'package:cofee/features/domain/repository/coffe_repository.dart';
 import 'package:cofee/features/domain/usecase/create_order.dart';
 import 'package:cofee/features/domain/usecase/create_user.dart';
+import 'package:cofee/features/domain/usecase/get_history.dart';
 import 'package:cofee/features/domain/usecase/get_organization.dart';
 import 'package:cofee/features/domain/usecase/get_products.dart';
 import 'package:cofee/features/domain/usecase/get_terminal_group.dart';
@@ -17,6 +18,9 @@ import 'package:cofee/features/presentation/auth/root_screen/controller/root_scr
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
+import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
+import 'package:cofee/features/presentation/profile/edit_profile/controller/edit_profile_cubit.dart';
+import 'package:cofee/features/presentation/profile/history/controller/history_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +44,19 @@ Future<void> init() async {
   sl.registerFactory(() => LoginViewCubit(getToken: sl()));
   sl.registerFactory(() => CartCubit(sl(), sl()));
   sl.registerFactory(() => ListViewCubit());
+  sl.registerFactory(() => HistoryCubit(
+        getHistory: sl(),
+        localDatasource: sl(),
+      ));
+  sl.registerFactory(
+    () => EditProfileCubit(createUser: sl(), localDatasource: sl()),
+  );
+  sl.registerFactory(
+    () => ProfilePageCubit(
+      getOrganization: sl(),
+      localDatasource: sl(),
+    ),
+  );
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
@@ -47,6 +64,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetProducts(sl()));
   sl.registerLazySingleton(() => GetTerminalGroup(sl()));
   sl.registerLazySingleton(() => CreateOrder(sl()));
+  sl.registerLazySingleton(() => GetHistory(sl()));
   //Repository
   sl.registerLazySingleton<CoffeeRepository>(
       () => CoffeeRepositoryImpl(sl(), sl()));

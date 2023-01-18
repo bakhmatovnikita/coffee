@@ -25,9 +25,9 @@ class ChoiceAdressCubit extends Cubit<ChoiceAdressState> {
         TerminalGroupParams(endpoint: endpoint, organizationId: organizationId),
       );
     } catch (_) {
-      // emit(
-      //   ChoiceAdressErrorState(message: BackConstants.SERVER_FAILURE_MESSAGE),
-      // );
+      emit(
+        ChoiceAdressErrorState(message: BackConstants.SERVER_FAILURE_MESSAGE),
+      );
     }
   }
 

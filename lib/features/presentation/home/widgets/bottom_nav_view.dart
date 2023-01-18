@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
+import 'package:cofee/features/domain/entiti/organization_entiti.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:cofee/features/presentation/home/view/main_home.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BottomNavView extends StatefulWidget {
-  const BottomNavView({super.key});
+  String? organizationId;
+  BottomNavView({super.key, this.organizationId});
 
   @override
   State<BottomNavView> createState() => _BottomNavViewState();
@@ -47,7 +49,7 @@ class _BottomNavViewState extends State<BottomNavView>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const MainHome(),
+                MainHome(organizationId: widget.organizationId,),
                 const CartView(),
                 BodyView(
                   onChangeView: (index) {
@@ -185,7 +187,7 @@ class _BottomNavViewState extends State<BottomNavView>
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              const MainHome(),
+              MainHome(organizationId: widget.organizationId,),
               const CartView(),
               BodyView(
                 onChangeView: (index) {

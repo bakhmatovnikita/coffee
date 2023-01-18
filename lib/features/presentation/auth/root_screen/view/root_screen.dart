@@ -22,7 +22,7 @@ class _RootScreenState extends State<RootScreen> {
         if (state is RootScreenIsAuthorized) {
           context.read<LoginViewCubit>().saveToken('access_token');
           const Duration(milliseconds: 600);
-          return const BottomNavView();
+          return BottomNavView();
         } else if (state is RootScreenEmptyState) {
           context.read<LoginViewCubit>().saveToken('access_token');
           const Duration(milliseconds: 600);

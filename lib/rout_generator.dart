@@ -14,7 +14,16 @@ class RouteGenerator {
       case "/":
         return MaterialPageRoute(builder: (context) => const RootScreen());
       case "/MainView":
-        return MaterialPageRoute(builder: (context) => const BottomNavView());
+        final arguments = settings.arguments as Map<String, dynamic>;
+        if (arguments['organizationId'] is String) {
+          return MaterialPageRoute(
+            builder: (context) => BottomNavView(
+              organizationId: arguments['organizationId'],
+            ),
+          );
+        } else {
+          return _errorRoute();
+        }
       case "/LoginView":
         return MaterialPageRoute(builder: (context) => const LoginView());
       case "/HelloView":

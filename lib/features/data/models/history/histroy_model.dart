@@ -2,8 +2,8 @@ import 'package:cofee/features/data/models/history/orders_by_organization_model.
 import 'package:cofee/features/domain/entiti/history/history_entiti.dart';
 import 'package:cofee/features/domain/entiti/history/orders_by_organization_entiti.dart';
 
-class HistroyModel extends HistroyEntiti {
-  HistroyModel({
+class HistoryModel extends HistoryEntiti {
+  HistoryModel({
     required final String correlationId,
     required final int maxRevision,
     required final List<OrdersByOrganizationEntiti> ordersByOrganizations,
@@ -12,7 +12,7 @@ class HistroyModel extends HistroyEntiti {
           maxRevision: maxRevision,
           ordersByOrganizations: ordersByOrganizations,
         );
-  factory HistroyModel.fromJson(Map<String, dynamic> json) => HistroyModel(
+  factory HistoryModel.fromJson(Map<String, dynamic> json) => HistoryModel(
         correlationId: json["correlationId"],
         maxRevision: json["maxRevision"],
         ordersByOrganizations: List<OrdersByOrganizationModel>.from(

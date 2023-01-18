@@ -8,6 +8,7 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/presentation/cart/widgets/food_card.dart';
+import 'package:cofee/features/presentation/cart/widgets/login_or_not_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -269,51 +270,7 @@ class _CartViewState extends State<CartView> {
             slivers: [
               _appBar(context),
               SliverToBoxAdapter(child: SizedBox(height: 142.h)),
-              SliverToBoxAdapter(
-                child: Image.asset(
-                  Img.cart,
-                  width: 80.h,
-                  height: 80.h,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 16.h),
-                    child: CustomText(
-                      title: 'Корзина пустая',
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(top: 40.h, left: 16.h, right: 16.h),
-                    child: CustomText(
-                      title:
-                          'Ваша корзину пуста, откройте Меню и выберите блюдо, которое \nвам по душе.',
-                      fontSize: 16.h,
-                      fontWeight: FontWeight.w500,
-                      color: ColorStyles.greyTitleColor,
-                      centerTitle: true,
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 24.h),
-                  child: CustomButton(
-                    title: 'Выбрать блюдо',
-                    onTap: () {
-                      Functions(context).showMenuBottomsheet();
-                    },
-                  ),
-                ),
-              ),
+              const LoginOrNot(),
             ],
           ),
         );
@@ -363,7 +320,7 @@ class _CartViewState extends State<CartView> {
           ),
           SizedBox(width: 16.w),
           ScaleButton(
-            onTap: () => Functions(context).showModalNotifications(),
+            onTap: () => Functions(context).showProfileUserBottomSheet(),
             bound: 0.05,
             duration: const Duration(milliseconds: 100),
             child: Container(

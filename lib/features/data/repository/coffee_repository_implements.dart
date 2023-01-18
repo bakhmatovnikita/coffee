@@ -2,6 +2,7 @@ import 'package:cofee/features/data/datasorces/local_datasource/local_datasource
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
+import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
@@ -60,9 +61,10 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       Future<OrganizationsModel> Function() organization) async {
     try {
       final organizationModel = await organization();
-      localDatasource.saveOrganizationId(organizationModel.organizations[1].id);
+      localDatasource.saveOrganizationId(organizationModel.organizations[0].id);
       return Right(organizationModel);
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
@@ -119,14 +121,33 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   }
 
   @override
-  Future<Either<Failure, OrderModel>> createOrder(String endpoint, List<Item> item, String phone, String organizationId) async {
-    return await _createOrder(() => remoteDatasource.createOrder(endpoint, item, phone, organizationId));
+  Future<Either<Failure, OrderModel>> createOrder(String endpoint,
+      List<Item> item, String phone, String organizationId) async {
+    return await _createOrder(() =>
+        remoteDatasource.createOrder(endpoint, item, phone, organizationId));
   }
 
-  Future<Either<Failure, OrderModel>> _createOrder(Future<OrderModel> Function() order) async {
+  Future<Either<Failure, OrderModel>> _createOrder(
+      Future<OrderModel> Function() order) async {
     try {
       final orderModel = await order();
       return Right(orderModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, HistoryModel>> getOrderHistory(
+      String endpoint, String phone, List<String> organizationIds) async {
+        return await _getOrderHistory(() => remoteDatasource.getHistory(endpoint, phone, organizationIds));
+      }
+
+  Future<Either<Failure, HistoryModel>> _getOrderHistory(
+      Future<HistoryModel> Function() history) async {
+    try {
+      final historyModel = await history();
+      return Right(historyModel);
     } catch (e) {
       return Left(ServerFailure());
     }

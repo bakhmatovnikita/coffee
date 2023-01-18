@@ -5,6 +5,7 @@ import 'package:cofee/core/error/exception.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
+import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
@@ -109,7 +110,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     };
     final apiLoginData = jsonEncode(
       {
-        "apiLogin": "4bbdab74-a27",
+        "apiLogin": "86a9ec87-8b2",
         "returnAdditionalInfo": true,
         "includeDisabled": true
       },
@@ -218,6 +219,40 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     print(response.statusCode);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrderModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<HistoryModel> getHistory(
+    String endpoint,
+    String phone,
+    List<String> organizationIds,
+  ) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+    };
+    final historyOrdersData = jsonEncode({
+      "organizationIds": organizationIds,
+      "startRevision": 0,
+      "phone": phone,
+    });
+    final response = await _dio.post(
+      endpoint,
+      data: historyOrdersData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return HistoryModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

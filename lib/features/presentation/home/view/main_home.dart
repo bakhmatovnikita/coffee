@@ -16,7 +16,8 @@ import '../widgets/calendar_select_modal.dart';
 import '../widgets/main_view_widgets/product_card_widget.dart';
 
 class MainHome extends StatefulWidget {
-  const MainHome({super.key});
+  String? organizationId;
+  MainHome({super.key, this.organizationId});
 
   @override
   State<MainHome> createState() => _MainHomeState();

@@ -8,7 +8,6 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/choiced_restaurant.dart';
@@ -22,8 +21,6 @@ class ChoiceAdressView extends StatefulWidget {
 }
 
 class _ChoiceAdressViewState extends State<ChoiceAdressView> {
-  final storage = const FlutterSecureStorage();
-
   final streamController = StreamController<int>();
   @override
   Widget build(BuildContext context) {
@@ -133,6 +130,12 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                           .pushNamedAndRemoveUntil(
                                         "/MainView",
                                         (route) => false,
+                                        arguments: {
+                                          'organizationId': state
+                                              .organizationsEntiti
+                                              .organizations[snapshot.data!]
+                                              .id
+                                        },
                                       );
                                     } else if (context
                                         .read<ChoiceAdressCubit>()
@@ -147,6 +150,12 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                           .pushNamedAndRemoveUntil(
                                         "/MainView",
                                         (route) => false,
+                                        arguments: {
+                                          'organizationId': state
+                                              .organizationsEntiti
+                                              .organizations[snapshot.data!]
+                                              .id
+                                        },
                                       );
                                     } else {
                                       ScaffoldMessenger.of(context)

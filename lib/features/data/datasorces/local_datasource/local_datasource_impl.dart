@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
+import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
+import 'package:cofee/injection.container.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -150,4 +154,25 @@ class LocalDatasourceImplement implements LocalDatasource {
       throw CacheException();
     }
   }
+
+  @override
+  Future<void> saveHistory(List<HistoryModel> historyList) {
+    final List<String> historyModelList =
+        historyList.map((history) => jsonEncode(history.toJson())).toList();
+    return sharedPreferences.setStringList(
+        BackConstants.SAVED_HISTORY_ORDERS, historyModelList);
+  }
+
+  @override
+  Future<void> getUser() async {
+    sl<AuthConfig>().phoneUser = await sharedPreferences.getString(BackConstants.SAVED_PHONE_USER); 
+    throw UnimplementedError();
+  }
+  // @override
+  // Future<void> saveToCart(List<CartModel> cartModel) {
+  //   final List<String> cartModelList =
+  //       cartModel.map((product) => json.encode(product.toJson())).toList();
+  //   return sharedPreferences.setStringList(
+  //       BackConstants.SAVED_CARTS_ITEMS, cartModelList);
+  // }
 }
