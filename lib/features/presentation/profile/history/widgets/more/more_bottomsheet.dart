@@ -277,6 +277,26 @@ class _MorePageState extends State<MorePage> {
                 ),
               ),
               ScaleButton(
+                onTap: () => Functions(context).showPaymentOrderBottomsheet(),
+                bound: 0.02,
+                duration: const Duration(milliseconds: 100),
+                child: Container(
+                  height: 48.h,
+                  margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: CustomText(
+                    title: "Изменить заказ",
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: ColorStyles.blackColor,
+                  ),
+                ),
+              ),
+              ScaleButton(
                 onTap: () => Functions(context).showComplaintPageBottomSheet(),
                 bound: 0.02,
                 duration: const Duration(milliseconds: 100),
@@ -294,6 +314,16 @@ class _MorePageState extends State<MorePage> {
                     fontWeight: FontWeight.w600,
                     color: ColorStyles.blackColor,
                   ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
+                child: CustomText(
+                  title:
+                      'Внимание: вы можете изменить заказ до 20:00 за день до его получения',
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  centerTitle: true,
                 ),
               ),
             ],

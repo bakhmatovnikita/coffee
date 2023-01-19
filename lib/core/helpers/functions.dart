@@ -19,6 +19,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/view/menu_bottomsheet.dart';
+import '../../features/presentation/profile/edit_order/widgets/payment_order_bottomsheet.dart';
+import '../../features/presentation/profile/edit_order/widgets/return_order_bottomsheet.dart';
 
 class Functions {
   final BuildContext context;
@@ -318,6 +320,32 @@ class Functions {
       builder: (context) {
         return const RestaurantBottomsheet();
       },
+    );
+  }
+
+  void showEditOrderBottomSheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) {
+        return const ReturnOrderBottomSheet();
+      },
+    );
+  }
+
+  void showPaymentOrderBottomsheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) => const PaymentOrderBottomsheet(),
     );
   }
 }
