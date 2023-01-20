@@ -235,7 +235,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           settings.length,
                           (index) => GestureDetector(
                             onTap: () {
-                              Functions(context).showUserHistoryBottomSheet();
+                              if (index == 0) {
+                                Functions(context).showUserHistoryBottomSheet();
+                              } else if (index == 1) {
+                              } else if (index == 2) {
+                              } else if (index == 3) {
+                              } else if (index == 4) {
+                                Functions(context).showAboutUsBottomsheet();
+                              }
                             },
                             child: Container(
                               color: Colors.transparent,
@@ -244,7 +251,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       bottom: 16.h,
                                       top: 16.h,
                                       right: 16.w,
-                                      left: 16.w)
+                                      left: 16.w,
+                                    )
                                   : EdgeInsets.only(
                                       top: 16.h, right: 16.w, left: 16.w),
                               child: Column(

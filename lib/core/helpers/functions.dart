@@ -10,9 +10,11 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/view/profile_page.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/widgets/restaurant_bottomsheet.dart';
+import 'package:cofee/features/presentation/profile/about_us/view/about_us_bottomsheet.dart';
 import 'package:cofee/features/presentation/profile/complaint/view/complaint_page.dart';
 import 'package:cofee/features/presentation/profile/edit_profile/view/edit_profile_page.dart';
 import 'package:cofee/features/presentation/profile/history/view/history.dart';
+import 'package:cofee/features/presentation/profile/history/widgets/edit_order/edit_order.dart';
 import 'package:cofee/features/presentation/profile/history/widgets/more/more_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/view/menu_bottomsheet.dart';
 import '../../features/presentation/profile/edit_order/widgets/payment_order_bottomsheet.dart';
 import '../../features/presentation/profile/edit_order/widgets/return_order_bottomsheet.dart';
+import '../../features/presentation/profile/history/widgets/time_accept/time_accept_bottomsheet.dart';
 
 class Functions {
   final BuildContext context;
@@ -346,6 +349,42 @@ class Functions {
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
       builder: (context) => const PaymentOrderBottomsheet(),
+    );
+  }
+
+  void showAboutUsBottomsheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) => const AboutUsBottomsheet(),
+    );
+  }
+
+  void showEditUserOrderBottomSheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) => const EditOrderBottomSheet(),
+    );
+  }
+
+  void showTimeAcceptBottomsheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) => const TimeAcceptBottomsheet(),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../../core/helpers/functions.dart';
 import '../widgets/history_card.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -89,7 +90,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   physics: const BouncingScrollPhysics(),
                   children: List.generate(
                     10,
-                    (index) => const HistoryCard(),
+                    (index) => GestureDetector(
+                      onTap: () =>
+                          Functions(context).showEditUserOrderBottomSheet(),
+                      child: const HistoryCard(),
+                    ),
                   ),
                 ),
               )
