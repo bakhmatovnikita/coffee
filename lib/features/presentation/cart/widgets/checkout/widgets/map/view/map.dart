@@ -1,6 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
+import 'package:cofee/core/helpers/location.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/switch_button.dart';
@@ -8,7 +9,7 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/map/wi
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:yandex_geocoder/yandex_geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../../../../../data/models/cart/cart_model.dart';
@@ -29,25 +30,49 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  // getCurrentPosition()  async {
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if(permission == LocationPermission.denied  permission == LocationPermission.deniedForever  !isLocationEnabled){
-  //     permission = await Geolocator.requestPermission();
-  //   }
-  //   if(permission != LocationPermission.denied && permission != LocationPermission.deniedForever){
-  //     if(isLocationEnabled){
-  //       Position _position = await Geolocator.getCurrentPosition();
+  CameraPosition? pos;
+  Position? position;
+  YandexMapController? mapController;
+  @override
+  void initState() {
+    LocationGeo().checkPermission();
+    super.initState();
+  }
 
-  //       yandexMapController!.moveCamera(
-  //         yandexMap.CameraUpdate.newCameraPosition(
-  //           yandexMap.CameraPosition(target: yandexMap.Point(latitude: _position.latitude, longitude: _position.longitude))
-  //         )
-  //       );
-  //     }
-  //   }
-  // }
+  void _jumpToPoint(Point point) async {
+    if (await LocationGeo().checkPermission()) {
+      if (mapController != null) {
+        await mapController!.moveCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: Point(
+                latitude: point.latitude,
+                longitude: point.longitude,
+              ),
+              zoom: 17,
+              tilt: 0,
+            ),
+          ),
+        );
+      }
+    }
+  }
 
+  void _getPosition() async {
+    if (await LocationGeo().checkPermission()) {
+      var position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      _jumpToPoint(
+        Point(
+          latitude: position.latitude,
+          longitude: position.longitude,
+        ),
+      );
+    }
+  }
+
+  final double lat = 0.0;
+  final double long = 0.0;
   final TextEditingController controllerKv = TextEditingController();
   final TextEditingController controllerPod = TextEditingController();
   final TextEditingController controllerFloor = TextEditingController();
@@ -59,6 +84,8 @@ class _MapPageState extends State<MapPage> {
   bool privateHouse = false;
   bool orderToRelatives = false;
   bool info = false;
+  String address = '';
+  String errorAddress = '';
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +144,60 @@ class _MapPageState extends State<MapPage> {
                   margin: EdgeInsets.symmetric(horizontal: 8.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(17.r),
-                    
                   ),
-                  child: const YandexMap(
+                  child: Stack(
+                    children: [
+                      YandexMap(
+                        onMapCreated: (controller) {
+                          mapController = controller;
+                          _getPosition();
+                        },
+                        onCameraPositionChanged:
+                            (cameraPosition, reason, finished) async {
+                          pos = cameraPosition;
+
+                          if (pos != null && finished) {
+                            if (await LocationGeo().checkPermission()) {
+                              SearchResultWithSession adress =
+                                  YandexSearch.searchByPoint(
+                                point: Point(
+                                  latitude: pos!.target.latitude,
+                                  longitude: pos!.target.longitude,
+                                ),
+                                searchOptions: const SearchOptions(),
+                              );
+                              final value = await adress.result;
+
+                              address = value.items!.first.name;
+
+                              final house = value
+                                  .items!
+                                  .first
+                                  .toponymMetadata
+                                  ?.address
+                                  .addressComponents[SearchComponentKind.house];
+
+                              if (house == null) {
+                                errorAddress = 'Ошибка';
+                              }
+                            }
+                          }
+
+                          setState(() {});
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 50.h),
+                          child: const Icon(
+                            Icons.location_pin,
+                            size: 40,
+                            color: Colors.green,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Container(
@@ -145,7 +223,7 @@ class _MapPageState extends State<MapPage> {
                           fontWeight: FontWeight.w500,
                         ),
                         CustomText(
-                          title: 'Ростов-на-Дону, Батуринская улица, 157/31',
+                          title: address,
                           color: ColorStyles.greyTitleColor,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
