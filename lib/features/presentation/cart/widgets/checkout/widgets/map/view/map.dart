@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:ffi';
+
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
@@ -15,6 +18,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../../../../../../data/models/cart/cart_model.dart';
 import '../widgets/user_data_card.dart';
 
+
 class MapPage extends StatefulWidget {
   final List<CartModel> cartModel;
   final double totalAmount;
@@ -30,6 +34,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  final Completer<YandexMapController> _completer = Completer();
   CameraPosition? pos;
   Position? position;
   YandexMapController? mapController;
@@ -62,6 +67,7 @@ class _MapPageState extends State<MapPage> {
     if (await LocationGeo().checkPermission()) {
       var position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      _completer.complete(mapController);
       _jumpToPoint(
         Point(
           latitude: position.latitude,
@@ -70,6 +76,15 @@ class _MapPageState extends State<MapPage> {
       );
     }
   }
+
+  void zoomIn() => mapController!.moveCamera(
+        CameraUpdate.zoomIn(),
+        animation:
+            const MapAnimation(type: MapAnimationType.linear, duration: 0.4),
+      );
+
+  void zoomOut() => mapController!.moveCamera(CameraUpdate.zoomOut(),animation:
+            const MapAnimation(type: MapAnimationType.linear, duration: 0.4),);
 
   final double lat = 0.0;
   final double long = 0.0;
@@ -194,6 +209,43 @@ class _MapPageState extends State<MapPage> {
                             Icons.location_pin,
                             size: 40,
                             color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 80.h, right: 10.w),
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => zoomIn(),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.add),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () => zoomOut(),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.remove),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       )
