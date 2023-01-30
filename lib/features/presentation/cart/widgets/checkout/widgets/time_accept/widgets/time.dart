@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 Widget time({required String title, required bool isSelected}) {
   return Container(
     height: 44.h,
+    padding: EdgeInsets.symmetric(horizontal: 10.w),
     decoration: BoxDecoration(
         color: ColorStyles.whiteColor,
         borderRadius: BorderRadius.circular(8.r)),
@@ -31,6 +32,7 @@ Widget timeIsSelected({required String title, required bool isSelected}) {
       ),
     ),
     margin: EdgeInsets.symmetric(horizontal: 5.w),
+    padding: EdgeInsets.symmetric(horizontal: 10.w),
     alignment: Alignment.center,
     child: CustomText(
       title: title,

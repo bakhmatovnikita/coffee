@@ -143,7 +143,9 @@ class _CartViewState extends State<CartView> {
                                           if (state.cartModel![index].count <
                                               2) {
                                             state.cartModel![index].count = 1;
-                                          } else {
+                                          } else if (state
+                                                  .cartModel![index].count >
+                                              49) {
                                             state.cartModel![index].count--;
                                           }
                                           calculateTotalAmount(
@@ -188,7 +190,12 @@ class _CartViewState extends State<CartView> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        state.cartModel![index].count++;
+                                        if (state.cartModel![index].count >
+                                            49) {
+                                          state.cartModel![index].count = 50;
+                                        } else {
+                                          state.cartModel![index].count++;
+                                        }
                                         calculateTotalAmount(state.cartModel!);
                                         calculateTotalWeight(state.cartModel!);
                                         context

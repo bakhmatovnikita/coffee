@@ -4,9 +4,11 @@ class AuthConfig {
   String? loginToken;
   String? phoneUser;
   UserIdModel? userId;
+  int? bonus;
   AuthConfig({
     this.loginToken,
     this.userId,
     this.phoneUser,
+    this.bonus,
   });
 }

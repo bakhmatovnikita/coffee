@@ -208,28 +208,31 @@ class _TimeAcceptState extends State<TimeAccept> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ...List.generate(
-                                listTimes.length,
-                                (index) => GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      // timeSelcted();
-                                    });
-                                    streamController.sink.add(index);
-                                  },
-                                  child: time(
-                                    title: listTimes[index]['title'],
-                                    isSelected: snapshotListTime.data! == index
-                                        ? listTimes[index]['isSelected'] = true
-                                        : listTimes[index]['isSelected'] =
-                                            false,
-                                  ),
+                          SizedBox(
+                            height: 44.h,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: listTimes.length,
+                              physics: const BouncingScrollPhysics(),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 10,
+                              ),
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    // timeSelcted();
+                                  });
+                                  streamController.sink.add(index);
+                                },
+                                child: time(
+                                  title: listTimes[index]['title'],
+                                  isSelected: snapshotListTime.data! == index
+                                      ? listTimes[index]['isSelected'] = true
+                                      : listTimes[index]['isSelected'] = false,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
@@ -250,58 +253,33 @@ class _TimeAcceptState extends State<TimeAccept> {
                                   padding: EdgeInsets.symmetric(
                                     vertical: 16.h,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      ...List.generate(
-                                        3,
-                                        (index) => GestureDetector(
-                                          onTap: () {
-                                            streamControllerListView.sink
-                                                .add(index);
-                                          },
-                                          child: timeIsSelected(
-                                            title: listTimesSelected[
-                                                    snapshotListTime.data!]
-                                                ['title'][index]['title'],
-                                            isSelected: snapshot.data! == index
-                                                ? listTimesSelected[index]
-                                                        ['title'][index]
-                                                    ['isSelected'] = true
-                                                : listTimesSelected[index]
-                                                        ['title'][index]
-                                                    ['isSelected'] = false,
-                                          ),
+                                  child: ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          streamControllerListView.sink
+                                              .add(index);
+                                        },
+                                        child: timeIsSelected(
+                                          title: listTimesSelected[
+                                                  snapshotListTime.data!]
+                                              ['title'][index]['title'],
+                                          isSelected: snapshot.data! == index
+                                              ? listTimesSelected[index]
+                                                      ['title'][index]
+                                                  ['isSelected'] = true
+                                              : listTimesSelected[index]
+                                                      ['title'][index]
+                                                  ['isSelected'] = false,
                                         ),
-                                      ),
-                                    ],
+                                      );
+                                    },
+                                    itemCount: listTimesSelected.length,
                                   ),
-                                  // child: ListView.builder(
-                                  //   physics: const BouncingScrollPhysics(),
-                                  //   scrollDirection: Axis.horizontal,
-                                  //   padding:
-                                  //       EdgeInsets.symmetric(horizontal: 16.w),
-                                  //   itemBuilder: (context, index) {
-                                  // return GestureDetector(
-                                  //   onTap: () {
-                                  //     streamControllerListView.sink
-                                  //         .add(index);
-                                  //   },
-                                  //   child: timeIsSelected(
-                                  //     title: listTimesSelected[
-                                  //             snapshotListTime.data!]['title']
-                                  //         [index]['title'],
-                                  //     isSelected: snapshot.data! == index
-                                  //         ? listTimesSelected[index]['title']
-                                  //             [index]['isSelected'] = true
-                                  //         : listTimesSelected[index]['title']
-                                  //             [index]['isSelected'] = false,
-                                  //   ),
-                                  // );
-                                  //   },
-                                  //   itemCount: listTimesSelected.length,
-                                  // ),
                                 ),
                               ),
                             ),

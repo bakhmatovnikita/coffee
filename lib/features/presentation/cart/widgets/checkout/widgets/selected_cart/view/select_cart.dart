@@ -43,6 +43,7 @@ class _SelectCartState extends State<SelectCart> {
     ),
   );
   OrderStatus? orderStatus;
+  double totalPrice = 0.0;
 
   Future<void> webviewPayment() async {
     final RegisterResponse register = await acquiring.register(
@@ -99,20 +100,26 @@ class _SelectCartState extends State<SelectCart> {
     }
   }
 
-  List<Map<String, dynamic>> listCart = [
-    {
-      'title': "Visa Gold (#9523)",
-      'isSelected': true,
-    },
-    {
-      'title': "Visa Silver (#9523)",
-      'isSelected': true,
-    },
-    {
-      'title': "Visa Bonze (#9523)",
-      'isSelected': true,
-    },
-  ];
+  // List<Map<String, dynamic>> listCart = [
+  //   {
+  //     'title': "Visa Gold (#9523)",
+  //     'isSelected': true,
+  //   },
+  //   {
+  //     'title': "Visa Silver (#9523)",
+  //     'isSelected': true,
+  //   },
+  //   {
+  //     'title': "Visa Bonze (#9523)",
+  //     'isSelected': true,
+  //   },
+  // ];
+
+  @override
+  void initState() {
+    totalPrice = (widget.totalAmount - 500) - widget.totalAmount / 100 * 10;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,87 +154,87 @@ class _SelectCartState extends State<SelectCart> {
                               color: ColorStyles.blackColor,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: 8.h,
-                            ),
-                            child: CustomText(
-                              title: 'Выберите способ оплаты',
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w500,
-                              color: ColorStyles.blackColor,
-                            ),
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(
+                          //     top: 8.h,
+                          //   ),
+                          //   child: CustomText(
+                          //     title: 'Выберите способ оплаты',
+                          //     fontSize: 17.sp,
+                          //     fontWeight: FontWeight.w500,
+                          //     color: ColorStyles.blackColor,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
-                      child: Column(
-                        children: [
-                          ...List.generate(
-                            listCart.length,
-                            (index) => GestureDetector(
-                              onTap: () => streamController.sink.add(index),
-                              child: SelectedCart(
-                                title: listCart[index]['title'],
-                                isSelected: snapshot.data! == index
-                                    ? listCart[index]['isSelected'] = true
-                                    : listCart[index]['isSelected'] = false,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                Functions(context).showCartAddedBottomsheet(),
-                            child: Container(
-                              width: 343.w,
-                              height: 56.h,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 4.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.r),
-                                color: ColorStyles.whiteColor,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 16.83.h,
-                                    width: 16.83.h,
-                                    margin: EdgeInsets.only(
-                                        left: 23.58.w, right: 11.58.w),
-                                    child: SvgPicture.asset(
-                                      SvgImg.plus,
-                                      color: ColorStyles.blackColor,
-                                    ),
-                                  ),
-                                  CustomText(
-                                    title: 'Добавить карту',
-                                    color: ColorStyles.blackColor,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // SliverToBoxAdapter(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
+                  //     child: Column(
+                  //       children: [
+                  //         ...List.generate(
+                  //           listCart.length,
+                  //           (index) => GestureDetector(
+                  //             onTap: () => streamController.sink.add(index),
+                  //             child: SelectedCart(
+                  //               title: listCart[index]['title'],
+                  //               isSelected: snapshot.data! == index
+                  //                   ? listCart[index]['isSelected'] = true
+                  //                   : listCart[index]['isSelected'] = false,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         GestureDetector(
+                  //           onTap: () =>
+                  //               Functions(context).showCartAddedBottomsheet(),
+                  //           child: Container(
+                  //             width: 343.w,
+                  //             height: 56.h,
+                  //             margin: EdgeInsets.symmetric(
+                  //                 horizontal: 16.w, vertical: 4.h),
+                  //             decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(8.r),
+                  //               color: ColorStyles.whiteColor,
+                  //             ),
+                  //             child: Row(
+                  //               crossAxisAlignment: CrossAxisAlignment.center,
+                  //               children: [
+                  //                 Container(
+                  //                   height: 16.83.h,
+                  //                   width: 16.83.h,
+                  //                   margin: EdgeInsets.only(
+                  //                       left: 23.58.w, right: 11.58.w),
+                  //                   child: SvgPicture.asset(
+                  //                     SvgImg.plus,
+                  //                     color: ColorStyles.blackColor,
+                  //                   ),
+                  //                 ),
+                  //                 CustomText(
+                  //                   title: 'Добавить карту',
+                  //                   color: ColorStyles.blackColor,
+                  //                   fontSize: 17.sp,
+                  //                   fontWeight: FontWeight.w600,
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SliverToBoxAdapter(
+                  //   child: Container(
+                  //     height: 1,
+                  //     margin: EdgeInsets.symmetric(horizontal: 16.w),
+                  //     color: const Color(0xffCDCDCD),
+                  //   ),
+                  // ),
                   SliverToBoxAdapter(
                     child: Container(
-                      height: 1,
-                      margin: EdgeInsets.symmetric(horizontal: 16.w),
-                      color: const Color(0xffCDCDCD),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      height: 84.h,
+                      height: 85.h,
                       width: 343.w,
                       margin: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 16.h),
@@ -282,7 +289,7 @@ class _SelectCartState extends State<SelectCart> {
                             fontWeight: FontWeight.w500,
                           ),
                           CustomText(
-                            title: '${widget.totalAmount} ₽ (-10%)',
+                            title: '$totalPrice ₽ (-10%)',
                             color: ColorStyles.blackColor,
                             fontSize: 32.sp,
                             fontWeight: FontWeight.w600,

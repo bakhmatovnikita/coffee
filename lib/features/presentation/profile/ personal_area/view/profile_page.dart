@@ -12,6 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
 
+import '../../../auth/login_view/controller/login_view_cubit.dart';
+import '../../../home/controller/home_view_cubit.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -20,6 +23,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Future<void> feetchProfile(Function() accessToken, Function() nomenclature,
+      Function() organizations) async {
+    await accessToken();
+    await nomenclature();
+    await organizations();
+  }
+
+  int bonus = 500;
+
   List<Map<String, dynamic>> settings = [
     {
       "icon": SvgImg.clock,
@@ -177,7 +189,89 @@ class _ProfilePageState extends State<ProfilePage> {
                         horizontal: 16.w,
                         vertical: 16.h,
                       ),
-                      child: Image.asset(Img.bonusCard),
+                      child: Container(
+                        height: 134.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              Img.bonusCard,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 16.h, left: 16.w, bottom: 16.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    title: 'Бонусный счет',
+                                    color: ColorStyles.greyTitleColor,
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        title: bonus.toString(),
+                                        fontSize: 32.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorStyles.whiteColor,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: ColorStyles.accentColor,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          padding: const EdgeInsets.all(5),
+                                          height: 21.h,
+                                          width: 21.w,
+                                          child: SvgPicture.asset(
+                                            SvgImg.plus,
+                                            color: ColorStyles.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        title: '#78684',
+                                        fontSize: 12,
+                                        color: ColorStyles.greyTitleColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      SizedBox(
+                                        width: 3.w,
+                                      ),
+                                      CustomText(
+                                        title: bonus > 0
+                                            ? 'СКИДКА 10% НА ВСЕ'
+                                            : 'СКИДКА 5% НА ВСЕ',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorStyles.accentColor,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     RestaurantWidget(
                       size: size,
@@ -300,8 +394,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           );
         } else if (state is ProfilePageErrorState) {
-          return Scaffold(
-            body: Center(child: CustomText(title: 'Error!')),
+          feetchProfile(
+            () => context.read<LoginViewCubit>().saveToken('access_token'),
+            () => context.read<HomeViewCubit>().fetchProducts('nomenclature'),
+            () => context
+                .read<ProfilePageCubit>()
+                .fetchOrganization('organizations'),
           );
         }
         return const Scaffold(

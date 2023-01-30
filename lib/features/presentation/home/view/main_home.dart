@@ -331,7 +331,7 @@ class _MainHomeState extends State<MainHome> {
           feetchMenu(
               () => context.read<LoginViewCubit>().saveToken('access_token'),
               () =>
-                  context.read<HomeViewCubit>().fetchProducts('nomenclature'));
+                  context.read<HomeViewCubit>().fetchProducts('nomenclature')); 
         }
         return const Scaffold(
           body: Center(
