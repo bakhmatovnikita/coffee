@@ -25,4 +25,10 @@ class HomeViewCubit extends Cubit<HomeViewState> {
       emit(HomeViewErrorState(message: BackConstants.SERVER_FAILURE_MESSAGE));
     }
   }
+
+  Future<int> getLenthCategory(String endpoint) async {
+    final product =
+        await getProducts.call(ProductsEndpointParams(endpoint: endpoint));
+    return product.fold((l) => 0, (r) => r.groups.length);
+  }
 }

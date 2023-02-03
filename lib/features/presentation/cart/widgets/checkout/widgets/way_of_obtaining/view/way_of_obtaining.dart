@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
@@ -93,57 +94,11 @@ class _WayOfObtainingState extends State<WayOfObtaining> {
               child: CustomButton(
                   title: 'Далее',
                   onTap: () async {
-                    String address = 'null';
-                    String latLong = 'null';
-                    setState(() {});
-                    // final YandexGeocoder geocoder = YandexGeocoder(
-                    //     apiKey: '280d67e0-e9e9-428f-baee-cd11699581f7');
-                    // final GeocodeResponse geocodeFromPoint =
-                    //     await geocoder.getGeocode(GeocodeRequest(
-                    //   geocode: PointGeocode(
-                    //       latitude: 55.771899, longitude: 37.597576),
-                    //   lang: Lang.enEn,
-                    // ));
-                    // address =
-                    //     geocodeFromPoint.firstAddress?.formatted ?? 'null';
-                    // final GeocodeResponse _latLong = await geocoder.getGeocode(
-                    //   GeocodeRequest(
-                    //     geocode: AddressGeocode(
-                    //       address: 'Москва, 4-я Тверская-Ямская улица, 7',
-                    //     ),
-                    //   ),
-                    // );
-                    // latLong = _latLong.firstPoint?.pos ?? 'null';
-
-                    setState(() {});
-                    // if (geocodeFromPoint
-                    //             .response!
-                    //             .geoObjectCollection!
-                    //             .metaDataProperty!
-                    //             .geocoderResponseMetaData!
-                    //             .found !=
-                    //         '0' &&
-                    //     geocodeFromPoint.firstAddress != null &&
-                    //     geocodeFromPoint.firstAddress!.components != null) {
-                    //   geocodeFromPoint.firstAddress!.components!
-                    //       .forEach((component) {
-                    //     if(component.kind == KindResponse.locality){
-                    //       cityController.text = component.name!;
-                    //     }
-                    //     if(component.kind == KindResponse.street){
-                    //       streetController.text = component.name!;
-                    //     }
-                    //     if(component.kind == KindResponse.house){
-                    //       homeNumberController.text = component.name!;
-                    //     }
-                    //   });
-                    // }
                     if (wayOfObtaining[2]['isSelected']) {
-                      Navigator.pushNamed(context, '/MapView', arguments: {
-                        'cartModel': widget.cartModel,
-                        "totalWeigth": widget.totalWeigth,
-                        "totalAmount": widget.totalAmount,
-                      });
+                      Functions(context).showMapPageBottomsheet(
+                          widget.cartModel,
+                          widget.totalAmount,
+                          widget.totalWeigth);
                     } else {
                       setState(() {
                         widget.pageController.nextPage(

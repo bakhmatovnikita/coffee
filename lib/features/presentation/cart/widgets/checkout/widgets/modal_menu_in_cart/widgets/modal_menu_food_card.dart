@@ -41,25 +41,26 @@ class _ModalMenuFoodCardState extends State<ModalMenuFoodCard> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.cartModel.imageLink.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: OctoImage(
-                          image: CachedNetworkImageProvider(
-                            widget.cartModel.imageLink[0],
-                          ),
-                          height: 64.h,
-                          width: 64.w,
-                          placeholderBuilder: OctoPlaceholder.blurHash(
-                            'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
-                          ),
-                          fit: BoxFit.cover,
-                          memCacheHeight: 0,
-                          memCacheWidth: 0,
-                          filterQuality: FilterQuality.low,
-                        ),
-                      )
-                    : SizedBox(
+                // widget.cartModel.imageLink.isNotEmpty
+                //     ? ClipRRect(
+                //         borderRadius: BorderRadius.circular(4),
+                //         child: OctoImage(
+                //           image: CachedNetworkImageProvider(
+                //             widget.cartModel.imageLink[0],
+                //           ),
+                //           height: 64.h,
+                //           width: 64.w,
+                //           placeholderBuilder: OctoPlaceholder.blurHash(
+                //             'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                //           ),
+                //           fit: BoxFit.cover,
+                //           memCacheHeight: 0,
+                //           memCacheWidth: 0,
+                //           filterQuality: FilterQuality.low,
+                //         ),
+                //       )
+                //     : 
+                    SizedBox(
                         width: 64.w,
                         height: 64.h,
                         child: Image.asset(

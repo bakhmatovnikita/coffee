@@ -24,47 +24,17 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  late List<double> itemMenu;
-  late List<double> itemCategory;
+  List<double> itemMenu = [];
+  List<GlobalKey> itemCategory = [];
   late ScrollController scrollController;
+  BuildContext? tabContext;
   ScrollController scrollControllerCategory = ScrollController();
+  late TabController tabController;
   final day = DateTime.now().day;
   final month = BackConstants.months[DateTime.now().month];
   final weekDay = BackConstants.weekDays[DateTime.now().weekday];
   final stream = StreamController<int>();
   double num = 0.0;
-
-  void changeCategory() {
-    for (var i = 0; i < itemCategory.length; i++) {
-      if (scrollController.offset >= itemMenu[i]) {
-        scrollControllerCategory.animateTo(
-          itemCategory[i],
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeInOut,
-        );
-        stream.sink.add(i);
-      }
-    }
-  }
-
-  Future<void> onTapCategory(int index) async {
-    scrollController.removeListener(() {
-      changeCategory();
-    });
-    await scrollController.animateTo(
-      itemCategory[index],
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeInOut,
-    );
-    scrollController.addListener(() {
-      changeCategory();
-    });
-    // await scrollController.position.animateTo(
-    //   itemMenu[index],
-    //   duration: const Duration(milliseconds: 600),
-    //   curve: Curves.easeInOut,
-    // );
-  }
 
   Future<void> feetchMenu(
       Function() accessToken, Function() nomenclature) async {
@@ -81,11 +51,32 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     context.read<LoginViewCubit>().saveToken("access_token");
     scrollController = ScrollController();
-    // scrollControllerCategory.addListener(() {});
-    // scrollController.addListener(() {
-    //   changeCategory();
-    // });
+    scrollController.addListener(changeTabs);
     super.initState();
+  }
+
+  void changeTabs() {
+    for (var i = 0; i < itemCategory.length; i++) {
+      if (scrollController.offset >= itemMenu[i]) {
+        DefaultTabController.of(tabContext!)!.animateTo(
+          i,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        stream.sink.add(i);
+      }
+    }
+  }
+
+  scrollTo(int index) async {
+    scrollController.removeListener(changeTabs);
+    stream.sink.add(index);
+    await Scrollable.ensureVisible(
+      itemCategory[index].currentContext!,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    scrollController.addListener(changeTabs);
   }
 
   @override
@@ -96,242 +87,242 @@ class _MainHomeState extends State<MainHome> {
         if (state is HomeViewEmptyState) {
           context.read<HomeViewCubit>().fetchProducts('nomenclature');
         } else if (state is HomeViewLoadedState) {
-          itemMenu = List.generate(
-            state.productsEntiti.groups.length,
-            (index) => index.toDouble(),
-          );
+          print(itemMenu.length);
+          // for (var i = 0; i < state.productsEntiti.groups.length; i++) {
+          //   itemCategory.add(GlobalKey());
+          // }
           itemCategory = List.generate(
-              state.productsEntiti.groups.length, (index) => index.toDouble());
-          return Scaffold(
-            backgroundColor: const Color(0xffF3F3F3),
-            body: SafeArea(
-              child: CustomScrollView(
-                clipBehavior: Clip.hardEdge,
-                physics: const BouncingScrollPhysics(),
-                controller: scrollController,
-                slivers: [
-                  SliverAppBar(
-                    backgroundColor: ColorStyles.backgroundColor,
-                    toolbarHeight: 170.h,
-                    elevation: 0,
-                    flexibleSpace: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 33.h, left: 15.w, right: 15.w),
-                          child: Row(
+            state.productsEntiti.groups.length,
+            (index) => GlobalKey(),
+          );
+          print(itemCategory.length);
+          return DefaultTabController(
+            length: state.productsEntiti.groups.length,
+            child: Builder(
+              builder: (context) {
+                tabContext = context;
+                return Scaffold(
+                  backgroundColor: const Color(0xffF3F3F3),
+                  body: SafeArea(
+                    child: CustomScrollView(
+                      clipBehavior: Clip.hardEdge,
+                      physics: const BouncingScrollPhysics(),
+                      controller: scrollController,
+                      slivers: [
+                        SliverAppBar(
+                          backgroundColor: ColorStyles.backgroundColor,
+                          toolbarHeight: 170.h,
+                          elevation: 0,
+                          flexibleSpace: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomText(
-                                title: 'Меню',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 40,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 33.h, left: 15.w, right: 15.w),
+                                child: Row(
+                                  children: [
+                                    CustomText(
+                                      title: 'Меню',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 40,
+                                    ),
+                                    const Expanded(child: SizedBox()),
+                                    ScaleButton(
+                                      onTap: () => Functions(context)
+                                          .showModalNotifications(),
+                                      bound: 0.05,
+                                      duration:
+                                          const Duration(milliseconds: 100),
+                                      child: Container(
+                                        width: 40.h,
+                                        height: 40.h,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          color: ColorStyles.whiteColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/bell.svg',
+                                          width: 19.55.w,
+                                          height: 21.08.h,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 16.w),
+                                    ScaleButton(
+                                      onTap: () => Functions(context)
+                                          .showProfileUserBottomSheet(),
+                                      bound: 0.05,
+                                      duration:
+                                          const Duration(milliseconds: 100),
+                                      child: Container(
+                                        width: 40.h,
+                                        height: 40.h,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          // color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.asset(
+                                          'assets/images/avatar.png',
+                                          width: 40.w,
+                                          height: 40.h,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                              const Expanded(child: SizedBox()),
-                              ScaleButton(
-                                onTap: () =>
-                                    Functions(context).showModalNotifications(),
-                                bound: 0.05,
-                                duration: const Duration(milliseconds: 100),
-                                child: Container(
-                                  width: 40.h,
-                                  height: 40.h,
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                    color: ColorStyles.whiteColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/bell.svg',
-                                    width: 19.55.w,
-                                    height: 21.08.h,
+                              Padding(
+                                padding: EdgeInsets.only(top: 17.h, left: 15.w),
+                                child: GestureDetector(
+                                  onTap: () => calendarSelectModal(context,
+                                      Offset(15.w, 170.5.h), (index) {}, 0),
+                                  child: CustomText(
+                                    title: 'Меню на $day $month ($weekDay)',
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 16.w),
-                              ScaleButton(
-                                onTap: () => Functions(context)
-                                    .showProfileUserBottomSheet(),
-                                bound: 0.05,
-                                duration: const Duration(milliseconds: 100),
-                                child: Container(
-                                  width: 40.h,
-                                  height: 40.h,
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                    // color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Image.asset(
-                                    'assets/images/avatar.png',
-                                    width: 40.w,
-                                    height: 40.h,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 15.h, left: 15.w, bottom: 5.h),
+                                child: GestureDetector(
+                                  onTap: () => calendarSelectModal(context,
+                                      Offset(15.w, 185.h), (index) {}, 0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month_rounded,
+                                        color: ColorStyles.accentColor,
+                                        size: 16.h,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      CustomText(
+                                        title: 'Выбрать день',
+                                        fontSize: 16.h,
+                                        color: ColorStyles.accentColor,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 17.h, left: 15.w),
-                          child: GestureDetector(
-                            onTap: () => calendarSelectModal(
-                                context, Offset(15.w, 170.5.h), (index) {}, 0),
-                            child: CustomText(
-                              title: 'Меню на $day $month ($weekDay)',
-                              fontSize: 16,
-                            ),
+                        SliverAppBar(
+                          backgroundColor: ColorStyles.backgroundColor,
+                          pinned: true,
+                          elevation: 0,
+                          bottom: PreferredSize(
+                            preferredSize: Size.fromHeight(10.h),
+                            child: StreamBuilder<int>(
+                                stream: stream.stream,
+                                initialData: 0,
+                                builder: (context, snapshot) {
+                                  return TabBar(
+                                    physics: const BouncingScrollPhysics(),
+                                    indicatorColor: Colors.transparent,
+                                    indicatorSize: TabBarIndicatorSize.label,
+                                    labelPadding:
+                                        EdgeInsets.symmetric(horizontal: 4.w),
+                                    isScrollable: true,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w, vertical: 10.h),
+                                    onTap: (value) {
+                                      scrollTo(value);
+                                    },
+                                    tabs: List.generate(
+                                      itemCategory.length,
+                                      (index) => CategoryCardWidget(
+                                        groupsEntiti:
+                                            state.productsEntiti.groups[index],
+                                        isSelected: snapshot.data! == index
+                                            ? true
+                                            : false,
+                                      ),
+                                    ),
+                                  );
+                                }),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 15.h, left: 15.w, bottom: 5.h),
-                          child: GestureDetector(
-                            onTap: () => calendarSelectModal(
-                                context, Offset(15.w, 185.h), (index) {}, 0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.calendar_month_rounded,
-                                  color: ColorStyles.accentColor,
-                                  size: 16.h,
-                                ),
-                                SizedBox(width: 4.w),
-                                CustomText(
-                                  title: 'Выбрать день',
-                                  fontSize: 16.h,
-                                  color: ColorStyles.accentColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverAppBar(
-                    backgroundColor: ColorStyles.backgroundColor,
-                    pinned: true,
-                    elevation: 0,
-                    flexibleSpace: StreamBuilder<int>(
-                        stream: stream.stream,
-                        initialData: 0,
-                        builder: (context, snapshot) {
-                          return Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 40.h,
-                              child: ScrollConfiguration(
-                                behavior: MyBehavior(),
-                                child: ListView.separated(
-                                  controller: scrollControllerCategory,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                  ),
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(
-                                      width: 10.h,
-                                    );
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.productsEntiti.groups.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) => GetBoxOffset(
+                                  offset: (offset) {
+                                    itemMenu.add(offset.dy);
+                                    setState(() {});
                                   },
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: itemCategory.length,
-                                  itemBuilder: (context, index) {
-                                    return GetBoxOffset(
-                                      offset: (Offset offset) {
-                                        itemCategory[index] = offset.dx;
-                                      },
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          scrollController.animateTo(
-                                              itemMenu[index],
-                                              duration: const Duration(
-                                                  milliseconds: 600),
-                                              curve: Curves.easeInOut);
-                                          stream.sink.add(index);
-                                        },
-                                        child: CategoryCardWidget(
-                                          groupsEntiti: state
-                                              .productsEntiti.groups[index],
-                                          isSelected: snapshot.data! == index
-                                              ? true
-                                              : false,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          key: itemCategory[index],
+                                          padding: EdgeInsets.only(
+                                            left: 20.w,
+                                            top: 20.h,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: CustomText(
+                                              title: state.productsEntiti
+                                                  .groups[index].name,
+                                              fontSize: 20.h,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: state
+                                              .productsEntiti.products
+                                              .where((element) {
+                                            return element.parentGroup ==
+                                                state.productsEntiti
+                                                    .groups[index].id;
+                                          }).length,
+                                          itemBuilder:
+                                              (context, indexProducts) =>
+                                                  ProductCard(
+                                            productEntiti: state
+                                                .productsEntiti.products
+                                                .where((element) =>
+                                                    element.parentGroup ==
+                                                    state.productsEntiti
+                                                        .groups[index].id)
+                                                .toList()[indexProducts],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: itemMenu.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => GetBoxOffset(
-                            offset: (offset) {
-                              itemMenu[index] = offset.dy;
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 20.w,
-                                      top: 20.h,
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomText(
-                                        title: state
-                                            .productsEntiti.groups[index].name,
-                                        fontSize: 20.h,
-                                      ),
-                                    ),
-                                  ),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: state.productsEntiti.products
-                                        .where((element) {
-                                      return element.parentGroup ==
-                                          state.productsEntiti.groups[index].id;
-                                    }).length,
-                                    itemBuilder: (context, indexProducts) =>
-                                        ProductCard(
-                                      productEntiti: state
-                                          .productsEntiti.products
-                                          .where((element) =>
-                                              element.parentGroup ==
-                                              state.productsEntiti.groups[index]
-                                                  .id)
-                                          .toList()[indexProducts],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            ],
                           ),
-                        ),
+                        )
                       ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                );
+              },
             ),
           );
         } else if (state is HomeViewErrorState) {
           feetchMenu(
               () => context.read<LoginViewCubit>().saveToken('access_token'),
               () =>
-                  context.read<HomeViewCubit>().fetchProducts('nomenclature')); 
+                  context.read<HomeViewCubit>().fetchProducts('nomenclature'));
         }
         return const Scaffold(
           body: Center(

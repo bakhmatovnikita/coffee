@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.17.5 <3.0.0'
+  sdk: '>=2.18.6 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -41,7 +41,6 @@ dependencies:
   flutter_svg: ^1.1.5
   scroll_to_index: ^3.0.1
   scale_button: ^2.1.2
-  modal_bottom_sheet: ^2.1.2
   flutter_native_splash: ^2.2.0
   http: ^0.13.5
   equatable: ^2.0.5
@@ -60,7 +59,6 @@ dependencies:
   flutter_smart_dialog: ^4.7.1
   shared_preferences: ^2.0.15
   native_ios_dialog: ^0.1.0
-  sberbank_acquiring: ^2.0.1
   flutter_rating_bar: ^4.0.1
   extended_image: ^6.3.4
   anchor_scroll_controller: ^0.4.2
@@ -68,6 +66,8 @@ dependencies:
   yandex_mapkit: ^3.2.0
   permission_handler: ^10.2.0
   geolocator: ^9.0.2
+  modal_bottom_sheet: ^2.1.2
+  sberbank_acquiring: ^2.0.1
 
 dev_dependencies:
   flutter_test:

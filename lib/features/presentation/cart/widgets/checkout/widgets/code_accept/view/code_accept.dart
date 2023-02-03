@@ -73,7 +73,7 @@ class _CodeAcceptState extends State<CodeAccept> {
           ),
         ),
         CustomButton(
-          title: "Получить код",
+          title: "Далее",
           onTap: () {
             if (controller.text.isEmpty || controller.text != "123456") {
               SmartDialog.show(

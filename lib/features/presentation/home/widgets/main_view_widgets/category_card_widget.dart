@@ -18,6 +18,7 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 40.h,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),

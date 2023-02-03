@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
@@ -22,6 +24,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await di.init();
+  HttpOverrides.global = DevHttpOverrides();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
     runApp(
@@ -72,4 +75,11 @@ Future<void> main() async {
       ),
     );
   });
+}
+
+class DevHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
 }

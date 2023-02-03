@@ -144,7 +144,7 @@ class _CartViewState extends State<CartView> {
                                               2) {
                                             state.cartModel![index].count = 1;
                                           } else if (state
-                                                  .cartModel![index].count >
+                                                  .cartModel![index].count <
                                               49) {
                                             state.cartModel![index].count--;
                                           }

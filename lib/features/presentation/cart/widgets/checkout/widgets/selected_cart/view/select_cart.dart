@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
@@ -37,66 +38,31 @@ class _SelectCartState extends State<SelectCart> {
   final streamController = StreamController<int>();
 
   SberbankAcquiring acquiring = SberbankAcquiring(
-    SberbankAcquiringConfig.token(
-      token: 'YRF3C5RFICWISEWFR6GJ',
+    SberbankAcquiringConfig.credential(
+      userName: "T616305058432-api",
+      password: "T616305058432",
       isDebugMode: true,
     ),
   );
   OrderStatus? orderStatus;
   double totalPrice = 0.0;
+  double bonus = 500;
 
   Future<void> webviewPayment() async {
     final RegisterResponse register = await acquiring.register(
       RegisterRequest(
         amount: widget.totalAmount.toInt() * 100,
-        returnUrl:
-            'https://3dsec.sberbank.ru/sbersafe/anonymous/order/finishTds',
+        returnUrl: 'https://3dsec.sberbank.ru/payment/rest/register.do',
         failUrl: 'https://www.yandex.ru/',
-        orderNumber: 'test',
+        orderNumber: Random().nextInt(10000).toString(),
         pageView: 'MOBILE',
       ),
     );
     final String? formUrl =
         register.formUrl?.replaceFirst('/www.3dsec.sberbank.ru', '');
     if (!register.hasError && formUrl != null) {
-      Functions(context).showCustomBottomSheet(
-        ClipRRect(
-          borderRadius: BorderRadius.circular(15.r),
-          child: Container(
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(15.r)),
-            height: 700.h,
-            child: Scaffold(
-              body: WebViewPayment(
-                logger: acquiring.logger,
-                formUrl: formUrl,
-                returnUrl:
-                    'https://3dsec.sberbank.ru/sbersafe/anonymous/order/finishTds',
-                failUrl: 'https://www.yandex.ru/',
-                onLoad: (bool v) {
-                  debugPrint('WebView load: $v');
-                },
-                onError: () {
-                  debugPrint('WebView Error');
-                },
-                onFinished: (String? v) async {
-                  print('finished!!!!');
-                  final GetOrderStatusExtendedResponse status =
-                      await acquiring.getOrderStatusExtended(
-                    GetOrderStatusExtendedRequest(orderId: v),
-                  );
-                  _successPaid();
-
-                  orderStatus = status.orderStatus;
-                  setState(() {});
-
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ),
-        ),
-      );
+      Functions(context)
+          .showCustomBottomSheet(acquiring, formUrl, orderStatus, _successPaid);
     }
   }
 
@@ -117,7 +83,12 @@ class _SelectCartState extends State<SelectCart> {
 
   @override
   void initState() {
-    totalPrice = (widget.totalAmount - 500) - widget.totalAmount / 100 * 10;
+    if (widget.totalAmount - bonus < 0) {
+      bonus = bonus - widget.totalAmount;
+    } else {
+      totalPrice =
+          (widget.totalAmount - bonus) - (widget.totalAmount / 100 * 10);
+    }
     super.initState();
   }
 
@@ -254,7 +225,7 @@ class _SelectCartState extends State<SelectCart> {
                           ),
                           const Spacer(),
                           CustomText(
-                            title: '500 ₽',
+                            title: '$bonus ₽',
                             color: ColorStyles.accentColor,
                             fontSize: 32,
                             fontWeight: FontWeight.w600,

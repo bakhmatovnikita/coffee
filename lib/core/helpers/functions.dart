@@ -5,6 +5,8 @@ import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottom
 import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_cart/view/added_cart.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/delivery/delivery_bottomsheet.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/map/view/map.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/widgets/payment.dart';
 import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -19,6 +21,7 @@ import 'package:cofee/features/presentation/profile/history/widgets/more/more_bo
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
 
 import '../../features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/view/menu_bottomsheet.dart';
 import '../../features/presentation/profile/edit_order/widgets/payment_order_bottomsheet.dart';
@@ -130,8 +133,9 @@ class Functions {
     );
   }
 
-  void showCustomBottomSheet(Widget customWidget) {
-    showMaterialModalBottomSheet(
+  void showCustomBottomSheet(
+      SberbankAcquiring acquiring, String formUrl, OrderStatus? orderStatus, Function() susseccPaid) {
+    showCupertinoModalBottomSheet(
         animationCurve: Curves.easeInOutQuint,
         elevation: 12,
         barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
@@ -139,7 +143,8 @@ class Functions {
         backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
-          return customWidget;
+          return PaymentBottomsheet(
+              acquiring: acquiring, formUrl: formUrl, orderStatus: orderStatus, successPaid: susseccPaid,);
         });
   }
 
@@ -201,7 +206,7 @@ class Functions {
   }
 
   void showMenuBottomsheet() {
-    showMaterialModalBottomSheet(
+    showCupertinoModalBottomSheet(
         animationCurve: Curves.easeInOutQuint,
         elevation: 12,
         barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
@@ -385,6 +390,24 @@ class Functions {
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
       builder: (context) => const TimeAcceptBottomsheet(),
+    );
+  }
+
+  void showMapPageBottomsheet(
+      List<CartModel> cartModel, double totalAmount, double totalWeigth) {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      enableDrag: false,
+      context: context,
+      builder: (context) => MapPage(
+        cartModel: cartModel,
+        totalAmount: totalAmount,
+        totalWeigth: totalWeigth,
+      ),
     );
   }
 }

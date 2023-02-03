@@ -5,6 +5,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/time_accept/widgets/time.dart';
+import 'package:cofee/features/presentation/home/view/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -210,26 +211,31 @@ class _TimeAcceptState extends State<TimeAccept> {
                           ),
                           SizedBox(
                             height: 44.h,
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: listTimes.length,
-                              physics: const BouncingScrollPhysics(),
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                width: 10,
-                              ),
-                              itemBuilder: (context, index) => GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    // timeSelcted();
-                                  });
-                                  streamController.sink.add(index);
-                                },
-                                child: time(
-                                  title: listTimes[index]['title'],
-                                  isSelected: snapshotListTime.data! == index
-                                      ? listTimes[index]['isSelected'] = true
-                                      : listTimes[index]['isSelected'] = false,
+                            child: ScrollConfiguration(
+                              behavior: MyBehavior(),
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: listTimes.length,
+                                physics: const ClampingScrollPhysics(),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 10,
+                                ),
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      // timeSelcted();
+                                    });
+                                    streamController.sink.add(index);
+                                  },
+                                  child: time(
+                                    title: listTimes[index]['title'],
+                                    isSelected: snapshotListTime.data! == index
+                                        ? listTimes[index]['isSelected'] = true
+                                        : listTimes[index]['isSelected'] =
+                                            false,
+                                  ),
                                 ),
                               ),
                             ),
