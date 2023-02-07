@@ -8,6 +8,8 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_state.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/widgets/cart_selected.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
@@ -48,7 +50,7 @@ class _SelectCartState extends State<SelectCart> {
   double totalPrice = 0.0;
   double bonus = 500;
 
-  Future<void> webviewPayment() async {
+  Future<void> webviewPayment(String paymentTypeKind, int sum, String paymentTypeId) async {
     final RegisterResponse register = await acquiring.register(
       RegisterRequest(
         amount: widget.totalAmount.toInt() * 100,
@@ -61,25 +63,24 @@ class _SelectCartState extends State<SelectCart> {
     final String? formUrl =
         register.formUrl?.replaceFirst('/www.3dsec.sberbank.ru', '');
     if (!register.hasError && formUrl != null) {
-      Functions(context)
-          .showCustomBottomSheet(acquiring, formUrl, orderStatus, _successPaid);
+      Functions(context).showCustomBottomSheet(acquiring, formUrl, orderStatus, () => _successPaid(paymentTypeKind, sum, paymentTypeId) );
     }
   }
 
-  // List<Map<String, dynamic>> listCart = [
-  //   {
-  //     'title': "Visa Gold (#9523)",
-  //     'isSelected': true,
-  //   },
-  //   {
-  //     'title': "Visa Silver (#9523)",
-  //     'isSelected': true,
-  //   },
-  //   {
-  //     'title': "Visa Bonze (#9523)",
-  //     'isSelected': true,
-  //   },
-  // ];
+  List<Map<String, dynamic>> listCart = [
+    {
+      'title': "Visa Gold (#9523)",
+      'isSelected': true,
+    },
+    {
+      'title': "Visa Silver (#9523)",
+      'isSelected': true,
+    },
+    {
+      'title': "Visa Bonze (#9523)",
+      'isSelected': true,
+    },
+  ];
 
   @override
   void initState() {
@@ -94,201 +95,222 @@ class _SelectCartState extends State<SelectCart> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(
+    return BlocBuilder<SelectCartCubit, SelectCartState>(
       builder: (context, state) {
-        return StreamBuilder<int>(
-          stream: streamController.stream,
-          initialData: 0,
-          builder: (context, snapshot) {
-            return Expanded(
-              child: CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            title: 'Шаг 6',
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500,
-                            color: ColorStyles.greyTitleColor,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 4.h),
-                            child: CustomText(
-                              title: 'Оплата заказа',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: ColorStyles.blackColor,
+        if (state is SelectCartEmptyState) {
+          context.read<SelectCartCubit>().fetchCart('payment_types');
+        } else if (state is SelectCartLoadedState) {
+          return StreamBuilder<int>(
+            stream: streamController.stream,
+            initialData: 0,
+            builder: (context, snapshot) {
+              return Expanded(
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              title: 'Шаг 6',
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w500,
+                              color: ColorStyles.greyTitleColor,
                             ),
-                          ),
-                          // Container(
-                          //   margin: EdgeInsets.only(
-                          //     top: 8.h,
-                          //   ),
-                          //   child: CustomText(
-                          //     title: 'Выберите способ оплаты',
-                          //     fontSize: 17.sp,
-                          //     fontWeight: FontWeight.w500,
-                          //     color: ColorStyles.blackColor,
-                          //   ),
-                          // ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(top: 4.h),
+                              child: CustomText(
+                                title: 'Оплата заказа',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: ColorStyles.blackColor,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: 8.h,
+                              ),
+                              child: CustomText(
+                                title: 'Выберите способ оплаты',
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w500,
+                                color: ColorStyles.blackColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  // SliverToBoxAdapter(
-                  //   child: Padding(
-                  //     padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
-                  //     child: Column(
-                  //       children: [
-                  //         ...List.generate(
-                  //           listCart.length,
-                  //           (index) => GestureDetector(
-                  //             onTap: () => streamController.sink.add(index),
-                  //             child: SelectedCart(
-                  //               title: listCart[index]['title'],
-                  //               isSelected: snapshot.data! == index
-                  //                   ? listCart[index]['isSelected'] = true
-                  //                   : listCart[index]['isSelected'] = false,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         GestureDetector(
-                  //           onTap: () =>
-                  //               Functions(context).showCartAddedBottomsheet(),
-                  //           child: Container(
-                  //             width: 343.w,
-                  //             height: 56.h,
-                  //             margin: EdgeInsets.symmetric(
-                  //                 horizontal: 16.w, vertical: 4.h),
-                  //             decoration: BoxDecoration(
-                  //               borderRadius: BorderRadius.circular(8.r),
-                  //               color: ColorStyles.whiteColor,
-                  //             ),
-                  //             child: Row(
-                  //               crossAxisAlignment: CrossAxisAlignment.center,
-                  //               children: [
-                  //                 Container(
-                  //                   height: 16.83.h,
-                  //                   width: 16.83.h,
-                  //                   margin: EdgeInsets.only(
-                  //                       left: 23.58.w, right: 11.58.w),
-                  //                   child: SvgPicture.asset(
-                  //                     SvgImg.plus,
-                  //                     color: ColorStyles.blackColor,
-                  //                   ),
-                  //                 ),
-                  //                 CustomText(
-                  //                   title: 'Добавить карту',
-                  //                   color: ColorStyles.blackColor,
-                  //                   fontSize: 17.sp,
-                  //                   fontWeight: FontWeight.w600,
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // SliverToBoxAdapter(
-                  //   child: Container(
-                  //     height: 1,
-                  //     margin: EdgeInsets.symmetric(horizontal: 16.w),
-                  //     color: const Color(0xffCDCDCD),
-                  //   ),
-                  // ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      height: 85.h,
-                      width: 343.w,
-                      margin: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 15.h),
-                      decoration: BoxDecoration(
-                          color: ColorStyles.whiteColor,
-                          borderRadius: BorderRadius.circular(16.r)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            title: 'БАЛАНС БОНУСНОГО СЧЕТА',
-                            color: ColorStyles.greyTitleColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          const Spacer(),
-                          CustomText(
-                            title: '$bonus ₽',
-                            color: ColorStyles.accentColor,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
+                        child: Column(
+                          children: [
+                            ...List.generate(
+                              state.selectCartEntiti.paymentTypes.length,
+                              (index) => GestureDetector(
+                                onTap: () => streamController.sink.add(index),
+                                child: SelectedCart(
+                                  title: state.selectCartEntiti
+                                      .paymentTypes[index].name,
+                                  isSelected: snapshot.data! == index
+                                      ? listCart[index]['isSelected'] = true
+                                      : listCart[index]['isSelected'] = false,
+                                ),
+                              ),
+                            ),
+                            // GestureDetector(
+                            //   onTap: () =>
+                            //       Functions(context).showCartAddedBottomsheet(),
+                            //   child: Container(
+                            //     width: 343.w,
+                            //     height: 56.h,
+                            //     margin: EdgeInsets.symmetric(
+                            //         horizontal: 16.w, vertical: 4.h),
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(8.r),
+                            //       color: ColorStyles.whiteColor,
+                            //     ),
+                            //     child: Row(
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         Container(
+                            //           height: 16.83.h,
+                            //           width: 16.83.h,
+                            //           margin: EdgeInsets.only(
+                            //               left: 23.58.w, right: 11.58.w),
+                            //           child: SvgPicture.asset(
+                            //             SvgImg.plus,
+                            //             color: ColorStyles.blackColor,
+                            //           ),
+                            //         ),
+                            //         CustomText(
+                            //           title: 'Добавить карту',
+                            //           color: ColorStyles.blackColor,
+                            //           fontSize: 17.sp,
+                            //           fontWeight: FontWeight.w600,
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: CustomText(
-                        title:
-                            'Внимание!  В первую очередь списание происходит с внутреннего счета, а остаток суммы оплачивается с помощью банковской карты ',
-                        color: ColorStyles.greyTitleColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 1,
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
+                        color: const Color(0xffCDCDCD),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            title: 'Итого к оплате:',
-                            color: ColorStyles.blackColor,
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          CustomText(
-                            title: '$totalPrice ₽ (-10%)',
-                            color: ColorStyles.blackColor,
-                            fontSize: 32.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 85.h,
+                        width: 343.w,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 16.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 15.h),
+                        decoration: BoxDecoration(
+                            color: ColorStyles.whiteColor,
+                            borderRadius: BorderRadius.circular(16.r)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              title: 'БАЛАНС БОНУСНОГО СЧЕТА',
+                              color: ColorStyles.greyTitleColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            const Spacer(),
+                            CustomText(
+                              title: '$bonus ₽',
+                              color: ColorStyles.accentColor,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 96.h),
-                      child: CustomButton(
-                          title: 'Оплатить',
-                          onTap: () async {
-                            webviewPayment();
-                          }),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: CustomText(
+                          title:
+                              'Внимание!  В первую очередь списание происходит с внутреннего счета, а остаток суммы оплачивается с помощью банковской карты ',
+                          color: ColorStyles.greyTitleColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              ),
-            );
-          },
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 16.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              title: 'Итого к оплате:',
+                              color: ColorStyles.blackColor,
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            CustomText(
+                              title: '$totalPrice ₽ (-10%)',
+                              color: ColorStyles.blackColor,
+                              fontSize: 32.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 96.h),
+                        child: CustomButton(
+                            title: 'Оплатить',
+                            onTap: () async {
+                              webviewPayment(
+                                state
+                                    .selectCartEntiti
+                                    .paymentTypes[snapshot.data!]
+                                    .paymentTypeKind,
+                                widget.totalAmount.toInt(),
+                                state.selectCartEntiti.paymentTypes[snapshot.data!].id
+                              );
+                            }),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        } else if (state is SelectCartErrorState) {
+          return Center(
+            child: CustomText(title: 'Error'),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Colors.orange,
+          ),
         );
       },
     );
   }
 
-  void _successPaid() async {
+  void _successPaid(String paymentTypeKind, int sum, String paymentTypeId) async {
     await context.read<CartCubit>().createClientOrder(
           'order/create',
           List.generate(
@@ -301,6 +323,9 @@ class _SelectCartState extends State<SelectCart> {
               productId: widget.cartModel[index].productId,
             ),
           ),
+          paymentTypeKind,
+          sum,
+          paymentTypeId,
         );
     widget.pageController.nextPage(
       duration: const Duration(milliseconds: 600),

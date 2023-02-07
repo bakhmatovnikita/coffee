@@ -24,30 +24,33 @@ class PaymentBottomsheet extends StatefulWidget {
 class _PaymentBottomsheetState extends State<PaymentBottomsheet> {
   @override
   Widget build(BuildContext context) {
-    return  WebViewPayment(
-        logger: widget.acquiring.logger,
-        formUrl: widget.formUrl,
-        returnUrl: 'https://3dsec.sberbank.ru/payment/rest/register.do',
-        failUrl: 'https://www.yandex.ru/',
-        onLoad: (bool v) {
-          debugPrint('WebView load: $v');
-        },
-        onError: () {
-          debugPrint('WebView Error');
-        },
-        onFinished: (String? v) async {
-          print('finished!!!!');
-          final GetOrderStatusExtendedResponse status =
-              await widget.acquiring.getOrderStatusExtended(
-            GetOrderStatusExtendedRequest(orderId: v),
-          );
+    return WebViewPayment(
+      logger: widget.acquiring.logger,
+      formUrl: widget.formUrl,
+      returnUrl: 'https://3dsec.sberbank.ru/payment/rest/register.do',
+      failUrl: 'https://www.yandex.ru/',
+      onLoad: (bool v) {
+        debugPrint('WebView load: $v');
+      },
+      onError: () {
+        debugPrint('WebView Error');
+      },
+      onFinished: (String? v) async {
+        print('finished!!!!');
+        final GetOrderStatusExtendedResponse status =
+            await widget.acquiring.getOrderStatusExtended(
+          GetOrderStatusExtendedRequest(orderId: v),
+        );
+        try {
           widget.successPaid();
-
           widget.orderStatus = status.orderStatus;
           setState(() {});
 
           Navigator.of(context).pop();
-        },
-      );
+        } catch (e) {
+          print(e);
+        }
+      },
+    );
   }
 }

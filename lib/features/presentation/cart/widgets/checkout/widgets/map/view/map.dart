@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
@@ -474,7 +475,8 @@ class _MapPageState extends State<MapPage> {
                         );
                       } else {
                         // Navigator.of(context).pop();
-                        // Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+
                         Functions(context).showDeliveryBottomSheet(
                           widget.cartModel,
                           widget.totalAmount,

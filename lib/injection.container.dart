@@ -7,6 +7,7 @@ import 'package:cofee/features/data/repository/coffee_repository_implements.dart
 import 'package:cofee/features/domain/repository/coffe_repository.dart';
 import 'package:cofee/features/domain/usecase/create_order.dart';
 import 'package:cofee/features/domain/usecase/create_user.dart';
+import 'package:cofee/features/domain/usecase/get_cart.dart';
 import 'package:cofee/features/domain/usecase/get_history.dart';
 import 'package:cofee/features/domain/usecase/get_organization.dart';
 import 'package:cofee/features/domain/usecase/get_products.dart';
@@ -16,6 +17,7 @@ import 'package:cofee/features/presentation/auth/choice_adress/controller/choice
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
@@ -57,6 +59,7 @@ Future<void> init() async {
       localDatasource: sl(),
     ),
   );
+  sl.registerFactory(() => SelectCartCubit(getCart: sl(), localDatasource: sl()));
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
@@ -65,6 +68,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetTerminalGroup(sl()));
   sl.registerLazySingleton(() => CreateOrder(sl()));
   sl.registerLazySingleton(() => GetHistory(sl()));
+  sl.registerLazySingleton(() => GetCart(coffeeRepository: sl()));
   //Repository
   sl.registerLazySingleton<CoffeeRepository>(
       () => CoffeeRepositoryImpl(sl(), sl()));

@@ -13,12 +13,12 @@ class TerminalGroupModel extends TerminalGroupEntiti {
         );
   factory TerminalGroupModel.fromJson(Map<String, dynamic> json) =>
       TerminalGroupModel(
-        correlationId: json["correlationId"],
+        correlationId: json["correlationId"] ?? '',
         terminalGroups: List<TerminalGroupsModel>.from(
           (json["terminalGroups"] as List<dynamic>)
               .map((x) => TerminalGroupsModel.fromJson(x))
-              .toList(),
-        ),
+              .toList(), 
+        ) 
       );
 
   Map<String, dynamic> toJson() => {

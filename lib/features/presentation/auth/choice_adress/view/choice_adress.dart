@@ -172,6 +172,8 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                   );
                 }),
           );
+        }else if(state is ChoiceAdressErrorState){
+          
         }
         return const Scaffold(
           body: Center(

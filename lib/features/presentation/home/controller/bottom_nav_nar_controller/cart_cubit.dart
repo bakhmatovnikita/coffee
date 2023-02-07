@@ -85,7 +85,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> createClientOrder(String endpoint, List<Item> item) async {
+  Future<void> createClientOrder(String endpoint, List<Item> item, String paymentTypeKind, int sum, String paymentTypeId) async {
     try {
       print(await localDatasource.getPhoneUser());
       createOrder.call(
@@ -94,6 +94,9 @@ class CartCubit extends Cubit<CartState> {
           item: item,
           phone: await localDatasource.getPhoneUser(),
           organizationId: await localDatasource.getOrganizatuonId(),
+          paymentTypeKind: paymentTypeKind,
+          sum: sum,
+          paymentTypeId: paymentTypeId,
         ),
       );
       localDatasource.delecteCart();

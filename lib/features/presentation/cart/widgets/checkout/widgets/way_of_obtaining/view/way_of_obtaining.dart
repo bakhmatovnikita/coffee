@@ -95,6 +95,10 @@ class _WayOfObtainingState extends State<WayOfObtaining> {
                   title: 'Далее',
                   onTap: () async {
                     if (wayOfObtaining[2]['isSelected']) {
+                      Navigator.pop(context);
+                      const Duration(
+                        seconds: 1,
+                      );
                       Functions(context).showMapPageBottomsheet(
                           widget.cartModel,
                           widget.totalAmount,

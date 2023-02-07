@@ -56,16 +56,18 @@ class _MainHomeState extends State<MainHome> {
   }
 
   void changeTabs() {
+    int currentIndex = 0;
     for (var i = 0; i < itemCategory.length; i++) {
       if (scrollController.offset >= itemMenu[i]) {
+        currentIndex = i;
         DefaultTabController.of(tabContext!)!.animateTo(
           i,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.easeInOut,
         );
-        stream.sink.add(i);
       }
     }
+    stream.sink.add(currentIndex);
   }
 
   scrollTo(int index) async {
@@ -75,7 +77,6 @@ class _MainHomeState extends State<MainHome> {
       itemCategory[index].currentContext!,
       duration: const Duration(milliseconds: 600),
     );
-
     scrollController.addListener(changeTabs);
   }
 

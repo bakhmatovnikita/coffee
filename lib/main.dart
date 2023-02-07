@@ -4,6 +4,7 @@ import 'package:cofee/features/presentation/auth/choice_adress/controller/choice
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
@@ -59,6 +60,9 @@ Future<void> main() async {
           BlocProvider<ProfilePageCubit>(
             create: (context) => sl<ProfilePageCubit>(),
           ),
+          BlocProvider<SelectCartCubit>(
+            create: (context) => sl<SelectCartCubit>(),
+          )
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),
@@ -80,6 +84,8 @@ Future<void> main() async {
 class DevHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

@@ -5,6 +5,7 @@ import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
+import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
@@ -122,9 +123,9 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
 
   @override
   Future<Either<Failure, OrderModel>> createOrder(String endpoint,
-      List<Item> item, String phone, String organizationId) async {
+      List<Item> item, String phone, String organizationId, String paymentTypeKind, int sum, String paymentTypeId) async {
     return await _createOrder(() =>
-        remoteDatasource.createOrder(endpoint, item, phone, organizationId));
+        remoteDatasource.createOrder(endpoint, item, phone, organizationId, paymentTypeKind, sum, paymentTypeId));
   }
 
   Future<Either<Failure, OrderModel>> _createOrder(
@@ -140,14 +141,33 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   @override
   Future<Either<Failure, HistoryModel>> getOrderHistory(
       String endpoint, String phone, List<String> organizationIds) async {
-        return await _getOrderHistory(() => remoteDatasource.getHistory(endpoint, phone, organizationIds));
-      }
+    return await _getOrderHistory(
+        () => remoteDatasource.getHistory(endpoint, phone, organizationIds));
+  }
 
   Future<Either<Failure, HistoryModel>> _getOrderHistory(
       Future<HistoryModel> Function() history) async {
     try {
       final historyModel = await history();
       return Right(historyModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, SelectCartModel>> getCart(
+      String endpoint, String organizationId) async {
+    return await _getCart(
+      () => remoteDatasource.getCarts(endpoint, organizationId),
+    );
+  }
+
+  Future<Either<Failure, SelectCartModel>> _getCart(
+      Future<SelectCartModel> Function() cart) async {
+    try {
+      final cartModel = await cart();
+      return Right(cartModel);
     } catch (e) {
       return Left(ServerFailure());
     }
