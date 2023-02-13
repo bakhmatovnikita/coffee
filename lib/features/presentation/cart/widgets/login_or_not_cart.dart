@@ -4,6 +4,8 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
+import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
+import 'package:cofee/features/presentation/cart/controller/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,11 +19,11 @@ class LoginOrNot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RootScreenCubit, RootScreenState>(
+    return BlocBuilder<CartViewCubit, CartViewState>(
       builder: (context, state) {
-        if (state is RootScreenEmptyState) {
-          context.read<RootScreenCubit>().checkAuthorization();
-        } else if (state is RootScreenIsAuthorized) {
+        if (state is CartViewEmptyState) {
+          context.read<CartViewCubit>().checkAuthorization();
+        } else if (state is CartViewHaveNumberState) {
           return SliverToBoxAdapter(
             child: Column(
               children: [

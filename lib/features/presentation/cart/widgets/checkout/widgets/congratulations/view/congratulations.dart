@@ -5,6 +5,10 @@ import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../../../constants/constants_for_back/constants.dart';
+import '../../../../../../../../core/services/auth_config/time_accept.dart';
+import '../../../../../../../../injection.container.dart';
+
 class Congratulations extends StatefulWidget {
   const Congratulations({super.key});
 
@@ -13,6 +17,10 @@ class Congratulations extends StatefulWidget {
 }
 
 class CcongratulationsState extends State<Congratulations> {
+  final String textWithNull =
+      '${DateTime.now().day}.0${DateTime.now().month}.${DateTime.now().year}';
+  final String textWithoutNull =
+      '${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}';
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,7 +58,7 @@ class CcongratulationsState extends State<Congratulations> {
             padding: EdgeInsets.only(top: 8.h),
             child: CustomText(
               title:
-                  'Заберите заказ в среду, в 8:15\nКогда заказ будет готов, вы получите\nуведомление',
+                  'Заберите заказ в ${sl<AcceptTime>().weekDay}, в ${sl<AcceptTime>().time}\nКогда заказ будет готов, вы получите\nуведомление',
               centerTitle: true,
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
@@ -67,7 +75,7 @@ class CcongratulationsState extends State<Congratulations> {
             padding: EdgeInsets.only(top: 16.h),
             child: CustomText(
               title:
-                  'Внимание: вы можете изменить заказ\nдо 20:00 во Вторник (17.09.2022)',
+                  'Внимание: вы можете изменить заказ\nдо 20:00 ${BackConstants.weekDaysForCon[DateTime.now().weekday]} (${DateTime.now().month > 9 ? textWithoutNull : textWithNull})',
               centerTitle: true,
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,

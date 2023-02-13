@@ -5,6 +5,7 @@ import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_state.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,149 +33,139 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
         } else if (state is ChoiceAdressLoadedState) {
           return Scaffold(
             body: StreamBuilder<int>(
-                initialData: 0,
-                stream: streamController.stream,
-                builder: (context, snapshot) {
-                  return Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          height: 116.h,
-                          width: 68.w,
-                          margin: EdgeInsets.only(bottom: 163.h),
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(Img.berry),
-                              fit: BoxFit.contain,
-                            ),
+              initialData: 0,
+              stream: streamController.stream,
+              builder: (context, snapshot) {
+                return Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        height: 116.h,
+                        width: 68.w,
+                        margin: EdgeInsets.only(bottom: 163.h),
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(Img.berry),
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 56.h,
-                                left: 25.5.w,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    icon: const Icon(Icons.arrow_back_ios),
-                                    color: ColorStyles.accentColor,
-                                  ),
-                                ],
-                              ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 56.h,
+                              left: 25.5.w,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 128.h),
-                              child: Text(
-                                'Выберите адрес заведения',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorStyles.blackColor,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(Icons.arrow_back_ios),
+                                  color: ColorStyles.accentColor,
                                 ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 128.h),
+                            child: Text(
+                              'Выберите адрес заведения',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: ColorStyles.blackColor,
                               ),
                             ),
-                            Container(
-                              width: size.width,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 40.h),
-                              child: Column(
-                                children: state
-                                    .organizationsEntiti.organizations
-                                    .map(
-                                      (e) => GestureDetector(
-                                        onTap: () => streamController.sink.add(
-                                          state
-                                              .organizationsEntiti.organizations
-                                              .indexOf(e),
-                                        ),
-                                        child: ChoicedRestaurant(
-                                          title: e.name,
-                                          adress: e.restaurantAddress,
-                                          isSelected: snapshot.data! ==
-                                                  state.organizationsEntiti
-                                                      .organizations
-                                                      .indexOf(e)
-                                              ? true
-                                              : false,
-                                        ),
+                          ),
+                          Container(
+                            width: size.width,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 40.h),
+                            child: Column(
+                              children: state.organizationsEntiti.organizations
+                                  .map(
+                                    (e) => GestureDetector(
+                                      onTap: () => streamController.sink.add(
+                                        state.organizationsEntiti.organizations
+                                            .indexOf(e),
                                       ),
-                                    )
-                                    .toList(),
-                              ),
+                                      child: ChoicedRestaurant(
+                                        title: e.name,
+                                        adress: e.restaurantAddress,
+                                        isSelected: snapshot.data! ==
+                                                state.organizationsEntiti
+                                                    .organizations
+                                                    .indexOf(e)
+                                            ? true
+                                            : false,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
-                            CustomButton(
-                                title: "Готово",
-                                onTap: () {
-                                  context
-                                      .read<ChoiceAdressCubit>()
-                                      .fetchTerminalGroup(
-                                          'terminal_groups',
-                                          state
-                                              .organizationsEntiti
-                                              .organizations[snapshot.data!]
-                                              .id);
-                                  print(widget.phone);
-                                  setState(() {
-                                    if (widget.phone == null) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                        "/MainView",
-                                        (route) => false,
-                                        arguments: {
-                                          'organizationId': state
-                                              .organizationsEntiti
-                                              .organizations[snapshot.data!]
-                                              .id
-                                        },
-                                      );
-                                    } else if (context
-                                        .read<ChoiceAdressCubit>()
-                                        .createCustomer(
-                                            "loyalty/iiko/customer/create_or_update",
-                                            state
-                                                .organizationsEntiti
-                                                .organizations[snapshot.data!]
-                                                .id,
-                                            widget.phone!)) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                        "/MainView",
-                                        (route) => false,
-                                        arguments: {
-                                          'organizationId': state
-                                              .organizationsEntiti
-                                              .organizations[snapshot.data!]
-                                              .id
-                                        },
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  "Ошибка регистрации\\авторизации")));
-                                    }
-                                  });
-                                }),
-                          ],
-                        ),
+                          ),
+                          CustomButton(
+                            title: "Готово",
+                            onTap: () async {
+                              context
+                                  .read<ChoiceAdressCubit>()
+                                  .fetchTerminalGroup(
+                                      'terminal_groups',
+                                      state.organizationsEntiti
+                                          .organizations[snapshot.data!].id);
+                              print(widget.phone);
+
+                              if (widget.phone == null) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/MainView",
+                                  (route) => false,
+                                  arguments: {
+                                    'organizationId': state.organizationsEntiti
+                                        .organizations[snapshot.data!].id
+                                  },
+                                );
+                              } else if (context
+                                  .read<ChoiceAdressCubit>()
+                                  .createCustomer(
+                                      "loyalty/iiko/customer/create_or_update",
+                                      state.organizationsEntiti
+                                          .organizations[snapshot.data!].id,
+                                      widget.phone!)) {
+                                       
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/MainView",
+                                  (route) => false,
+                                  arguments: {
+                                    'organizationId': state.organizationsEntiti
+                                        .organizations[snapshot.data!].id,
+                                  },
+                                );
+                                
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text("Ошибка регистрации\\авторизации"),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  );
-                }),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
-        }else if(state is ChoiceAdressErrorState){
-          
-        }
+        } else if (state is ChoiceAdressErrorState) {}
         return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(

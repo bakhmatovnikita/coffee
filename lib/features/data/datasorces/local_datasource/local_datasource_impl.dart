@@ -65,7 +65,7 @@ class LocalDatasourceImplement implements LocalDatasource {
 
   @override
   Future<void> savePhoneUser(String phone) async {
-    storage.write(key: BackConstants.SAVED_PHONE_USER, value: phone);
+    await storage.write(key: BackConstants.SAVED_PHONE_USER, value: phone);
   }
 
   @override

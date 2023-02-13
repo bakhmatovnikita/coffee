@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/domain/entiti/organization_entiti.dart';
+import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:cofee/features/presentation/home/view/main_home.dart';
@@ -49,7 +50,9 @@ class _BottomNavViewState extends State<BottomNavView>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                MainHome(organizationId: widget.organizationId,),
+                MainHome(
+                  organizationId: widget.organizationId,
+                ),
                 const CartView(),
                 BodyView(
                   onChangeView: (index) {
@@ -69,7 +72,7 @@ class _BottomNavViewState extends State<BottomNavView>
                     showUnselectedLabels: false,
                     selectedItemColor: ColorStyles.accentColor,
                     unselectedItemColor: ColorStyles.greyTitleColor,
-                    onTap: (index) {
+                    onTap: (index) async {
                       _streamController.sink.add(index);
                       _tabController.animateTo(index);
                     },
@@ -103,53 +106,55 @@ class _BottomNavViewState extends State<BottomNavView>
                         label: 'Главная',
                       ),
                       BottomNavigationBarItem(
-                        icon: Column(
-                          children: [
-                            SizedBox(
-                              width: 19.7.h,
-                              height: 16.9.h,
-                              child: Stack(
-                                children: [
-                                  SvgPicture.asset(
-                                    snapshot.data! == 1
-                                        ? SvgImg.cartFill
-                                        : SvgImg.cart,
-                                    color: snapshot.data! == 1
-                                        ? ColorStyles.accentColor
-                                        : ColorStyles.greyTitleColor,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      height: 8.h,
-                                      width: 8.w,
-                                      decoration: BoxDecoration(
-                                        color: ColorStyles.accentColor,
-                                        borderRadius:
-                                            BorderRadius.circular(4.r),
-                                      ),
-                                      child: Align(
-                                          alignment: Alignment.center,
-                                          child: CustomText(
-                                            title: state.countCart.toString(),
-                                            color: Colors.white,
-                                            fontSize: 6,
-                                          )),
+                        icon: GestureDetector(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 19.7.h,
+                                height: 16.9.h,
+                                child: Stack(
+                                  children: [
+                                    SvgPicture.asset(
+                                      snapshot.data! == 1
+                                          ? SvgImg.cartFill
+                                          : SvgImg.cart,
+                                      color: snapshot.data! == 1
+                                          ? ColorStyles.accentColor
+                                          : ColorStyles.greyTitleColor,
                                     ),
-                                  )
-                                ],
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Container(
+                                        height: 8.h,
+                                        width: 8.w,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.accentColor,
+                                          borderRadius:
+                                              BorderRadius.circular(4.r),
+                                        ),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: CustomText(
+                                              title: state.countCart.toString(),
+                                              color: Colors.white,
+                                              fontSize: 6,
+                                            )),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 5.h),
-                            CustomText(
-                              title: 'Корзина',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.h,
-                              color: snapshot.data! == 1
-                                  ? ColorStyles.accentColor
-                                  : ColorStyles.greyTitleColor,
-                            ),
-                          ],
+                              SizedBox(height: 5.h),
+                              CustomText(
+                                title: 'Корзина',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.h,
+                                color: snapshot.data! == 1
+                                    ? ColorStyles.accentColor
+                                    : ColorStyles.greyTitleColor,
+                              ),
+                            ],
+                          ),
                         ),
                         label: 'Корзина',
                       ),
@@ -187,7 +192,9 @@ class _BottomNavViewState extends State<BottomNavView>
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              MainHome(organizationId: widget.organizationId,),
+              MainHome(
+                organizationId: widget.organizationId,
+              ),
               const CartView(),
               BodyView(
                 onChangeView: (index) {

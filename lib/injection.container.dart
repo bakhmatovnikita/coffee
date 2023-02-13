@@ -1,4 +1,5 @@
 import 'package:cofee/core/services/auth_config/auth_config.dart';
+import 'package:cofee/core/services/auth_config/time_accept.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource_impl.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
@@ -16,6 +17,7 @@ import 'package:cofee/features/domain/usecase/get_token.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
+import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
@@ -59,7 +61,9 @@ Future<void> init() async {
       localDatasource: sl(),
     ),
   );
-  sl.registerFactory(() => SelectCartCubit(getCart: sl(), localDatasource: sl()));
+  sl.registerFactory(
+      () => SelectCartCubit(getCart: sl(), localDatasource: sl()));
+  sl.registerFactory(() => CartViewCubit(localDatasource: sl()));
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
@@ -78,6 +82,7 @@ Future<void> init() async {
       () => LocalDatasourceImplement(sl(), sl(), sl()));
   //UserData
   sl.registerLazySingleton<AuthConfig>(() => AuthConfig());
+  sl.registerLazySingleton<AcceptTime>(() => AcceptTime());
   const flutterSecureStorage = FlutterSecureStorage();
   sl.registerLazySingleton(() => flutterSecureStorage);
   final sharedPreferences = await SharedPreferences.getInstance();

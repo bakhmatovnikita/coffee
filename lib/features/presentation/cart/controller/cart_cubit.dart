@@ -1,25 +1,22 @@
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
-import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_state.dart';
+import 'package:cofee/features/presentation/cart/controller/cart_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RootScreenCubit extends Cubit<RootScreenState> {
+class CartViewCubit extends Cubit<CartViewState> {
   final LocalDatasource localDatasource;
-  RootScreenCubit({
-    required this.localDatasource,
-  }) : super(RootScreenEmptyState());
-
+  CartViewCubit({required this.localDatasource}) : super(CartViewEmptyState());
   Future<void> checkAuthorization() async {
     try {
       final phoneUser = await localDatasource.haveNumber();
       if (phoneUser != false) {
-        emit(RootScreenIsAuthorized());
+        emit(CartViewHaveNumberState());
       } else if (phoneUser == false) {
-        emit(RootScreenUnauthorized());
+        emit(CartViewNotHaveNumberState());
       } else {
-        emit(RootScreenEmptyState());
+        emit(CartViewEmptyState());
       }
     } catch (e) {
-      emit(RootScreenUnauthorized());
+      emit(CartViewNotHaveNumberState());
     }
   }
 }

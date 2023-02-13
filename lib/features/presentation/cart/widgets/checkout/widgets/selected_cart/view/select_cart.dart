@@ -16,10 +16,13 @@ import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_contr
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+
+import '../../../../../../../../custom_widgets/push_error.dart';
 
 class SelectCart extends StatefulWidget {
   final PageController pageController;
@@ -50,7 +53,8 @@ class _SelectCartState extends State<SelectCart> {
   double totalPrice = 0.0;
   double bonus = 500;
 
-  Future<void> webviewPayment(String paymentTypeKind, int sum, String paymentTypeId) async {
+  Future<void> webviewPayment(
+      String paymentTypeKind, int sum, String paymentTypeId) async {
     final RegisterResponse register = await acquiring.register(
       RegisterRequest(
         amount: widget.totalAmount.toInt() * 100,
@@ -63,7 +67,8 @@ class _SelectCartState extends State<SelectCart> {
     final String? formUrl =
         register.formUrl?.replaceFirst('/www.3dsec.sberbank.ru', '');
     if (!register.hasError && formUrl != null) {
-      Functions(context).showCustomBottomSheet(acquiring, formUrl, orderStatus, () => _successPaid(paymentTypeKind, sum, paymentTypeId) );
+      Functions(context).showCustomBottomSheet(acquiring, formUrl, orderStatus,
+          () => _successPaid(paymentTypeKind, sum, paymentTypeId));
     }
   }
 
@@ -278,16 +283,33 @@ class _SelectCartState extends State<SelectCart> {
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 96.h),
                         child: CustomButton(
-                            title: 'Оплатить',
+                            title: state.selectCartEntiti
+                                        .paymentTypes[snapshot.data!].code ==
+                                    'CASH'
+                                ? 'Оформить'
+                                : 'Оплатить',
                             onTap: () async {
-                              webviewPayment(
-                                state
-                                    .selectCartEntiti
-                                    .paymentTypes[snapshot.data!]
-                                    .paymentTypeKind,
-                                widget.totalAmount.toInt(),
-                                state.selectCartEntiti.paymentTypes[snapshot.data!].id
-                              );
+                              if (state.selectCartEntiti
+                                      .paymentTypes[snapshot.data!].code ==
+                                  'CASH') {
+                                _successPaid(
+                                    state
+                                        .selectCartEntiti
+                                        .paymentTypes[snapshot.data!]
+                                        .paymentTypeKind,
+                                    widget.totalAmount.toInt(),
+                                    state.selectCartEntiti
+                                        .paymentTypes[snapshot.data!].id);
+                              } else {
+                                webviewPayment(
+                                    state
+                                        .selectCartEntiti
+                                        .paymentTypes[snapshot.data!]
+                                        .paymentTypeKind,
+                                    widget.totalAmount.toInt(),
+                                    state.selectCartEntiti
+                                        .paymentTypes[snapshot.data!].id);
+                              }
                             }),
                       ),
                     )
@@ -310,27 +332,46 @@ class _SelectCartState extends State<SelectCart> {
     );
   }
 
-  void _successPaid(String paymentTypeKind, int sum, String paymentTypeId) async {
-    await context.read<CartCubit>().createClientOrder(
-          'order/create',
-          List.generate(
-            widget.cartModel.length,
-            (index) => Item(
-              type: 'Product',
-              amount: widget.cartModel[index].count,
-              productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
-              comment: 'comment',
-              productId: widget.cartModel[index].productId,
+  void _successPaid(
+      String paymentTypeKind, int sum, String paymentTypeId) async {
+    try {
+      await context.read<CartCubit>().createClientOrder(
+            'order/create',
+            List.generate(
+              widget.cartModel.length,
+              (index) => Item(
+                type: 'Product',
+                amount: widget.cartModel[index].count,
+                productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
+                comment: 'comment',
+                productId: widget.cartModel[index].productId,
+              ),
+            ),
+            paymentTypeKind,
+            sum,
+            paymentTypeId,
+          );
+      widget.pageController.nextPage(
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOutQuint,
+      );
+      setState(() {});
+    } catch (e) {
+      SmartDialog.show(
+        animationType: SmartAnimationType.fade,
+        maskColor: Colors.transparent,
+        displayTime: const Duration(seconds: 3),
+        clickMaskDismiss: false,
+        usePenetrate: true,
+        builder: (context) => const SafeArea(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: PushError(
+              title: 'Что-то пошло не так, попробуйте позже',
             ),
           ),
-          paymentTypeKind,
-          sum,
-          paymentTypeId,
-        );
-    widget.pageController.nextPage(
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.easeInOutQuint,
-    );
-    setState(() {});
+        ),
+      );
+    }
   }
 }

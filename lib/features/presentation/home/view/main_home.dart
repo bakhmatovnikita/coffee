@@ -3,6 +3,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
 import 'package:cofee/features/presentation/home/widgets/main_view_widgets/category_card_widget.dart';
@@ -80,23 +81,26 @@ class _MainHomeState extends State<MainHome> {
     scrollController.addListener(changeTabs);
   }
 
+  Future<void> checkUser(
+      Function() nomenclature, Function() checkUserNumber) async {
+    await checkUserNumber();
+    await nomenclature();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return BlocBuilder<HomeViewCubit, HomeViewState>(
       builder: (context, state) {
         if (state is HomeViewEmptyState) {
+          // checkUser(
+          //     () => context.read<HomeViewCubit>().fetchProducts('nomenclature'),
+          //     () => context.read<RootScreenCubit>().checkAuthorization());
           context.read<HomeViewCubit>().fetchProducts('nomenclature');
         } else if (state is HomeViewLoadedState) {
-          print(itemMenu.length);
-          // for (var i = 0; i < state.productsEntiti.groups.length; i++) {
-          //   itemCategory.add(GlobalKey());
-          // }
           itemCategory = List.generate(
             state.productsEntiti.groups.length,
             (index) => GlobalKey(),
           );
-          print(itemCategory.length);
           return DefaultTabController(
             length: state.productsEntiti.groups.length,
             child: Builder(

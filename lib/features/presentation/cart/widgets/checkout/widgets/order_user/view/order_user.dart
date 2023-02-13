@@ -3,9 +3,12 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:octo_image/octo_image.dart';
+
+import '../../../../../../../../core/services/auth_config/time_accept.dart';
 
 class OrderUser extends StatefulWidget {
   final PageController pageController;
@@ -222,7 +225,8 @@ class _OrderUserState extends State<OrderUser> {
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    title: 'во вторник 12 Июля, 8:15',
+                    title:
+                        'во ${sl<AcceptTime>().weekDay} ${sl<AcceptTime>().day} ${sl<AcceptTime>().month}, ${sl<AcceptTime>().time}',
                     fontSize: 16,
                     color: ColorStyles.accentColor,
                     fontWeight: FontWeight.w600,
@@ -237,7 +241,7 @@ class _OrderUserState extends State<OrderUser> {
                     ),
                   ),
                   CustomText(
-                    title: 'в 8:15',
+                    title: 'в ${sl<AcceptTime>().time}',
                     fontSize: 16,
                     color: ColorStyles.accentColor,
                     fontWeight: FontWeight.w600,

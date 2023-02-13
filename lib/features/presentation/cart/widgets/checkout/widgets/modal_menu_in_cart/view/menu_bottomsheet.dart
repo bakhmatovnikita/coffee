@@ -221,14 +221,17 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
                   SliverAppBar(
                     automaticallyImplyLeading: false,
                     elevation: 0,
+                    expandedHeight: 40,
                     backgroundColor: ColorStyles.backgroundColor,
                     pinned: true,
                     flexibleSpace: Padding(
-                      padding: EdgeInsets.only(
-                          left: 16.w, bottom: 16.h, top: 24.h, right: 16.w),
-                      child: CustomText(
-                        title: 'Меню на $weekDay ( $day $month)',
-                        fontSize: 16,
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: CustomText(
+                          title: 'Меню на $weekDay ( $day $month)',
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
@@ -241,23 +244,25 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
                       stream: stream.stream,
                       initialData: 0,
                       builder: (context, snapshot) {
-                        return TabBar(
-                          physics: const BouncingScrollPhysics(),
-                          indicatorColor: Colors.transparent,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          labelPadding: EdgeInsets.symmetric(horizontal: 4.w),
-                          isScrollable: true,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 10.h),
-                          onTap: (value) {
-                            scrollTo(value);
-                          },
-                          tabs: List.generate(
-                            itemCategory.length,
-                            (index) => CategoryCardWidget(
-                              groupsEntiti: state.productsEntiti.groups[index],
-                              isSelected:
-                                  snapshot.data! == index ? true : false,
+                        return Align(
+                          alignment: Alignment.center,
+                          child: TabBar(
+                            physics: const BouncingScrollPhysics(),
+                            indicatorColor: Colors.transparent,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 4.w),
+                            isScrollable: true,
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            onTap: (value) {
+                              scrollTo(value);
+                            },
+                            tabs: List.generate(
+                              itemCategory.length,
+                              (index) => CategoryCardWidget(
+                                groupsEntiti: state.productsEntiti.groups[index],
+                                isSelected:
+                                    snapshot.data! == index ? true : false,
+                              ),
                             ),
                           ),
                         );

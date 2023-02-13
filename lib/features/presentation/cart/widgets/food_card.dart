@@ -15,7 +15,7 @@ class FoodCard extends StatefulWidget {
   final Function() onTap;
   final Function() onUpdatePrice;
   final Function() onUpdateWeight;
-  FoodCard({
+  const FoodCard({
     super.key,
     required this.index,
     required this.onTap,

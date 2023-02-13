@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/services/auth_config/time_accept.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/time_accept/widgets/time.dart';
 import 'package:cofee/features/presentation/home/view/main_home.dart';
+import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -94,19 +96,41 @@ class _TimeAcceptState extends State<TimeAccept> {
   void availableTime() {
     for (int i = 0; i < listTimesSelected.length; i++) {
       listTimes[i]['title'] = minutes1 < 10
-          ? '$hour1:0$minutes1 - $hour2:$minutes2'
+          ? '$hour1:0${minutes1.round()} - $hour2:${minutes2.round()}'
           : minutes2 < 10
-              ? '$hour1:$minutes1 - $hour2:0$minutes2'
+              ? '$hour1:${minutes1.round()} - $hour2:0${minutes2.round()}'
               : minutes1 < 10 && minutes2 < 10
-                  ? '$hour1:0$minutes1 - $hour2:0$minutes2'
-                  : '$hour1:$minutes1 - $hour2:$minutes2';
+                  ? '$hour1:0${minutes1.round()} - $hour2:0${minutes2.round()}'
+                  : '$hour1:${minutes1.round()} - $hour2:${minutes2.round()}';
       if (i == 0) {
         hour2 = hour1;
         minutes2 = minutes1 + 30;
+
         if (minutes2 > 59) {
           hour2++;
           minutes2 -= 60;
         }
+        do {
+          minutes1++;
+          if (minutes1 == 60) {
+            minutes1 = 0;
+            hour1++;
+            if (hour1 > 23) {
+              hour1 = 0;
+            }
+          }
+        } while (minutes1 % 5 != 0);
+
+        do {
+          minutes2++;
+          if (minutes2 == 60) {
+            minutes2 = 0;
+            hour2++;
+            if (hour2 > 23) {
+              hour2 = 0;
+            }
+          }
+        } while (minutes2 % 5 != 0);
       } else {
         hour1 = hour2;
         minutes1 = minutes2;
@@ -114,17 +138,20 @@ class _TimeAcceptState extends State<TimeAccept> {
         minutes2 = minutes1 + 30;
         if (minutes2 > 59) {
           hour2++;
+          if (hour2 > 23) {
+            hour2 = 0;
+          }
           minutes2 -= 60;
         }
       }
       timeSelcted(hour1, minutes1, hour2, minutes2, i);
       listTimes[i]['title'] = minutes1 < 10
-          ? '$hour1:0$minutes1 - $hour2:$minutes2'
+          ? '$hour1:0${minutes1.round()} - $hour2:${minutes2.round()}'
           : minutes2 < 10
-              ? '$hour1:$minutes1 - $hour2:0$minutes2'
+              ? '$hour1:${minutes1.round()} - $hour2:0${minutes2.round()}'
               : minutes1 < 10 && minutes2 < 10
-                  ? '$hour1:0$minutes1 - $hour2:0$minutes2'
-                  : '$hour1:$minutes1 - $hour2:$minutes2';
+                  ? '$hour1:0${minutes1.round()} - $hour2:0${minutes2.round()}'
+                  : '$hour1:${minutes1.round()} - $hour2:${minutes2.round()}';
     }
   }
 
@@ -144,23 +171,25 @@ class _TimeAcceptState extends State<TimeAccept> {
         minutes2 = minutes1 + 10;
         if (minutes2 > 59) {
           hour2++;
+          if (hour2 > 23) {
+            hour2 = 0;
+          }
           minutes2 -= 60;
         }
       }
       listTimesSelected[i]['title'][index]['title'] = minutes1 < 10
-          ? '$hour1:0$minutes1 - $hour2:$minutes2'
+          ? '$hour1:0${minutes1.round()} - $hour2:${minutes2.round()}'
           : minutes2 < 10
-              ? '$hour1:$minutes1 - $hour2:0$minutes2'
+              ? '$hour1:${minutes1.round()} - $hour2:0${minutes2.round()}'
               : minutes1 < 10 && minutes2 < 10
-                  ? '$hour1:0$minutes1 - $hour2:0$minutes2'
-                  : '$hour1:$minutes1 - $hour2:$minutes2';
+                  ? '$hour1:0${minutes1.round()} - $hour2:0${minutes2.round()}'
+                  : '$hour1:${minutes1.round()} - $hour2:${minutes2.round()}';
     }
   }
 
   @override
   void initState() {
     availableTime();
-
     super.initState();
   }
 
@@ -348,6 +377,9 @@ class _TimeAcceptState extends State<TimeAccept> {
                       onTap: () {
                         setState(
                           () {
+                            sl<AcceptTime>().time =
+                                listTimesSelected[snapshotListTime.data!]
+                                    ['title'][snapshot.data!]['title'];
                             widget.pageController.nextPage(
                               duration: const Duration(milliseconds: 600),
                               curve: Curves.easeInOutQuint,

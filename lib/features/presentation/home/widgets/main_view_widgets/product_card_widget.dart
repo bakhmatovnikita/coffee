@@ -58,23 +58,35 @@ class _ProductCardState extends State<ProductCard> {
                     topLeft: Radius.circular(16.r),
                     bottomLeft: Radius.circular(16.r),
                   ),
-                  child:
-                      // child: widget.productEntiti.imageLink.isNotEmpty
-                      // ? ExtendedImage.network(
-                      //     widget.productEntiti.imageLink[0],
-                      //     width: 155.w,
-                      //     fit: BoxFit.cover,
-
-                      //   )
-                      SizedBox(
-                    width: 155.w,
-                    child: Image.asset(
-                      'assets/images/splash.png',
-                      width: 155.w / 2,
-                      height: 155.w / 2,
-                    ),
-                  ),
                   // child: widget.productEntiti.imageLink.isNotEmpty
+                  //     ? CachedNetworkImage(
+                  //         memCacheWidth: 155,
+                  //         // memCacheHeight: 160,
+                  //         // maxHeightDiskCache: 60,
+                  //         maxWidthDiskCache: 155,
+                  //         imageUrl: widget.productEntiti.imageLink[0],
+                  //         width: 155.w,
+                  //         filterQuality: FilterQuality.high,
+                  //         fit: BoxFit.cover,
+                  //         progressIndicatorBuilder:
+                  //             (context, url, downloadProgress) => SizedBox(
+                  //           height: 20,
+                  //           width: 20,
+                  //           child: CircularProgressIndicator(
+                  //               value: downloadProgress.progress),
+                  //         ),
+                  //         errorWidget: (context, url, error) =>
+                  //             const Icon(Icons.error),
+                  //       )
+                      child: SizedBox(
+                          width: 155.w,
+                          child: Image.asset(
+                            'assets/images/splash.png',
+                            width: 155.w / 2,
+                            height: 155.w / 2,
+                          ),
+                        ),
+                  // widget.productEntiti.imageLink.isNotEmpty
                   //     ? OctoImage(
                   //         image: CachedNetworkImageProvider(
                   //           widget.productEntiti.imageLink[0],
