@@ -2,6 +2,7 @@ import 'package:cofee/core/error/failure.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/history/histroy_model.dart';
+import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
@@ -29,4 +30,5 @@ abstract class CoffeeRepository {
   Future<Either<Failure, HistoryModel>> getOrderHistory(
       String endpoint, String phone, List<String> organizationIds);
   Future<Either<Failure, SelectCartModel>> getCart(String endpoint, String organizationId);
+  Future<Either<Failure, OrderTypesModel>> getOrderTypes(String endpoint, String organizationId);
 }

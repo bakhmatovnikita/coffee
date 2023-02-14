@@ -43,12 +43,15 @@ class PushError extends StatelessWidget {
                     color: const Color(0xffFFFFFF)
                   ),
                 ),
-                Text(
-                  title,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xffFFFFFF)
+                SizedBox(
+                  width: 343,
+                  child: Text(
+                    title,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xffFFFFFF)
+                    ),
                   ),
                 ),
               ],

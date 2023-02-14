@@ -6,6 +6,7 @@ import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasour
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/history/histroy_model.dart';
+import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
@@ -192,8 +193,14 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   }
 
   @override
-  Future<OrderModel> createOrder(String endpoint, List<Item> item, String phone,
-      String organizationId, String paymentTypeKind, int sum, String paymentTypeId) async {
+  Future<OrderModel> createOrder(
+      String endpoint,
+      List<Item> item,
+      String phone,
+      String organizationId,
+      String paymentTypeKind,
+      int sum,
+      String paymentTypeId) async {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -225,9 +232,14 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       ),
     );
     print(response.statusCode);
-    if (response.statusCode! >= 200 && response.statusCode! < 400) {
-      return OrderModel.fromJson(response.data);
-    } else {
+    print(response.data);
+    try {
+      if (response.statusCode! >= 200 && response.statusCode! < 400) {
+        return OrderModel.fromJson(response.data);
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
       throw ServerException();
     }
   }
@@ -289,6 +301,33 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return SelectCartModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<OrderTypesModel> getOrderTypes(String endpoint, String organizationId) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+    };
+    final selectOrderTypeData = jsonEncode({
+      "organizationIds": [organizationId],
+    });
+     final response = await _dio.post(
+      endpoint,
+      data: selectOrderTypeData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return OrderTypesModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

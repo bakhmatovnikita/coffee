@@ -3,6 +3,7 @@ import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasour
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/history/histroy_model.dart';
+import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
@@ -122,10 +123,16 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   }
 
   @override
-  Future<Either<Failure, OrderModel>> createOrder(String endpoint,
-      List<Item> item, String phone, String organizationId, String paymentTypeKind, int sum, String paymentTypeId) async {
-    return await _createOrder(() =>
-        remoteDatasource.createOrder(endpoint, item, phone, organizationId, paymentTypeKind, sum, paymentTypeId));
+  Future<Either<Failure, OrderModel>> createOrder(
+      String endpoint,
+      List<Item> item,
+      String phone,
+      String organizationId,
+      String paymentTypeKind,
+      int sum,
+      String paymentTypeId) async {
+    return await _createOrder(() => remoteDatasource.createOrder(endpoint, item,
+        phone, organizationId, paymentTypeKind, sum, paymentTypeId));
   }
 
   Future<Either<Failure, OrderModel>> _createOrder(
@@ -134,6 +141,7 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       final orderModel = await order();
       return Right(orderModel);
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
@@ -168,6 +176,23 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
     try {
       final cartModel = await cart();
       return Right(cartModel);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, OrderTypesModel>> getOrderTypes(
+      String endpoint, String organizationId) async {
+    return await _getOrderTypes(
+        () => remoteDatasource.getOrderTypes(endpoint, organizationId));
+  }
+
+  Future<Either<Failure, OrderTypesModel>> _getOrderTypes(
+      Future<OrderTypesModel> Function() orderTypes) async {
+    try {
+      final orderType = await orderTypes();
+      return Right(orderType);
     } catch (e) {
       return Left(ServerFailure());
     }

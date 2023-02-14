@@ -6,6 +6,7 @@ import 'package:cofee/features/presentation/auth/root_screen/controller/root_scr
 import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_cubit.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/way_of_obtaining/controller/way_of_obtaining_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
@@ -67,6 +68,9 @@ Future<void> main() async {
           BlocProvider<CartViewCubit>(
             create: (context) => sl<CartViewCubit>(),
           ),
+          BlocProvider<OrderTypesCubit>(
+            create: (context) => sl<OrderTypesCubit>(),
+          )
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),

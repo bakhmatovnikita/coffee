@@ -334,44 +334,40 @@ class _SelectCartState extends State<SelectCart> {
 
   void _successPaid(
       String paymentTypeKind, int sum, String paymentTypeId) async {
-    try {
-      await context.read<CartCubit>().createClientOrder(
-            'order/create',
-            List.generate(
-              widget.cartModel.length,
-              (index) => Item(
-                type: 'Product',
-                amount: widget.cartModel[index].count,
-                productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
-                comment: 'comment',
-                productId: widget.cartModel[index].productId,
-              ),
-            ),
-            paymentTypeKind,
-            sum,
-            paymentTypeId,
-          );
-      widget.pageController.nextPage(
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.easeInOutQuint,
-      );
-      setState(() {});
-    } catch (e) {
-      SmartDialog.show(
-        animationType: SmartAnimationType.fade,
-        maskColor: Colors.transparent,
-        displayTime: const Duration(seconds: 3),
-        clickMaskDismiss: false,
-        usePenetrate: true,
-        builder: (context) => const SafeArea(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: PushError(
-              title: 'Что-то пошло не так, попробуйте позже',
+    await context.read<CartCubit>().createClientOrder(
+          'order/create',
+          List.generate(
+            widget.cartModel.length,
+            (index) => Item(
+              type: 'Product',
+              amount: widget.cartModel[index].count,
+              productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
+              comment: 'comment',
+              productId: widget.cartModel[index].productId,
             ),
           ),
-        ),
-      );
-    }
+          paymentTypeKind,
+          sum,
+          paymentTypeId,
+          () => SmartDialog.show(
+            animationType: SmartAnimationType.fade,
+            maskColor: Colors.transparent,
+            displayTime: const Duration(seconds: 3),
+            clickMaskDismiss: false,
+            usePenetrate: true,
+            builder: (context) => const SafeArea(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: PushError(
+                  title: 'Что-то пошло не так',
+                ),
+              ),
+            ),
+          ),
+          () => widget.pageController.nextPage(
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOutQuint,
+          ),
+        );
   }
 }

@@ -29,11 +29,6 @@ class CheckoutBottomsheet extends StatefulWidget {
 class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
   static PageController pageController = PageController(keepPage: true);
 
-  @override
-  void initState() {
-    pageController.addListener(() {});
-    super.initState();
-  }
 
   late List<dynamic> listPages = [
     TimeAccept(

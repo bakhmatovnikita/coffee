@@ -85,10 +85,10 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> createClientOrder(String endpoint, List<Item> item, String paymentTypeKind, int sum, String paymentTypeId) async {
+  Future<void> createClientOrder(String endpoint, List<Item> item,
+      String paymentTypeKind, int sum, String paymentTypeId, Function() onError, Function() onSucces) async {
     try {
-      print(await localDatasource.getPhoneUser());
-      createOrder.call(
+      final value = await createOrder.call(
         CresteOrderParams(
           endpoint: endpoint,
           item: item,
@@ -99,8 +99,18 @@ class CartCubit extends Cubit<CartState> {
           paymentTypeId: paymentTypeId,
         ),
       );
-      localDatasource.delecteCart();
-      emit(NotHaveCartState());
+      value.fold(
+        (error) {
+          final cart = localDatasource.getSavedCart();
+          onError();
+          emit(HaveCartState(countCart: cart.length, cartModel: cart));
+        },
+        (good) {
+          localDatasource.delecteCart();
+          onSucces();
+          emit(NotHaveCartState());
+        },
+      );
     } catch (e) {
       final cart = localDatasource.getSavedCart();
       emit(HaveCartState(countCart: cart.length, cartModel: cart));

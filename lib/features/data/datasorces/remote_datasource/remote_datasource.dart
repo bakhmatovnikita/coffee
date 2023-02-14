@@ -1,12 +1,14 @@
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
-import 'package:cofee/features/data/models/history/histroy_model.dart';
+import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
+
+import '../../models/history/histroy_model.dart';
 
 abstract class RemoteDatasource {
   Future<UserIdModel> createUser(
@@ -26,4 +28,5 @@ abstract class RemoteDatasource {
   Future<HistoryModel> getHistory(
       String endpoint, String phone, List<String> organizationIds);
   Future<SelectCartModel> getCarts(String endpoint, String organizationId);
+  Future<OrderTypesModel> getOrderTypes(String endpoint, String organizationId);
 }
