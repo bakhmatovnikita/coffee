@@ -10,6 +10,7 @@ import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
+import 'package:cofee/features/data/models/user_info/user_info_model.dart';
 import 'package:cofee/features/domain/entiti/organizations_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
@@ -193,6 +194,23 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
     try {
       final orderType = await orderTypes();
       return Right(orderType);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserInfoModel>> getUserInfo(
+      String endpoint, String phone, String organizationId) async {
+    return await _getUserInfo(
+        () => remoteDatasource.getUserInfo(endpoint, phone, organizationId));
+  }
+
+  Future<Either<Failure, UserInfoModel>> _getUserInfo(
+      Future<UserInfoModel> Function() userInfo) async {
+    try {
+      final userData = await userInfo();
+      return Right(userData);
     } catch (e) {
       return Left(ServerFailure());
     }

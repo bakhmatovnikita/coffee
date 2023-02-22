@@ -12,6 +12,7 @@ import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
+import 'package:cofee/features/data/models/user_info/user_info_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -307,7 +308,8 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   }
 
   @override
-  Future<OrderTypesModel> getOrderTypes(String endpoint, String organizationId) async {
+  Future<OrderTypesModel> getOrderTypes(
+      String endpoint, String organizationId) async {
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -317,7 +319,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     final selectOrderTypeData = jsonEncode({
       "organizationIds": [organizationId],
     });
-     final response = await _dio.post(
+    final response = await _dio.post(
       endpoint,
       data: selectOrderTypeData,
       options: Options(
@@ -328,6 +330,38 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrderTypesModel.fromJson(response.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<UserInfoModel> getUserInfo(
+      String endpoint, String phone, String organizationId) async {
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization':
+          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
+    };
+    final userInfoData = jsonEncode({
+      {
+        "phone": phone,
+        "type": "phone",
+        "organizationId": organizationId,
+      }
+    });
+    final response = await _dio.post(
+      endpoint,
+      data: userInfoData,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) => status! < 499,
+        headers: headers,
+      ),
+    );
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return UserInfoModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

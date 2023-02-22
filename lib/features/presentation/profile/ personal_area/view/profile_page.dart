@@ -6,6 +6,8 @@ import 'package:cofee/custom_widgets/switch_button.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_state.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/widgets/restaurant_widget.dart';
+import 'package:cofee/features/presentation/profile/edit_profile/controller/edit_profile_cubit.dart';
+import 'package:cofee/features/presentation/profile/edit_profile/controller/edit_profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -125,31 +127,36 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: 16.w,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                title: "Имя Фамилия",
-                                color: ColorStyles.blackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(
-                                height: 8.h,
-                              ),
-                              CustomText(
-                                title: "mail@yandex.ru",
-                                color: ColorStyles.greyTitleColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              CustomText(
-                                title: "+7 654 675-78-09",
-                                color: ColorStyles.greyTitleColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ],
+                          BlocBuilder<EditProfileCubit, EditProfileState>(
+                            builder: (context, state) {
+                              
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    title: "Имя Фамилия",
+                                    color: ColorStyles.blackColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  SizedBox(
+                                    height: 8.h,
+                                  ),
+                                  CustomText(
+                                    title: "mail@yandex.ru",
+                                    color: ColorStyles.greyTitleColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  CustomText(
+                                    title: "+7 654 675-78-09",
+                                    color: ColorStyles.greyTitleColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ],
+                              );
+                            },
                           )
                         ],
                       ),

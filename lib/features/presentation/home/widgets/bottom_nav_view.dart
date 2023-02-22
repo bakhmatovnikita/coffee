@@ -81,8 +81,8 @@ class _BottomNavViewState extends State<BottomNavView>
                         icon: Column(
                           children: [
                             SizedBox(
-                              width: 20.73.h,
-                              height: 18.14.h,
+                              width: 24.73.h,
+                              height: 22.14.h,
                               child: SvgPicture.asset(
                                 snapshot.data! == 0
                                     ? SvgImg.houseFill
@@ -110,8 +110,8 @@ class _BottomNavViewState extends State<BottomNavView>
                           child: Column(
                             children: [
                               SizedBox(
-                                width: 19.7.h,
-                                height: 16.9.h,
+                                width: 23.7.h,
+                                height: 20.9.h,
                                 child: Stack(
                                   children: [
                                     SvgPicture.asset(
@@ -163,8 +163,8 @@ class _BottomNavViewState extends State<BottomNavView>
                           children: [
                             SvgPicture.asset(
                               SvgImg.heart,
-                              width: 17.15.h,
-                              height: 15.88.h,
+                              width: 21.15.h,
+                              height: 19.88.h,
                               color: snapshot.data! == 2
                                   ? ColorStyles.accentColor
                                   : ColorStyles.greyTitleColor,
