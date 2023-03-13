@@ -12,6 +12,7 @@ import 'package:cofee/features/data/models/terminal_group/terminal_group_model.d
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
 import 'package:cofee/injection.container.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,11 +40,13 @@ class LocalDatasourceImplement implements LocalDatasource {
   }
 
   @override
-  Future<TokenModel> getToken() async {
+  Future<String> getToken() async {
     final token = await storage.read(key: BackConstants.SAVED_TOKEN);
     if (token != null) {
-      return TokenModel.fromJson(jsonDecode(token));
-    } else {
+      return token;
+    } else if (token == null){
+      return "";
+    }else{
       throw CacheException();
     }
   }

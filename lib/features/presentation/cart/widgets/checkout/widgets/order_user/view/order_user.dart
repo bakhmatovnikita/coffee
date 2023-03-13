@@ -148,7 +148,7 @@ class _OrderUserState extends State<OrderUser> {
                         children: [
                           CustomText(
                             title:
-                                "${widget.cartModel[index].sizePrices.toString()} ₽",
+                                "${widget.cartModel[index].count} * ${widget.cartModel[index].sizePrices.toString()} ₽",
                             color: ColorStyles.accentColor,
                             fontSize: 20.sp,
                           ),

@@ -132,11 +132,11 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
   final weekDay = BackConstants.weekDays[DateTime.now().weekday];
   final stream = StreamController<int>();
   double num = 0.0;
-  Future<void> feetchMenu(
-      Function() accessToken, Function() nomenclature) async {
-    await accessToken();
-    await nomenclature();
-  }
+  // Future<void> feetchMenu(
+  //     Function() accessToken, Function() nomenclature) async {
+  //   await accessToken();
+  //   await nomenclature();
+  // }
 
   @override
   void dispose() {
@@ -145,7 +145,6 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
 
   @override
   void initState() {
-    context.read<LoginViewCubit>().saveToken("access_token");
     scrollController = ScrollController();
     scrollController.addListener(changeTabs);
     super.initState();
@@ -180,10 +179,7 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewCubit, HomeViewState>(
       builder: (context, state) {
-        if (state is HomeViewEmptyState) {
-          context.read<LoginViewCubit>().saveToken("access_token");
-          context.read<HomeViewCubit>().fetchProducts('nomenclature');
-        } else if (state is HomeViewLoadedState) {
+        if (state is HomeViewLoadedState) {
           itemCategory = List.generate(
             state.productsEntiti.groups.length,
             (index) => GlobalKey(),
@@ -259,7 +255,8 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
                             tabs: List.generate(
                               itemCategory.length,
                               (index) => CategoryCardWidget(
-                                groupsEntiti: state.productsEntiti.groups[index],
+                                groupsEntiti:
+                                    state.productsEntiti.groups[index],
                                 isSelected:
                                     snapshot.data! == index ? true : false,
                               ),
@@ -574,22 +571,23 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
                             try {
                               context.read<ListViewCubit>().addToModalCart(
                                     CartModel(
-                                        name: productEntiti.name,
-                                        fatFullAmount: productEntiti
-                                            .fatFullAmount
-                                            .toStringAsFixed(2),
-                                        weight: productEntiti.weight,
-                                        proteinsFullAmount: productEntiti
-                                            .proteinsFullAmount
-                                            .toStringAsFixed(2),
-                                        carbohydratesFullAmount: productEntiti
-                                            .carbohydratesFullAmount
-                                            .toStringAsFixed(2),
-                                        sizePrices: productEntiti
-                                            .sizePrices[0].price.currentPrice,
-                                        imageLink: productEntiti.imageLink,
-                                        count: 1,
-                                        productId: productEntiti.id),
+                                      name: productEntiti.name,
+                                      fatFullAmount: productEntiti.fatFullAmount
+                                          .toStringAsFixed(2),
+                                      weight: productEntiti.weight,
+                                      proteinsFullAmount: productEntiti
+                                          .proteinsFullAmount
+                                          .toStringAsFixed(2),
+                                      carbohydratesFullAmount: productEntiti
+                                          .carbohydratesFullAmount
+                                          .toStringAsFixed(2),
+                                      sizePrices: productEntiti
+                                          .sizePrices[0].price.currentPrice,
+                                      imageLink: productEntiti.imageLink,
+                                      count: 1,
+                                      productId: productEntiti.id,
+                                      isSelected: true,
+                                    ),
                                   );
                               SmartDialog.show(
                                 animationType: SmartAnimationType.fade,

@@ -229,6 +229,16 @@ class _CartViewState extends State<CartView> {
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15.h),
+                          child: Divider(
+                            color: Colors.grey,
+                            height: 1.h,
+                            indent: 16.w,
+                            endIndent: 16.w,
+                            thickness: 1.h,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -237,23 +247,23 @@ class _CartViewState extends State<CartView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
-                        child: CustomText(
-                          title: 'Итого:',
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 2),
-                        child: CustomText(
-                          title:
-                              '${totalAmount.toString()} ₽ · ${totalWeigth.toStringAsFixed(2)} Ккал',
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
+                      Container(
+                        margin: EdgeInsets.only(top: 20.h, left: 16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              title: 'Итого:',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            CustomText(
+                              title:
+                                  '${totalAmount.toString()} ₽ · ${totalWeigth.toStringAsFixed(2)} Ккал',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
                         ),
                       ),
                       Padding(

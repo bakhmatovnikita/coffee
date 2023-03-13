@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/error/exception.dart';
+import 'package:cofee/features/data/datasorces/remote_datasource/auth_interceptor.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
@@ -14,6 +15,7 @@ import 'package:cofee/features/data/models/terminal_group/terminal_group_model.d
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_info/user_info_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
@@ -28,15 +30,15 @@ class RemoteDatasourceImplement implements RemoteDatasource {
         baseUrl: BackConstants.baseUrl,
       ),
     );
-    // initializeInterceptor();
+    if (kDebugMode) initializeInterceptor();
   }
   initializeInterceptor() {
+    _dio.interceptors.add(DataSourceInterceptor());
     _dio.interceptors.add(
       PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
-        responseBody: true,
-        responseHeader: false,
+        responseBody: false,
         error: true,
         compact: true,
         maxWidth: 90,
@@ -44,15 +46,13 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     );
   }
 
+  Map<String, String> headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  };
   @override
   Future<UserIdModel> createUser(
       String endpoint, String phone, String organizationId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final userData = jsonEncode({
       "organizationId": organizationId,
       "phone": phone,
@@ -63,25 +63,18 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return UserIdModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<OrganizationsModel> getOrganizations(List<String> organizationIds,
       bool returnAdditionalInfo, bool includeDisabled, String endpoint) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final organizationData = jsonEncode(
       {
         "organizationIds": organizationIds,
@@ -94,23 +87,19 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       data: organizationData,
       options: Options(
         followRedirects: false,
-        validateStatus: (status) => status! < 499,
         headers: headers,
+        validateStatus: (status) => status! < 499,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrganizationsModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<TokenModel> getToken(String endpoint) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    };
     final apiLoginData = jsonEncode(
       {
         "apiLogin": "86a9ec87-8b2",
@@ -121,57 +110,36 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     final response = await _dio.post(
       endpoint,
       data: apiLoginData,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) => status! < 499,
-        headers: headers,
-      ),
+      
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return TokenModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<ProductsModel> getProducts(String endpoint) async {
-    print('TOKEN IS: ${await storage.read(key: BackConstants.SAVED_TOKEN)}');
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final organizationIdData = jsonEncode({
       "organizationId": "aaf34eae-ad9d-4ea0-8dfb-5ad02d23a0b8",
       "startRevision": 0
     });
+
     final response = await _dio.post(
       endpoint,
       data: organizationIdData,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) => status! < 499,
-        headers: headers,
-      ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return ProductsModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<TerminalGroupModel> fetchTerminalGroup(
       String endpoint, String organizationId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final organizationData = jsonEncode({
       "organizationIds": [
         organizationId,
@@ -183,13 +151,12 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return TerminalGroupModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
@@ -202,12 +169,6 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       String paymentTypeKind,
       int sum,
       String paymentTypeId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final cartToOrderData = jsonEncode({
       "organizationId": organizationId,
       "terminalGroupId": "0bcfb696-b4a3-e489-013e-c7339742007b",
@@ -229,19 +190,15 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     print(response.statusCode);
     print(response.data);
-    try {
-      if (response.statusCode! >= 200 && response.statusCode! < 400) {
-        return OrderModel.fromJson(response.data);
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      throw ServerException();
+
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return OrderModel.fromJson(response.data);
+    } else {
+      throw DioErrorType.other;
     }
   }
 
@@ -251,12 +208,6 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     String phone,
     List<String> organizationIds,
   ) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final historyOrdersData = jsonEncode({
       "organizationIds": organizationIds,
       "startRevision": 0,
@@ -268,26 +219,19 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     print(response.statusCode);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return HistoryModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<SelectCartModel> getCarts(
       String endpoint, String organizationId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final selectCartData = jsonEncode({
       "organizationIds": [organizationId],
     });
@@ -297,25 +241,18 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return SelectCartModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<OrderTypesModel> getOrderTypes(
       String endpoint, String organizationId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final selectOrderTypeData = jsonEncode({
       "organizationIds": [organizationId],
     });
@@ -325,25 +262,18 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       options: Options(
         followRedirects: false,
         validateStatus: (status) => status! < 499,
-        headers: headers,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrderTypesModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
     }
   }
 
   @override
   Future<UserInfoModel> getUserInfo(
       String endpoint, String phone, String organizationId) async {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization':
-          'Bearer ${await storage.read(key: BackConstants.SAVED_TOKEN)}',
-    };
     final userInfoData = jsonEncode({
       {
         "phone": phone,
@@ -354,16 +284,20 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     final response = await _dio.post(
       endpoint,
       data: userInfoData,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) => status! < 499,
-        headers: headers,
-      ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return UserInfoModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw DioErrorType.other;
+    }
+  }
+
+  @override
+  Future fetch(RequestOptions options) {
+    try {
+      return _dio.fetch(options);
+    } catch (_) {
+      rethrow;
     }
   }
 }

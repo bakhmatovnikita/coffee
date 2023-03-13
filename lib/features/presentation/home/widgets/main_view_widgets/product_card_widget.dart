@@ -1,5 +1,7 @@
+import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/push_access.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
+import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +24,9 @@ import '../../controller/home_view_state.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductEntiti productEntiti;
-  const ProductCard({super.key, required this.productEntiti});
+  final int index;
+  const ProductCard(
+      {super.key, required this.productEntiti, required this.index});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -30,9 +34,21 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   SmartDialogController smartDialogController = SmartDialogController();
+  int countProducts = 1;
+  bool? isSelected;
+  returnBool(List<CartModel> cart) {
+    for (var element in cart) {
+      if (element.name == widget.productEntiti.name && element.isSelected) {
+        countProducts = element.count;
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewCubit, HomeViewState>(
+    return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
         return ScaleButton(
           onTap: () => Functions(context)
@@ -78,14 +94,14 @@ class _ProductCardState extends State<ProductCard> {
                   //         errorWidget: (context, url, error) =>
                   //             const Icon(Icons.error),
                   //       )
-                      child: SizedBox(
-                          width: 155.w,
-                          child: Image.asset(
-                            'assets/images/splash.png',
-                            width: 155.w / 2,
-                            height: 155.w / 2,
-                          ),
-                        ),
+                  child: SizedBox(
+                    width: 155.w,
+                    child: Image.asset(
+                      'assets/images/splash.png',
+                      width: 155.w / 2,
+                      height: 155.w / 2,
+                    ),
+                  ),
                   // widget.productEntiti.imageLink.isNotEmpty
                   //     ? OctoImage(
                   //         image: CachedNetworkImageProvider(
@@ -154,81 +170,313 @@ class _ProductCardState extends State<ProductCard> {
                               fontWeight: FontWeight.w600,
                               color: ColorStyles.accentColor,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                try {
-                                  context.read<CartCubit>().addToCartItem(
-                                        CartModel(
-                                            name: widget.productEntiti.name,
-                                            fatFullAmount: widget
-                                                .productEntiti.fatFullAmount
-                                                .toStringAsFixed(2),
-                                            weight: widget.productEntiti.weight,
-                                            proteinsFullAmount: widget
-                                                .productEntiti
-                                                .proteinsFullAmount
-                                                .toStringAsFixed(2),
-                                            carbohydratesFullAmount: widget
-                                                .productEntiti
-                                                .carbohydratesFullAmount
-                                                .toStringAsFixed(2),
-                                            sizePrices: widget
-                                                .productEntiti
-                                                .sizePrices[0]
-                                                .price
-                                                .currentPrice,
-                                            imageLink:
-                                                widget.productEntiti.imageLink,
-                                            count: 1,
-                                            productId: widget.productEntiti.id),
-                                      );
-                                  SmartDialog.show(
-                                    animationType: SmartAnimationType.fade,
-                                    maskColor: Colors.transparent,
-                                    controller: smartDialogController,
-                                    displayTime: const Duration(seconds: 3),
-                                    clickMaskDismiss: false,
-                                    usePenetrate: true,
-                                    builder: (context) => const SafeArea(
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: PushAccess(
-                                          title: 'Товар добавлен в корзину',
-                                          subTitle: 'Вы можете оформить заказ!',
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } catch (e) {
-                                  SmartDialog.show(
-                                    animationType: SmartAnimationType.fade,
-                                    maskColor: Colors.transparent,
-                                    displayTime: const Duration(seconds: 3),
-                                    clickMaskDismiss: false,
-                                    usePenetrate: true,
-                                    builder: (context) => const SafeArea(
-                                      child: Align(
-                                        alignment: Alignment.topCenter,
-                                        child: PushError(
-                                          title: 'Что-то пошло не так',
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                            BlocBuilder<CartCubit, CartState>(
+                              builder: (context, state) {
+                                if (state is HaveCartState) {
+                                  return returnBool(state.cartModel!)
+                                      ? SizedBox(
+                                          height: 40.h,
+                                          child: Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (countProducts < 2) {
+                                                    countProducts = 1;
+                                                  } else if (countProducts <
+                                                      49) {
+                                                    countProducts--;
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 32.h,
+                                                  width: 32.w,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SvgPicture.asset(
+                                                      SvgImg.minus,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                alignment: Alignment.center,
+                                                width: 30.w,
+                                                child: CustomText(
+                                                  title:
+                                                      countProducts.toString(),
+                                                  fontSize: 17,
+                                                  color: ColorStyles.blackColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (countProducts > 49) {
+                                                    countProducts = 50;
+                                                  } else {
+                                                    countProducts++;
+                                                  }
+                                                  context
+                                                      .read<CartCubit>()
+                                                      .addToCartItem(
+                                                        CartModel(
+                                                          name: widget
+                                                              .productEntiti
+                                                              .name,
+                                                          fatFullAmount: widget
+                                                              .productEntiti
+                                                              .fatFullAmount
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                          weight: widget
+                                                              .productEntiti
+                                                              .weight,
+                                                          proteinsFullAmount: widget
+                                                              .productEntiti
+                                                              .proteinsFullAmount
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                          carbohydratesFullAmount: widget
+                                                              .productEntiti
+                                                              .carbohydratesFullAmount
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                          sizePrices: widget
+                                                              .productEntiti
+                                                              .sizePrices[0]
+                                                              .price
+                                                              .currentPrice,
+                                                          imageLink: widget
+                                                              .productEntiti
+                                                              .imageLink,
+                                                          count: countProducts,
+                                                          productId: widget
+                                                              .productEntiti.id,
+                                                          isSelected: true,
+                                                        ),
+                                                      );
+                                                },
+                                                child: Container(
+                                                  height: 32.h,
+                                                  width: 32.w,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SvgPicture.asset(
+                                                      SvgImg.plus,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : GestureDetector(
+                                          onTap: () {
+                                            try {
+                                              context
+                                                  .read<CartCubit>()
+                                                  .addToCartItem(
+                                                    CartModel(
+                                                      name: widget
+                                                          .productEntiti.name,
+                                                      fatFullAmount: widget
+                                                          .productEntiti
+                                                          .fatFullAmount
+                                                          .toStringAsFixed(2),
+                                                      weight: widget
+                                                          .productEntiti.weight,
+                                                      proteinsFullAmount: widget
+                                                          .productEntiti
+                                                          .proteinsFullAmount
+                                                          .toStringAsFixed(2),
+                                                      carbohydratesFullAmount:
+                                                          widget.productEntiti
+                                                              .carbohydratesFullAmount
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                      sizePrices: widget
+                                                          .productEntiti
+                                                          .sizePrices[0]
+                                                          .price
+                                                          .currentPrice,
+                                                      imageLink: widget
+                                                          .productEntiti
+                                                          .imageLink,
+                                                      count: countProducts,
+                                                      productId: widget
+                                                          .productEntiti.id,
+                                                      isSelected: true,
+                                                    ),
+                                                  );
+                                                  setState(() {
+                                                    
+                                                  });
+                                              SmartDialog.show(
+                                                animationType:
+                                                    SmartAnimationType.fade,
+                                                maskColor: Colors.transparent,
+                                                controller:
+                                                    smartDialogController,
+                                                displayTime:
+                                                    const Duration(seconds: 3),
+                                                clickMaskDismiss: false,
+                                                usePenetrate: true,
+                                                builder: (context) =>
+                                                    const SafeArea(
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    child: PushAccess(
+                                                      title:
+                                                          'Товар добавлен в корзину',
+                                                      subTitle:
+                                                          'Вы можете оформить заказ!',
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            } catch (e) {
+                                              SmartDialog.show(
+                                                animationType:
+                                                    SmartAnimationType.fade,
+                                                maskColor: Colors.transparent,
+                                                displayTime:
+                                                    const Duration(seconds: 3),
+                                                clickMaskDismiss: false,
+                                                usePenetrate: true,
+                                                builder: (context) =>
+                                                    const SafeArea(
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: PushError(
+                                                      title:
+                                                          'Что-то пошло не так',
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: SizedBox(
+                                            height: 30.h,
+                                            width: 30.w,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: SvgPicture.asset(
+                                                'assets/icons/plus.svg',
+                                                width: 16.83.h,
+                                                height: 16.83.h,
+                                              ),
+                                            ),
+                                          ),
+                                        );
                                 }
-                              },
-                              child: SizedBox(
-                                height: 30.h,
-                                width: 30.w,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/plus.svg',
-                                    width: 16.83.h,
-                                    height: 16.83.h,
+                                return GestureDetector(
+                                  onTap: () {
+                                    try {
+                                      context.read<CartCubit>().addToCartItem(
+                                            CartModel(
+                                              name: widget.productEntiti.name,
+                                              fatFullAmount: widget
+                                                  .productEntiti.fatFullAmount
+                                                  .toStringAsFixed(2),
+                                              weight:
+                                                  widget.productEntiti.weight,
+                                              proteinsFullAmount: widget
+                                                  .productEntiti
+                                                  .proteinsFullAmount
+                                                  .toStringAsFixed(2),
+                                              carbohydratesFullAmount: widget
+                                                  .productEntiti
+                                                  .carbohydratesFullAmount
+                                                  .toStringAsFixed(2),
+                                              sizePrices: widget
+                                                  .productEntiti
+                                                  .sizePrices[0]
+                                                  .price
+                                                  .currentPrice,
+                                              imageLink: widget
+                                                  .productEntiti.imageLink,
+                                              count: countProducts,
+                                              productId:
+                                                  widget.productEntiti.id,
+                                              isSelected: true,
+                                            ),
+                                          );
+                                          setState(() {
+                                            
+                                          });
+                                      SmartDialog.show(
+                                        animationType: SmartAnimationType.fade,
+                                        maskColor: Colors.transparent,
+                                        controller: smartDialogController,
+                                        displayTime: const Duration(seconds: 3),
+                                        clickMaskDismiss: false,
+                                        usePenetrate: true,
+                                        builder: (context) => const SafeArea(
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: PushAccess(
+                                              title: 'Товар добавлен в корзину',
+                                              subTitle:
+                                                  'Вы можете оформить заказ!',
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      SmartDialog.show(
+                                        animationType: SmartAnimationType.fade,
+                                        maskColor: Colors.transparent,
+                                        displayTime: const Duration(seconds: 3),
+                                        clickMaskDismiss: false,
+                                        usePenetrate: true,
+                                        builder: (context) => const SafeArea(
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: PushError(
+                                              title: 'Что-то пошло не так',
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: SizedBox(
+                                    height: 30.h,
+                                    width: 30.w,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/plus.svg',
+                                        width: 16.83.h,
+                                        height: 16.83.h,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
                           ],
                         ),

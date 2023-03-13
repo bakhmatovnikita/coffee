@@ -7,6 +7,7 @@ import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
+import 'package:dio/dio.dart';
 
 import '../../models/history/histroy_model.dart';
 import '../../models/user_info/user_info_model.dart';
@@ -31,4 +32,5 @@ abstract class RemoteDatasource {
   Future<SelectCartModel> getCarts(String endpoint, String organizationId);
   Future<OrderTypesModel> getOrderTypes(String endpoint, String organizationId);
   Future<UserInfoModel> getUserInfo(String endpoint, String phone, String organizationId);
+  Future<dynamic>fetch(RequestOptions options);
 }

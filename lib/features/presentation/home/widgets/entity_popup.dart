@@ -180,7 +180,8 @@ class _EntityPopupState extends State<EntityPopup> {
                                   .price.currentPrice,
                               imageLink: widget.productEntiti.imageLink,
                               productId: widget.productEntiti.id,
-                              count: 1
+                              count: 1,
+                              isSelected: true,
                             ),
                           );
                       context.read<CartCubit>().getItemsCart();

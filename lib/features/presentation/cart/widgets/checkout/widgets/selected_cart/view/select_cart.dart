@@ -19,7 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
-import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
+// import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../../../../../../../custom_widgets/push_error.dart';

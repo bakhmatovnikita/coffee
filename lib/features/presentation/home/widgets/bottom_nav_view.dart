@@ -9,7 +9,6 @@ import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_contr
 import 'package:cofee/features/presentation/home/view/main_home.dart';
 import 'package:cofee/features/presentation/home/widgets/body_view.dart';
 import 'package:cofee/features/presentation/cart/view/cart_view.dart';
-import 'package:cofee/features/presentation/home/view/home_view.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,89 +39,89 @@ class _BottomNavViewState extends State<BottomNavView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(
-      builder: (context, state) {
-        if (state is CartEmptyState) {
-          context.read<CartCubit>().getItemsCart();
-        } else if (state is HaveCartState) {
-          return Scaffold(
-            body: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                MainHome(
-                  organizationId: widget.organizationId,
+    return Scaffold(
+      body: TabBarView(
+        controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          MainHome(
+            organizationId: widget.organizationId,
+          ),
+          const CartView(),
+          BodyView(
+            onChangeView: (index) {
+              _streamController.sink.add(index);
+              _tabController.animateTo(index);
+            },
+          ),
+        ],
+      ),
+      bottomNavigationBar: StreamBuilder<int>(
+          stream: _streamController.stream,
+          initialData: 0,
+          builder: (context, snapshot) {
+            return BottomNavigationBar(
+              showSelectedLabels: false,
+              backgroundColor: ColorStyles.whiteColor,
+              showUnselectedLabels: false,
+              selectedItemColor: ColorStyles.accentColor,
+              unselectedItemColor: ColorStyles.greyTitleColor,
+              onTap: (index) async {
+                _streamController.sink.add(index);
+                _tabController.animateTo(index);
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Column(
+                    children: [
+                      SizedBox(
+                        width: 24.73.h,
+                        height: 22.14.h,
+                        child: SvgPicture.asset(
+                          snapshot.data! == 0
+                              ? SvgImg.houseFill
+                              : SvgImg.houseNotFill,
+                          color: snapshot.data! == 0
+                              ? ColorStyles.accentColor
+                              : ColorStyles.greyTitleColor,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      CustomText(
+                        title: 'Главная',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.h,
+                        color: snapshot.data! == 0
+                            ? ColorStyles.accentColor
+                            : ColorStyles.greyTitleColor,
+                      ),
+                    ],
+                  ),
+                  label: 'Главная',
                 ),
-                const CartView(),
-                BodyView(
-                  onChangeView: (index) {
-                    _streamController.sink.add(index);
-                    _tabController.animateTo(index);
-                  },
-                ),
-              ],
-            ),
-            bottomNavigationBar: StreamBuilder<int>(
-                stream: _streamController.stream,
-                initialData: 0,
-                builder: (context, snapshot) {
-                  return BottomNavigationBar(
-                    showSelectedLabels: false,
-                    backgroundColor: ColorStyles.whiteColor,
-                    showUnselectedLabels: false,
-                    selectedItemColor: ColorStyles.accentColor,
-                    unselectedItemColor: ColorStyles.greyTitleColor,
-                    onTap: (index) async {
-                      _streamController.sink.add(index);
-                      _tabController.animateTo(index);
-                    },
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: Column(
-                          children: [
-                            SizedBox(
-                              width: 24.73.h,
-                              height: 22.14.h,
-                              child: SvgPicture.asset(
-                                snapshot.data! == 0
-                                    ? SvgImg.houseFill
-                                    : SvgImg.houseNotFill,
-                                color: snapshot.data! == 0
+                BottomNavigationBarItem(
+                  icon: GestureDetector(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 23.7.h,
+                          height: 20.9.h,
+                          child: Stack(
+                            children: [
+                              SvgPicture.asset(
+                                snapshot.data! == 1
+                                    ? SvgImg.cartFill
+                                    : SvgImg.cart,
+                                color: snapshot.data! == 1
                                     ? ColorStyles.accentColor
                                     : ColorStyles.greyTitleColor,
                               ),
-                            ),
-                            SizedBox(height: 5.h),
-                            CustomText(
-                              title: 'Главная',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.h,
-                              color: snapshot.data! == 0
-                                  ? ColorStyles.accentColor
-                                  : ColorStyles.greyTitleColor,
-                            ),
-                          ],
-                        ),
-                        label: 'Главная',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: GestureDetector(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 23.7.h,
-                                height: 20.9.h,
-                                child: Stack(
-                                  children: [
-                                    SvgPicture.asset(
-                                      snapshot.data! == 1
-                                          ? SvgImg.cartFill
-                                          : SvgImg.cart,
-                                      color: snapshot.data! == 1
-                                          ? ColorStyles.accentColor
-                                          : ColorStyles.greyTitleColor,
-                                    ),
-                                    Align(
+                              BlocBuilder<CartCubit, CartState>(
+                                builder: (context, state) {
+                                  if (state is CartEmptyState) {
+                                    context.read<CartCubit>().getItemsCart();
+                                  } else if (state is HaveCartState) {
+                                    return Align(
                                       alignment: Alignment.topRight,
                                       child: Container(
                                         height: 8.h,
@@ -140,174 +139,55 @@ class _BottomNavViewState extends State<BottomNavView>
                                               fontSize: 6,
                                             )),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 5.h),
-                              CustomText(
-                                title: 'Корзина',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.h,
-                                color: snapshot.data! == 1
-                                    ? ColorStyles.accentColor
-                                    : ColorStyles.greyTitleColor,
-                              ),
+                                    );
+                                  }
+                                  return Container();
+                                },
+                              )
                             ],
                           ),
                         ),
-                        label: 'Корзина',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Column(
-                          children: [
-                            SvgPicture.asset(
-                              SvgImg.heart,
-                              width: 21.15.h,
-                              height: 19.88.h,
-                              color: snapshot.data! == 2
-                                  ? ColorStyles.accentColor
-                                  : ColorStyles.greyTitleColor,
-                            ),
-                            SizedBox(height: 5.h),
-                            CustomText(
-                              title: 'Моё тело',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.h,
-                              color: snapshot.data! == 2
-                                  ? ColorStyles.accentColor
-                                  : ColorStyles.greyTitleColor,
-                            ),
-                          ],
+                        SizedBox(height: 5.h),
+                        CustomText(
+                          title: 'Корзина',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.h,
+                          color: snapshot.data! == 1
+                              ? ColorStyles.accentColor
+                              : ColorStyles.greyTitleColor,
                         ),
-                        label: 'Мое тело',
+                      ],
+                    ),
+                  ),
+                  label: 'Корзина',
+                ),
+                BottomNavigationBarItem(
+                  icon: Column(
+                    children: [
+                      SvgPicture.asset(
+                        SvgImg.heart,
+                        width: 21.15.h,
+                        height: 19.88.h,
+                        color: snapshot.data! == 2
+                            ? ColorStyles.accentColor
+                            : ColorStyles.greyTitleColor,
+                      ),
+                      SizedBox(height: 5.h),
+                      CustomText(
+                        title: 'Моё тело',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.h,
+                        color: snapshot.data! == 2
+                            ? ColorStyles.accentColor
+                            : ColorStyles.greyTitleColor,
                       ),
                     ],
-                  );
-                }),
-          );
-        }
-        return Scaffold(
-          body: TabBarView(
-            controller: _tabController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              MainHome(
-                organizationId: widget.organizationId,
-              ),
-              const CartView(),
-              BodyView(
-                onChangeView: (index) {
-                  _streamController.sink.add(index);
-                  _tabController.animateTo(index);
-                },
-              ),
-            ],
-          ),
-          bottomNavigationBar: StreamBuilder<int>(
-              stream: _streamController.stream,
-              initialData: 0,
-              builder: (context, snapshot) {
-                return BottomNavigationBar(
-                  showSelectedLabels: false,
-                  backgroundColor: ColorStyles.whiteColor,
-                  showUnselectedLabels: false,
-                  selectedItemColor: ColorStyles.accentColor,
-                  unselectedItemColor: ColorStyles.greyTitleColor,
-                  onTap: (index) {
-                    _streamController.sink.add(index);
-                    _tabController.animateTo(index);
-                  },
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Column(
-                        children: [
-                          SizedBox(
-                            width: 20.73.h,
-                            height: 18.14.h,
-                            child: SvgPicture.asset(
-                              snapshot.data! == 0
-                                  ? SvgImg.houseFill
-                                  : SvgImg.houseNotFill,
-                              color: snapshot.data! == 0
-                                  ? ColorStyles.accentColor
-                                  : ColorStyles.greyTitleColor,
-                            ),
-                          ),
-                          SizedBox(height: 5.h),
-                          CustomText(
-                            title: 'Главная',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.h,
-                            color: snapshot.data! == 0
-                                ? ColorStyles.accentColor
-                                : ColorStyles.greyTitleColor,
-                          ),
-                        ],
-                      ),
-                      label: 'Главная',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Column(
-                        children: [
-                          SizedBox(
-                            width: 19.7.h,
-                            height: 16.9.h,
-                            child: Stack(
-                              children: [
-                                SvgPicture.asset(
-                                  snapshot.data! == 1
-                                      ? SvgImg.cartFill
-                                      : SvgImg.cart,
-                                  color: snapshot.data! == 1
-                                      ? ColorStyles.accentColor
-                                      : ColorStyles.greyTitleColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 5.h),
-                          CustomText(
-                            title: 'Корзина',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.h,
-                            color: snapshot.data! == 1
-                                ? ColorStyles.accentColor
-                                : ColorStyles.greyTitleColor,
-                          ),
-                        ],
-                      ),
-                      label: 'Корзина',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Column(
-                        children: [
-                          SvgPicture.asset(
-                            SvgImg.heart,
-                            width: 17.15.h,
-                            height: 15.88.h,
-                            color: snapshot.data! == 2
-                                ? ColorStyles.accentColor
-                                : ColorStyles.greyTitleColor,
-                          ),
-                          SizedBox(height: 5.h),
-                          CustomText(
-                            title: 'Моё тело',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.h,
-                            color: snapshot.data! == 2
-                                ? ColorStyles.accentColor
-                                : ColorStyles.greyTitleColor,
-                          ),
-                        ],
-                      ),
-                      label: 'Мое тело',
-                    ),
-                  ],
-                );
-              }),
-        );
-      },
+                  ),
+                  label: 'Мое тело',
+                ),
+              ],
+            );
+          }),
     );
   }
 }

@@ -37,11 +37,11 @@ class _MainHomeState extends State<MainHome> {
   final stream = StreamController<int>();
   double num = 0.0;
 
-  Future<void> feetchMenu(
-      Function() accessToken, Function() nomenclature) async {
-    await accessToken();
-    await nomenclature();
-  }
+  // Future<void> feetchMenu(
+  //     Function() accessToken, Function() nomenclature) async {
+  //   await accessToken();
+  //   await nomenclature();
+  // }
 
   @override
   void dispose() {
@@ -50,7 +50,6 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   void initState() {
-    context.read<LoginViewCubit>().saveToken("access_token");
     scrollController = ScrollController();
     scrollController.addListener(changeTabs);
     super.initState();
@@ -61,7 +60,7 @@ class _MainHomeState extends State<MainHome> {
     for (var i = 0; i < itemCategory.length; i++) {
       if (scrollController.offset >= itemMenu[i]) {
         currentIndex = i;
-        DefaultTabController.of(tabContext!)!.animateTo(
+        DefaultTabController.of(tabContext!)?.animateTo(
           i,
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeInOut,
@@ -81,9 +80,7 @@ class _MainHomeState extends State<MainHome> {
     scrollController.addListener(changeTabs);
   }
 
-  Future<void> checkUser(
-      Function() nomenclature, Function() checkUserNumber) async {
-    await checkUserNumber();
+  Future<void> checkUser(Function() nomenclature) async {
     await nomenclature();
   }
 
@@ -92,10 +89,9 @@ class _MainHomeState extends State<MainHome> {
     return BlocBuilder<HomeViewCubit, HomeViewState>(
       builder: (context, state) {
         if (state is HomeViewEmptyState) {
-          // checkUser(
-          //     () => context.read<HomeViewCubit>().fetchProducts('nomenclature'),
-          //     () => context.read<RootScreenCubit>().checkAuthorization());
-          context.read<HomeViewCubit>().fetchProducts('nomenclature');
+          checkUser(() =>
+              context.read<HomeViewCubit>().fetchProducts('nomenclature'));
+              print(2);
         } else if (state is HomeViewLoadedState) {
           itemCategory = List.generate(
             state.productsEntiti.groups.length,
@@ -306,6 +302,7 @@ class _MainHomeState extends State<MainHome> {
                                                     state.productsEntiti
                                                         .groups[index].id)
                                                 .toList()[indexProducts],
+                                            index: indexProducts,
                                           ),
                                         ),
                                       ],
@@ -323,12 +320,10 @@ class _MainHomeState extends State<MainHome> {
               },
             ),
           );
-        } else if (state is HomeViewErrorState) {
-          feetchMenu(
-              () => context.read<LoginViewCubit>().saveToken('access_token'),
-              () =>
-                  context.read<HomeViewCubit>().fetchProducts('nomenclature'));
         }
+        // } else if (state is HomeViewErrorState) {
+        //   context.read<HomeViewCubit>().fetchProducts('nomenclature');
+        // }
         return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(

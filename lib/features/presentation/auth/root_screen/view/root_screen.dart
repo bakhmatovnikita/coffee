@@ -20,16 +20,11 @@ class _RootScreenState extends State<RootScreen> {
     return BlocBuilder<RootScreenCubit, RootScreenState>(
       builder: (context, state) {
         if (state is RootScreenIsAuthorized) {
-          context.read<LoginViewCubit>().saveToken('access_token');
-          const Duration(milliseconds: 600);
           return BottomNavView();
         } else if (state is RootScreenEmptyState) {
-          context.read<LoginViewCubit>().saveToken('access_token');
           const Duration(milliseconds: 600);
           context.read<RootScreenCubit>().checkAuthorization();
         } else {
-          context.read<LoginViewCubit>().saveToken('access_token');
-          const Duration(milliseconds: 600);
           return const HelloView();
         }
         return const Scaffold(

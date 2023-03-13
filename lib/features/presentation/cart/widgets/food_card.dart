@@ -126,11 +126,6 @@ class _FoodCardState extends State<FoodCard> {
                 ),
               ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10.h),
-              height: 1,
-              color: Colors.grey,
-            )
           ],
         ),
       ),

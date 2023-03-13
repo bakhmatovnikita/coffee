@@ -7,7 +7,7 @@ import 'package:cofee/features/data/models/user_id_model.dart';
 abstract class LocalDatasource {
   Future<UserIdModel> getUserId();
   Future<void> saveUserId(UserIdModel userId);
-  Future<TokenModel> getToken();
+  Future<String> getToken();
   Future<String> getOrganizatuonId();
   Future<void> saveToken(String token);
   Future<void> savePhoneUser(String phone);

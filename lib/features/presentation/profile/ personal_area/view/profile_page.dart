@@ -13,8 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
-
-import '../../../auth/login_view/controller/login_view_cubit.dart';
 import '../../../home/controller/home_view_cubit.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -25,10 +23,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Future<void> feetchProfile(Function() accessToken, Function() nomenclature,
-      Function() organizations) async {
-    await accessToken();
-    await nomenclature();
+  Future<void> feetchProfile(Function() organizations) async {
     await organizations();
   }
 
@@ -129,7 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           BlocBuilder<EditProfileCubit, EditProfileState>(
                             builder: (context, state) {
-                              
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -401,13 +395,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           );
         } else if (state is ProfilePageErrorState) {
-          feetchProfile(
-            () => context.read<LoginViewCubit>().saveToken('access_token'),
-            () => context.read<HomeViewCubit>().fetchProducts('nomenclature'),
-            () => context
-                .read<ProfilePageCubit>()
-                .fetchOrganization('organizations'),
-          );
+          feetchProfile(() => context
+              .read<ProfilePageCubit>()
+              .fetchOrganization('organizations'));
         }
         return const Scaffold(
           body: Center(
