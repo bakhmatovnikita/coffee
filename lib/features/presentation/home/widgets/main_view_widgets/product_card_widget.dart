@@ -46,6 +46,14 @@ class _ProductCardState extends State<ProductCard> {
     return false;
   }
 
+  getIndex(List<CartModel> cart) {
+    for (var i = 0; i < cart.length; i++) {
+      if (widget.productEntiti.name == cart[i].name) {
+        return i;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
@@ -180,22 +188,51 @@ class _ProductCardState extends State<ProductCard> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  if (countProducts < 2) {
-                                                    countProducts = 1;
-                                                  } else if (countProducts <
+                                                  if (state
+                                                          .cartModel![getIndex(
+                                                              state.cartModel!)]
+                                                          .count <
+                                                      2) {
+                                                    state
+                                                        .cartModel![getIndex(
+                                                            state.cartModel!)]
+                                                        .count = 1;
+                                                  } else if (state
+                                                          .cartModel![getIndex(
+                                                              state.cartModel!)]
+                                                          .count <
                                                       49) {
-                                                    countProducts--;
+                                                    state
+                                                        .cartModel![getIndex(
+                                                            state.cartModel!)]
+                                                        .count--;
                                                   }
+
+                                                  context
+                                                      .read<CartCubit>()
+                                                      .saveToCart(
+                                                          state.cartModel!);
+                                                  context
+                                                      .read<CartCubit>()
+                                                      .getItemsCart();
+
+                                                  // context
+                                                  //     .read<CartCubit>()
+                                                  //     .saveToCart(
+                                                  //         state.cartModel!);
+                                                  // context
+                                                  //     .read<CartCubit>()
+                                                  //     .getItemsCart();
                                                 },
                                                 child: Container(
-                                                  height: 32.h,
-                                                  width: 32.w,
+                                                  height: 27.h,
+                                                  width: 27.w,
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
+                                                    color:
+                                                        const Color(0xffFF7728)
+                                                            .withOpacity(0.5),
+                                                    shape: BoxShape.circle,
                                                   ),
                                                   child: Padding(
                                                     padding:
@@ -211,8 +248,11 @@ class _ProductCardState extends State<ProductCard> {
                                                 alignment: Alignment.center,
                                                 width: 30.w,
                                                 child: CustomText(
-                                                  title:
-                                                      countProducts.toString(),
+                                                  title: state
+                                                      .cartModel![getIndex(
+                                                          state.cartModel!)]
+                                                      .count
+                                                      .toString(),
                                                   fontSize: 17,
                                                   color: ColorStyles.blackColor,
                                                   fontWeight: FontWeight.w500,
@@ -220,60 +260,37 @@ class _ProductCardState extends State<ProductCard> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  if (countProducts > 49) {
-                                                    countProducts = 50;
+                                                  if (state
+                                                          .cartModel![getIndex(
+                                                              state.cartModel!)]
+                                                          .count >
+                                                      49) {
+                                                    state
+                                                        .cartModel![getIndex(
+                                                            state.cartModel!)]
+                                                        .count = 50;
                                                   } else {
-                                                    countProducts++;
+                                                    state
+                                                        .cartModel![getIndex(
+                                                            state.cartModel!)]
+                                                        .count++;
                                                   }
+
                                                   context
                                                       .read<CartCubit>()
-                                                      .addToCartItem(
-                                                        CartModel(
-                                                          name: widget
-                                                              .productEntiti
-                                                              .name,
-                                                          fatFullAmount: widget
-                                                              .productEntiti
-                                                              .fatFullAmount
-                                                              .toStringAsFixed(
-                                                                  2),
-                                                          weight: widget
-                                                              .productEntiti
-                                                              .weight,
-                                                          proteinsFullAmount: widget
-                                                              .productEntiti
-                                                              .proteinsFullAmount
-                                                              .toStringAsFixed(
-                                                                  2),
-                                                          carbohydratesFullAmount: widget
-                                                              .productEntiti
-                                                              .carbohydratesFullAmount
-                                                              .toStringAsFixed(
-                                                                  2),
-                                                          sizePrices: widget
-                                                              .productEntiti
-                                                              .sizePrices[0]
-                                                              .price
-                                                              .currentPrice,
-                                                          imageLink: widget
-                                                              .productEntiti
-                                                              .imageLink,
-                                                          count: countProducts,
-                                                          productId: widget
-                                                              .productEntiti.id,
-                                                          isSelected: true,
-                                                        ),
-                                                      );
+                                                      .saveToCart(
+                                                          state.cartModel!);
+                                                  setState(() {});
                                                 },
                                                 child: Container(
-                                                  height: 32.h,
-                                                  width: 32.w,
+                                                  height: 27.h,
+                                                  width: 27.w,
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
+                                                    color:
+                                                        const Color(0xffFF7728)
+                                                            .withOpacity(0.5),
+                                                    shape: BoxShape.circle,
                                                   ),
                                                   child: Padding(
                                                     padding:
@@ -321,15 +338,12 @@ class _ProductCardState extends State<ProductCard> {
                                                       imageLink: widget
                                                           .productEntiti
                                                           .imageLink,
-                                                      count: countProducts,
+                                                      count: 1,
                                                       productId: widget
                                                           .productEntiti.id,
                                                       isSelected: true,
                                                     ),
                                                   );
-                                                  setState(() {
-                                                    
-                                                  });
                                               SmartDialog.show(
                                                 animationType:
                                                     SmartAnimationType.fade,
@@ -355,6 +369,7 @@ class _ProductCardState extends State<ProductCard> {
                                                 ),
                                               );
                                             } catch (e) {
+                                              print(e);
                                               SmartDialog.show(
                                                 animationType:
                                                     SmartAnimationType.fade,
@@ -418,15 +433,12 @@ class _ProductCardState extends State<ProductCard> {
                                                   .currentPrice,
                                               imageLink: widget
                                                   .productEntiti.imageLink,
-                                              count: countProducts,
+                                              count: 1,
                                               productId:
                                                   widget.productEntiti.id,
                                               isSelected: true,
                                             ),
                                           );
-                                          setState(() {
-                                            
-                                          });
                                       SmartDialog.show(
                                         animationType: SmartAnimationType.fade,
                                         maskColor: Colors.transparent,
@@ -446,6 +458,7 @@ class _ProductCardState extends State<ProductCard> {
                                         ),
                                       );
                                     } catch (e) {
+                                      print(e);
                                       SmartDialog.show(
                                         animationType: SmartAnimationType.fade,
                                         maskColor: Colors.transparent,
