@@ -13,7 +13,8 @@ import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widgets/list_view_modal_cart.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widget/list_view_modal_cart.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widget/product_cart_widget.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
 import 'package:flutter/material.dart';
@@ -137,6 +138,7 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
   //   await accessToken();
   //   await nomenclature();
   // }
+  
 
   @override
   void dispose() {
@@ -307,9 +309,9 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
                                           state.productsEntiti.groups[index].id;
                                     }).length,
                                     itemBuilder: (context, indexProducts) =>
-                                        _productCardWidget(
-                                      context,
-                                      state.productsEntiti.products
+                                        ProductCartWidget(
+                                      productEntiti: state
+                                          .productsEntiti.products
                                           .where((element) =>
                                               element.parentGroup ==
                                               state.productsEntiti.groups[index]

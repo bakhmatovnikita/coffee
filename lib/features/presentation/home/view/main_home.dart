@@ -80,18 +80,16 @@ class _MainHomeState extends State<MainHome> {
     scrollController.addListener(changeTabs);
   }
 
-  Future<void> checkUser(Function() nomenclature) async {
-    await nomenclature();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewCubit, HomeViewState>(
       builder: (context, state) {
         if (state is HomeViewEmptyState) {
-          checkUser(() =>
-              context.read<HomeViewCubit>().fetchProducts('nomenclature'));
-              print(2);
+          
+              context.read<HomeViewCubit>().fetchProducts('nomenclature');
+             
         } else if (state is HomeViewLoadedState) {
           itemCategory = List.generate(
             state.productsEntiti.groups.length,

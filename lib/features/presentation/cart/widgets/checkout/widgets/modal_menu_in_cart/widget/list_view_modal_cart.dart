@@ -5,7 +5,7 @@ import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_state.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widgets/modal_menu_food_card.dart';
+import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widget/modal_menu_food_card.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
