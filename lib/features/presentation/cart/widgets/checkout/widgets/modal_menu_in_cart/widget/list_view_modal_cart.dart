@@ -39,7 +39,9 @@ class _ListViewModalCartState extends State<ListViewModalCart> {
                     ModalMenuFoodCard(
                       index: index,
                       onTap: () {
-                        context.read<ListViewCubit>().deleteOneInModalCart(index);
+                        context
+                            .read<ListViewCubit>()
+                            .deleteOneInModalCart(index);
                       },
                       onUpdatePrice: () {},
                       onUpdateWeight: () {},
@@ -63,13 +65,14 @@ class _ListViewModalCartState extends State<ListViewModalCart> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    setState(() {
                                       if (state.cart[index].count < 2) {
                                         state.cart[index].count = 1;
                                       } else {
                                         state.cart[index].count--;
                                       }
-                                    });
+                                    context
+                                        .read<ListViewCubit>()
+                                        .saveToCart(state.cart);
                                   },
                                   child: Container(
                                     height: 32.h,
@@ -100,7 +103,9 @@ class _ListViewModalCartState extends State<ListViewModalCart> {
                                 GestureDetector(
                                   onTap: () {
                                     state.cart[index].count++;
-                                    setState(() {});
+                                    context
+                                        .read<ListViewCubit>()
+                                        .saveToCart(state.cart);
                                   },
                                   child: Container(
                                     height: 32.h,

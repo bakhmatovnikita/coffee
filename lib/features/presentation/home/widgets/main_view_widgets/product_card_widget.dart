@@ -34,12 +34,10 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   SmartDialogController smartDialogController = SmartDialogController();
-  int countProducts = 1;
-  bool? isSelected;
+
   returnBool(List<CartModel> cart) {
     for (var element in cart) {
       if (element.name == widget.productEntiti.name && element.isSelected) {
-        countProducts = element.count;
         return true;
       }
     }
@@ -134,7 +132,11 @@ class _ProductCardState extends State<ProductCard> {
                   //       ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(14.86.h),
+                  padding: EdgeInsets.only(
+                    left: 14.86.h,
+                    top: 14.86.h,
+                    bottom: 14.86.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -166,7 +168,7 @@ class _ProductCardState extends State<ProductCard> {
                         fontWeight: FontWeight.w400,
                       ),
                       SizedBox(
-                        width: 151.w,
+                        width: 160.w,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

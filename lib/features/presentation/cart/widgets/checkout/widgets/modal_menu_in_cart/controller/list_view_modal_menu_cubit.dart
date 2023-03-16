@@ -53,4 +53,35 @@ class ListViewCubit extends Cubit<ListViewState> {
       print(e);
     }
   }
+
+  Future<void> saveToCart(List<CartModel> cart) async {
+    try {
+      emit(EmptyListViewState());
+
+      if (cart.isEmpty) {
+        emit(NotHaveListViewState());
+      } else {
+        emit(HaveListViewState(cart: cart));
+      }
+    } catch (e) {
+      emit(EmptyListViewState());
+    }
+  }
+
+  Future<void> getItemsCart(List<CartModel> cart) async {
+    try {
+      emit(EmptyListViewState());
+
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (cart.isEmpty) {
+        emit(NotHaveListViewState());
+      } else {
+        emit(HaveListViewState(
+          cart: cart,
+        ));
+      }
+    } catch (e) {
+      emit(NotHaveListViewState());
+    }
+  }
 }
