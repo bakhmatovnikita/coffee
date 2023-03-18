@@ -99,9 +99,16 @@ class _CodeViewState extends State<CodeView> {
                 padding: EdgeInsets.only(top: 32.h),
                 child: CustomButton(
                   title: 'Подтвердить',
-                  onTap: () {
-                    if (controller.text.isEmpty ||
-                        controller.text != "123456") {
+                  onTap: () async {
+                    if (controller.text.isNotEmpty ||
+                        controller.text == "123456") {
+                      Navigator.of(context).pushNamed(
+                        '/ChoiceAdressView',
+                        arguments: {
+                          'phone': widget.phone,
+                        },
+                      );
+                    } else {
                       SmartDialog.show(
                         animationType: SmartAnimationType.fade,
                         maskColor: Colors.transparent,
@@ -117,18 +124,10 @@ class _CodeViewState extends State<CodeView> {
                           ),
                         ),
                       );
-                    } else {
-                      print(widget.phone);
-                      Navigator.of(context).pushNamed(
-                        '/ChoiceAdressView',
-                        arguments: {
-                          'phone': widget.phone,
-                        },
-                      );
                     }
                   },
                 ),
-              )
+              ),
             ],
           ),
           Align(

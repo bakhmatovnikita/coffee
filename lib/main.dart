@@ -24,7 +24,7 @@ import 'injection.container.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  HttpOverrides.global = DevHttpOverrides();
+  // HttpOverrides.global = DevHttpOverrides();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
     runApp(

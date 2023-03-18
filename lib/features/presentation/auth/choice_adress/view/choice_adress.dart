@@ -5,7 +5,6 @@ import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_state.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
-import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,8 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/choiced_restaurant.dart';
 
 class ChoiceAdressView extends StatefulWidget {
-  final String? phone;
-  const ChoiceAdressView({super.key, this.phone});
+  final String phone;
+  const ChoiceAdressView({super.key, required this.phone});
 
   @override
   State<ChoiceAdressView> createState() => _ChoiceAdressViewState();
@@ -136,8 +135,7 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                       "loyalty/iiko/customer/create_or_update",
                                       state.organizationsEntiti
                                           .organizations[snapshot.data!].id,
-                                      widget.phone!)) {
-                                       
+                                      widget.phone)) {
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   "/MainView",
                                   (route) => false,
@@ -146,7 +144,6 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                         .organizations[snapshot.data!].id,
                                   },
                                 );
-                                
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -165,7 +162,11 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
               },
             ),
           );
-        } else if (state is ChoiceAdressErrorState) {}
+        } else if (state is ChoiceAdressErrorState) {
+          return const Scaffold(
+            body: Center(child: Text('error')),
+          );
+        }
         return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(

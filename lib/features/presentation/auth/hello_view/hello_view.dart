@@ -2,6 +2,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/view/choice_adress.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/features/presentation/auth/login_view/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -108,7 +109,11 @@ class HelloView extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 190.h),
               child: CustomButton(
                 title: 'Войти по номеру телефона',
-                onTap: () => Navigator.of(context).pushNamed('/LoginView'),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const LoginView(),
+                  ),
+                ),
               ),
             ),
           ),
@@ -122,7 +127,12 @@ class HelloView extends StatelessWidget {
               child: CustomButton(
                 title: 'Пропустить',
                 accent: false,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChoiceAdressView()))
+                onTap: () => Navigator.of(context).pushNamed(
+                  '/ChoiceAdressView',
+                  arguments: {
+                    'phone': '',
+                  },
+                ),
               ),
             ),
           )

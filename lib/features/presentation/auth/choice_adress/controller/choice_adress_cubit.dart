@@ -1,5 +1,3 @@
-
-
 import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/features/domain/usecase/create_user.dart';
 import 'package:cofee/features/domain/usecase/get_organization.dart';
@@ -20,6 +18,7 @@ class ChoiceAdressCubit extends Cubit<ChoiceAdressState> {
     required this.createUser,
     required this.getTerminalGroup,
   }) : super(ChoiceAdressEmptyState());
+
   Future<void> fetchTerminalGroup(
       String endpoint, String organizationId) async {
     try {
@@ -40,14 +39,16 @@ class ChoiceAdressCubit extends Cubit<ChoiceAdressState> {
       emit(ChoiceAdressEmptyState());
       final loadedOrganizationOrFailure = await getOrganization.call(
         EndpointParams(
-          organizationIds: const ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
+          organizationIds: const [],
           returnAdditionalInfo: true,
           includeDisabled: true,
           endpoint: endpoint,
         ),
       );
       loadedOrganizationOrFailure.fold(
-        (error) => null,
+        (error) => emit(
+          ChoiceAdressErrorState(message: BackConstants.SERVER_FAILURE_MESSAGE),
+        ),
         (loadedData) => emit(
           ChoiceAdressLoadedState(loadedData),
         ),

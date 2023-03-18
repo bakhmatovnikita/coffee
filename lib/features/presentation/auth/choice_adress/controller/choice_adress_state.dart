@@ -12,6 +12,11 @@ class ChoiceAdressEmptyState extends ChoiceAdressState{
   List<Object?> get props => [];
 }
 
+class ChoiceAdressLoadingState extends ChoiceAdressState{
+  @override
+  List<Object?> get props => [];
+}
+
 class ChoiceAdressLoadedState extends ChoiceAdressState{
   final OrganizationsEntiti organizationsEntiti;
 

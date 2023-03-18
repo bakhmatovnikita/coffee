@@ -33,9 +33,6 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginViewCubit, LoginViewState>(
       builder: (context, state) {
-        if (state is LoginViewEmptyState) {
-          context.read<LoginViewCubit>().saveToken("access_token");
-        }
         return Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: ColorStyles.whiteColor,

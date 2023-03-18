@@ -30,7 +30,7 @@ class RemoteDatasourceImplement implements RemoteDatasource {
         baseUrl: BackConstants.baseUrl,
       ),
     );
-    if (kDebugMode) initializeInterceptor();
+    initializeInterceptor();
   }
   initializeInterceptor() {
     _dio.interceptors.add(DataSourceInterceptor());
@@ -86,14 +86,13 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       endpoint,
       data: organizationData,
       options: Options(
-        followRedirects: false,
         headers: headers,
-        validateStatus: (status) => status! < 499,
       ),
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return OrganizationsModel.fromJson(response.data);
     } else {
+      print("Organization");
       throw DioErrorType.other;
     }
   }
@@ -110,7 +109,6 @@ class RemoteDatasourceImplement implements RemoteDatasource {
     final response = await _dio.post(
       endpoint,
       data: apiLoginData,
-      
     );
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return TokenModel.fromJson(response.data);
