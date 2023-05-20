@@ -1,9 +1,8 @@
 import 'dart:async';
+
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
-import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_state.dart';
 import 'package:cofee/features/presentation/home/widgets/main_view_widgets/category_card_widget.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
+
 import '../../../../constants/constants_for_back/constants.dart';
 import '../widgets/calendar_select_modal.dart';
 import '../widgets/main_view_widgets/product_card_widget.dart';
@@ -60,7 +60,7 @@ class _MainHomeState extends State<MainHome> {
     for (var i = 0; i < itemCategory.length; i++) {
       if (scrollController.offset >= itemMenu[i]) {
         currentIndex = i;
-        DefaultTabController.of(tabContext!)?.animateTo(
+        DefaultTabController.of(tabContext!).animateTo(
           i,
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeInOut,

@@ -1,10 +1,10 @@
 import 'package:cofee/core/error/failure.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
-import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/user_info/user_info_model.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/history_order_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
 import 'package:cofee/features/domain/entiti/token_entiti.dart';
@@ -34,8 +34,8 @@ abstract class CoffeeRepository {
       String paymentTypeKind,
       int sum,
       String paymentTypeId);
-  Future<Either<Failure, HistoryModel>> getOrderHistory(
-      String endpoint, String phone, List<String> organizationIds);
+  Future<Either<Failure, HistoryOrderEntiti>> getOrderHistory(
+      String endpoint, List<String> organizationIds, List<String> ordersId);
   Future<Either<Failure, SelectCartModel>> getCart(
       String endpoint, String organizationId);
   Future<Either<Failure, OrderTypesModel>> getOrderTypes(

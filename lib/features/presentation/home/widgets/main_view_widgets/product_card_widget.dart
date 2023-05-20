@@ -1,26 +1,20 @@
+import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/push_access.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:octo_image/octo_image.dart';
 import 'package:scale_button/scale_button.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/core/helpers/functions.dart';
 
 import '../../../../../custom_widgets/custom_text.dart';
 import '../../../../../custom_widgets/push_error.dart';
 import '../../../../data/models/cart/cart_model.dart';
 import '../../controller/bottom_nav_nar_controller/cart_cubit.dart';
-import '../../controller/home_view_cubit.dart';
-import '../../controller/home_view_state.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductEntiti productEntiti;

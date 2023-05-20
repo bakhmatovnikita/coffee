@@ -1,4 +1,4 @@
-import 'package:cofee/features/domain/entiti/history/history_entiti.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/history_order_entiti.dart';
 import 'package:equatable/equatable.dart';
 
 class HistoryState extends Equatable {
@@ -12,7 +12,7 @@ class HistoryEmptyState extends HistoryState {
 }
 
 class HistoryLoadedSatate extends HistoryState {
-  final HistoryEntiti historyEntiti;
+  final HistoryOrderEntiti historyEntiti;
 
   HistoryLoadedSatate(this.historyEntiti);
   @override

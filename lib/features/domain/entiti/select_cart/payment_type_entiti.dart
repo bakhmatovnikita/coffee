@@ -1,5 +1,4 @@
 import 'package:cofee/features/domain/entiti/select_cart/terminal_group_entiti.dart';
-import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
 
 class PaymentTypeEntiti {
   final String id;

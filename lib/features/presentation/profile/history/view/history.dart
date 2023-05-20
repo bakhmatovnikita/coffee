@@ -1,10 +1,8 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
-import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/profile/history/controller/history_cubit.dart';
 import 'package:cofee/features/presentation/profile/history/controller/history_state.dart';
-import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,9 +24,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return BlocBuilder<HistoryCubit, HistoryState>(
       builder: (context, state) {
         if (state is HistoryEmptyState) {
-          context.read<HistoryCubit>().getUserHistory(
-              'deliveries/by_delivery_date_and_phone',
-              ['aaf34eae-ad9d-4ea0-8dfb-5ad02d23a0b8']);
+          context.read<HistoryCubit>().getUserHistory('order/by_id');
         } else if (state is HistoryLoadedSatate) {
           return Column(
             children: [

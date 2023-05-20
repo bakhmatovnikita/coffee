@@ -1,12 +1,12 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
-import 'package:cofee/custom_widgets/push_error.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/custom_widgets/push_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class CodeView extends StatefulWidget {
   final String phone;
@@ -33,7 +33,7 @@ class _CodeViewState extends State<CodeView> {
   }
 
   void listen() async {
-    await SmsAutoFill().listenForCode;
+    SmsAutoFill().listenForCode;
   }
 
   @override

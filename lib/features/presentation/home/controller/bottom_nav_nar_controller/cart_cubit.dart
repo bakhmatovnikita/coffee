@@ -5,7 +5,7 @@ import 'package:cofee/features/domain/usecase/create_order.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CartCubit extends Cubit<CartState> {
+class   CartCubit extends Cubit<CartState> {
   final LocalDatasource localDatasource;
   final CreateOrder createOrder;
   CartCubit(this.localDatasource, this.createOrder) : super(CartEmptyState());

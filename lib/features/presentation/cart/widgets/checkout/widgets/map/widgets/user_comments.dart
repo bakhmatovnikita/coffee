@@ -1,5 +1,4 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,6 +1,5 @@
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/features/presentation/auth/hello_view/hello_view.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_state.dart';
 import 'package:cofee/features/presentation/home/widgets/bottom_nav_view.dart';

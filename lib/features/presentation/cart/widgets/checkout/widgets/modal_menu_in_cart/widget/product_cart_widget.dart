@@ -6,7 +6,6 @@ import 'package:cofee/custom_widgets/push_access.dart';
 import 'package:cofee/custom_widgets/push_error.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,11 +55,11 @@ class _ProductCartWidgetState extends State<ProductCartWidget> {
       child: Container(
         padding: EdgeInsets.zero,
         height: 155.71.h,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: ColorStyles.whiteColor,
           borderRadius: BorderRadius.circular(16.r),
         ),
-        width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.symmetric(
           horizontal: 15.w,
           vertical: 7.5.h,
@@ -98,8 +97,9 @@ class _ProductCartWidgetState extends State<ProductCartWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(
-                14.86.h,
+              padding: EdgeInsets.only(
+                top: 16.h,
+                bottom: 16.h
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

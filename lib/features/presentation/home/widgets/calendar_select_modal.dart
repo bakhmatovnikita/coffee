@@ -201,9 +201,9 @@ class CalendarView extends StatelessWidget {
   Widget _dayWidget(DayOfWeek dayOfWeek, bool selected) {
     return GestureDetector(
       onTap: () {
-        _daysOfWeek.forEach((element) {
+        for (var element in _daysOfWeek) {
           element.selected = false;
-        });
+        }
         _daysOfWeek.firstWhere((element) => element == dayOfWeek).selected =
             true;
         _streamController.sink.add(dayOfWeek);

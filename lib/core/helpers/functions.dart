@@ -1,4 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/custom_widgets/status_page.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
@@ -8,8 +11,6 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/delive
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/map/view/map.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/widgets/payment.dart';
 import 'package:cofee/features/presentation/home/widgets/entity_popup.dart';
-import 'package:cofee/custom_widgets/custom_button.dart';
-import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/view/profile_page.dart';
 import 'package:cofee/features/presentation/profile/%20personal_area/widgets/restaurant_bottomsheet.dart';
 import 'package:cofee/features/presentation/profile/about_us/view/about_us_bottomsheet.dart';
@@ -133,8 +134,8 @@ class Functions {
     );
   }
 
-  void showCustomBottomSheet(
-      SberbankAcquiring acquiring, String formUrl, OrderStatus? orderStatus, Function() susseccPaid) {
+  void showCustomBottomSheet(SberbankAcquiring acquiring, String formUrl,
+      OrderStatus? orderStatus, Function() susseccPaid) {
     showCupertinoModalBottomSheet(
         animationCurve: Curves.easeInOutQuint,
         elevation: 12,
@@ -144,7 +145,11 @@ class Functions {
         context: context,
         builder: (BuildContext context) {
           return PaymentBottomsheet(
-              acquiring: acquiring, formUrl: formUrl, orderStatus: orderStatus, successPaid: susseccPaid,);
+            acquiring: acquiring,
+            formUrl: formUrl,
+            orderStatus: orderStatus,
+            successPaid: susseccPaid,
+          );
         });
   }
 
@@ -408,6 +413,19 @@ class Functions {
         totalAmount: totalAmount,
         totalWeigth: totalWeigth,
       ),
+    );
+  }
+
+  void showStatusBottomsheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      enableDrag: false,
+      context: context,
+      builder: (context) => const StatusPage(),
     );
   }
 }

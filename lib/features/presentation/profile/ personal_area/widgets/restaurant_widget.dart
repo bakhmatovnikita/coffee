@@ -1,7 +1,6 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
-import 'package:cofee/features/domain/entiti/history/address_entiti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

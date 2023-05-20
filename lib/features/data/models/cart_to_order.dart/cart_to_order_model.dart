@@ -44,14 +44,12 @@ class Order {
 class Item {
   final String type;
   final int amount;
-  final String productSizeId;
   final String comment;
   final String productId;
 
   Item({
     required this.type,
     required this.amount,
-    required this.productSizeId,
     required this.comment,
     required this.productId,
   });
@@ -59,7 +57,6 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         type: json["type"],
         amount: json["amount"],
-        productSizeId: json["productSizeId"],
         comment: json["comment"],
         productId: json["productId"],
       );
@@ -67,8 +64,7 @@ class Item {
   Map<String, dynamic> toJson() => {
         "type": type,
         "amount": amount,
-        "productSizeId": productSizeId,
-        "comment": comment,
+        // "comment": comment,
         "productId": productId,
       };
 }

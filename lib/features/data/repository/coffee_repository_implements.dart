@@ -1,8 +1,9 @@
+import 'package:cofee/core/error/failure.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/datasorces/remote_datasource/remote_datasource.dart';
-import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/cart/order_model.dart';
-import 'package:cofee/features/data/models/history/histroy_model.dart';
+import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
+import 'package:cofee/features/data/models/default_history_model.dart/history_order_model.dart';
 import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
@@ -16,7 +17,6 @@ import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
 import 'package:cofee/features/domain/entiti/token_entiti.dart';
 import 'package:cofee/features/domain/entiti/user_id_entiti.dart';
-import 'package:cofee/core/error/failure.dart';
 import 'package:cofee/features/domain/repository/coffe_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -140,6 +140,9 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
       Future<OrderModel> Function() order) async {
     try {
       final orderModel = await order();
+      final ordersId = await localDatasource.getOrdersId();
+      ordersId.add(orderModel.orderInfo.id);
+      await localDatasource.saveHistory(ordersId);
       return Right(orderModel);
     } catch (e) {
       print(e);
@@ -148,14 +151,14 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   }
 
   @override
-  Future<Either<Failure, HistoryModel>> getOrderHistory(
-      String endpoint, String phone, List<String> organizationIds) async {
+  Future<Either<Failure, HistoryOrderModel>> getOrderHistory(String endpoint,
+      List<String> organizationIds, List<String> ordersId) async {
     return await _getOrderHistory(
-        () => remoteDatasource.getHistory(endpoint, phone, organizationIds));
+        () => remoteDatasource.getHistory(endpoint, organizationIds, ordersId));
   }
 
-  Future<Either<Failure, HistoryModel>> _getOrderHistory(
-      Future<HistoryModel> Function() history) async {
+  Future<Either<Failure, HistoryOrderModel>> _getOrderHistory(
+      Future<HistoryOrderModel> Function() history) async {
     try {
       final historyModel = await history();
       return Right(historyModel);

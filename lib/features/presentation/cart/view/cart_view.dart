@@ -37,17 +37,17 @@ class _CartViewState extends State<CartView> {
   void calculateTotalAmount(List<CartModel> list) {
     double result = 0;
 
-    list.forEach((element) {
+    for (var element in list) {
       result = result + element.sizePrices * element.count;
-    });
+    }
     totalAmount = result;
   }
 
   void calculateTotalWeight(List<CartModel> list) {
     double result = 0;
-    list.forEach((element) {
+    for (var element in list) {
       result = result + element.weight * element.count;
-    });
+    }
     totalWeigth = result;
   }
 

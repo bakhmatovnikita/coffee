@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
@@ -425,7 +424,7 @@ class _MapPageState extends State<MapPage> {
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                             color: ColorStyles.greyTitleColor,
-                          )
+                          ),
                         ],
                       ),
                     )

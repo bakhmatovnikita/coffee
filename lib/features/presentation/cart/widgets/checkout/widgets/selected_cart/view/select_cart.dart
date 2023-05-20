@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
-import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
@@ -12,15 +11,11 @@ import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/select
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/controller/select_cart_state.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/widgets/cart_selected.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_cubit.dart';
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sberbank_acquiring/sberbank_acquiring_core.dart';
-// import 'package:sberbank_acquiring/sberbank_acquiring_ui.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../../../../../../../custom_widgets/push_error.dart';
 
@@ -341,7 +336,6 @@ class _SelectCartState extends State<SelectCart> {
             (index) => Item(
               type: 'Product',
               amount: widget.cartModel[index].count,
-              productSizeId: "b4513563-032a-4dbc-8894-4b05c402f7de",
               comment: 'comment',
               productId: widget.cartModel[index].productId,
             ),

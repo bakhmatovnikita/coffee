@@ -16,6 +16,7 @@ class BackConstants {
   static String token = "";
   static List<CartModel> cart = [];
   static List<CartModel> modalCart = [];
+  static List<String> orders = [];
   static int amountPrice = 1;
   static int amountWeight = 1;
   static final List<String> months = [

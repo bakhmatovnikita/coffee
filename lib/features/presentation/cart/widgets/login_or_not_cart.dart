@@ -2,8 +2,6 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
 import 'package:cofee/features/presentation/cart/controller/cart_cubit.dart';
 import 'package:cofee/features/presentation/cart/controller/cart_state.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helpers/functions.dart';
-import '../../auth/root_screen/controller/root_screen_cubit.dart';
-import '../../auth/root_screen/controller/root_screen_state.dart';
 
 class LoginOrNot extends StatelessWidget {
   const LoginOrNot({super.key});

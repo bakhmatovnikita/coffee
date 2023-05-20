@@ -1,4 +1,3 @@
-import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
 import 'package:equatable/equatable.dart';
 
 class CartViewState extends Equatable {

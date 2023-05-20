@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
-import '../../../home/controller/home_view_cubit.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

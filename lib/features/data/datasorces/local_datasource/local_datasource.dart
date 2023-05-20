@@ -1,7 +1,5 @@
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/data/models/history/histroy_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
-import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
 
 abstract class LocalDatasource {
@@ -20,6 +18,7 @@ abstract class LocalDatasource {
   Future<void> delecteCart();
   Future<void> saveOrganizationId(String organizationId);
   Future<void> saveTerminalGroup(TerminalGroupModel terminalGroupModel);
-  Future<void> saveHistory(List<HistoryModel> historyList);
+  Future<void> saveHistory(List<String>? orderId);
   Future<void> getUser();
+  Future<List<String>> getOrdersId();
 }

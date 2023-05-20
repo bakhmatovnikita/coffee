@@ -1,4 +1,3 @@
-import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../../../domain/entiti/select_cart/select_cart_entiti.dart';

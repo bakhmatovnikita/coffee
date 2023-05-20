@@ -29,6 +29,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/followthemoney1/modal_bottom_sheet.git
+      ref: main
+      path: modal_bottom_sheet
   flutter:
     sdk: flutter
 
@@ -66,7 +71,7 @@ dependencies:
   yandex_mapkit: ^3.2.0
   permission_handler: ^10.2.0
   geolocator: ^9.0.2
-  modal_bottom_sheet: ^2.1.2
+  # modal_bottom_sheet: ^2.1.2
   sberbank_acquiring: ^2.0.1
   hydrated_bloc: ^9.1.0
   path_provider: ^2.0.13

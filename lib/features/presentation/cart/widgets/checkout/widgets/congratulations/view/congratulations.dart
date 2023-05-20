@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -68,7 +69,10 @@ class CcongratulationsState extends State<Congratulations> {
             padding: EdgeInsets.only(top: 32.h),
             child: CustomButton(
               title: 'Понятно',
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () {
+                Navigator.pop(context);
+                Functions(context).showStatusBottomsheet();
+              },
             ),
           ),
           Padding(

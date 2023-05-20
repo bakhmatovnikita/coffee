@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RectGetter extends StatefulWidget {
+  @override
   final GlobalKey<RectGetterState> key;
   final Widget child;
 

@@ -1,18 +1,8 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/constants/constants_for_back/constants.dart';
-import 'package:cofee/core/helpers/functions.dart';
-import 'package:cofee/core/helpers/rect_getter.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
-import 'package:cofee/custom_widgets/push_access.dart';
-import 'package:cofee/custom_widgets/push_error.dart';
-import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
-import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/controller/list_view_modal_menu_cubit.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widget/list_view_modal_cart.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/modal_menu_in_cart/widget/product_cart_widget.dart';
 import 'package:cofee/features/presentation/home/controller/home_view_cubit.dart';
@@ -21,14 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:octo_image/octo_image.dart';
-import 'package:scale_button/scale_button.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../../../../../../../domain/entiti/products/groups_entiti.dart';
 import '../../../../../../home/widgets/main_view_widgets/category_card_widget.dart';
-import '../../../../../../home/widgets/main_view_widgets/product_card_widget.dart';
 
 class MenuBottomsheet extends StatefulWidget {
   const MenuBottomsheet({super.key});
@@ -155,7 +139,7 @@ class _MenuBottomsheetState extends State<MenuBottomsheet> {
   void changeTabs() {
     for (var i = 0; i < itemCategory.length; i++) {
       if (scrollController.offset >= itemMenu[i]) {
-        DefaultTabController.of(tabContext!)!.animateTo(
+        DefaultTabController.of(tabContext!).animateTo(
           i,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,

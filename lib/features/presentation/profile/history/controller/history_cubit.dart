@@ -9,15 +9,22 @@ class HistoryCubit extends Cubit<HistoryState> {
   final LocalDatasource localDatasource;
   final GetHistory getHistory;
 
-  HistoryCubit({required this.getHistory, required this.localDatasource, }) : super(HistoryEmptyState());
+  HistoryCubit({
+    required this.getHistory,
+    required this.localDatasource,
+  }) : super(HistoryEmptyState());
 
   Future<void> getUserHistory(
-      String endpoint, List<String> organizationIds) async {
+    String endpoint,
+  ) async {
     try {
       emit(HistoryEmptyState());
       final loadedHistoryOrFailure = await getHistory.call(
         HistoryEndpointParams(
-            endpoint: endpoint, organizationIds: organizationIds, phone: await localDatasource.getPhoneUser()),
+          endpoint: endpoint,
+          organizationIds: [await localDatasource.getOrganizatuonId()],
+          ordersId: await localDatasource.getOrdersId(),
+        ),
       );
       loadedHistoryOrFailure.fold(
           (error) => emit(HistoryErrorState(message: error.toString())),
