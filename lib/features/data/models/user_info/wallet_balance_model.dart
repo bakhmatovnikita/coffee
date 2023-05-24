@@ -5,7 +5,7 @@ class WalletBalanceModel extends WalletBalanceEntiti {
     required final String id,
     required final String name,
     required final int type,
-    required final int balance,
+    required final double balance,
   }) : super(
           id: id,
           name: name,

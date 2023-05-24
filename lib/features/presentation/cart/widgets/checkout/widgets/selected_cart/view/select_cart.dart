@@ -210,7 +210,7 @@ class _SelectCartState extends State<SelectCart> {
                     ),
                     SliverToBoxAdapter(
                       child: Container(
-                        height: 85.h,
+                        height: 90.h,
                         width: 343.w,
                         margin: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 16.h),
@@ -220,6 +220,7 @@ class _SelectCartState extends State<SelectCart> {
                             color: ColorStyles.whiteColor,
                             borderRadius: BorderRadius.circular(16.r)),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(

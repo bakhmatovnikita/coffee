@@ -20,7 +20,7 @@ class DataSourceInterceptor extends QueuedInterceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    if (err.response!.statusCode == 401) {
+    if (err.response?.statusCode == 401) {
       try {
         await sl<LoginViewCubit>().saveToken('access_token');
         final response =

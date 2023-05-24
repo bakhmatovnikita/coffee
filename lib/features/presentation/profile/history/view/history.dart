@@ -20,12 +20,16 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   @override
+  void initState() {
+    context.read<HistoryCubit>().getUserHistory('order/by_id');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<HistoryCubit, HistoryState>(
       builder: (context, state) {
-        if (state is HistoryEmptyState) {
-          context.read<HistoryCubit>().getUserHistory('order/by_id');
-        } else if (state is HistoryLoadedSatate) {
+        if (state is HistoryLoadedSatate) {
           return Column(
             children: [
               Padding(
@@ -85,16 +89,28 @@ class _HistoryPageState extends State<HistoryPage> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   children: List.generate(
-                    10,
+                    state.historyEntiti.orders.length,
                     (index) => GestureDetector(
                       onTap: () =>
                           Functions(context).showEditUserOrderBottomSheet(),
-                      child: const HistoryCard(),
+                      child: HistoryCard(
+                        orderEntiti: state.historyEntiti.orders[index].order,
+                        index: index,
+                      ),
                     ),
                   ),
                 ),
               )
             ],
+          );
+        } else if (state is NotHaveItemState) {
+          return Scaffold(
+            backgroundColor: ColorStyles.backgroundColor,
+            body: Center(
+              child: CustomText(
+                title: 'История пуста',
+              ),
+            ),
           );
         }
         return const Scaffold(

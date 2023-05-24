@@ -1,5 +1,6 @@
 
 
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/discount_entiti.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/guest_info_entiti.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/item_entiti.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/loyalty_info_entiti.dart';
@@ -9,30 +10,31 @@ import 'package:cofee/features/domain/entiti/default_history_entiti.dart/waiter_
 class OrderEntiti{
   final List<String> tableIds;
     final dynamic customer;
-    final dynamic phone;
+    final String? phone;
     final String status;
     final DateTime whenCreated;
     final WaiterEntiti waiter;
     final dynamic tabName;
-    final String splitOrderBetweenCashRegisters;
-    final int sum;
+    final dynamic splitOrderBetweenCashRegisters;
+    final double sum;
     final int number;
     final dynamic sourceKey;
-    final dynamic whenBillPrinted;
-    final dynamic whenClosed;
+    final DateTime? whenBillPrinted;
+    final DateTime? whenClosed;
     final dynamic conception;
     final GuestInfoEntiti guestsInfo;
     final List<ItemEntiti> items;
     final dynamic combos;
-    final List<PaymentEntiti> payments;
+    final List<PaymentEntiti>? payments;
     final dynamic tips;
-    final dynamic discounts;
+    final List<DiscountEntiti>? discounts;
     final dynamic orderType;
     final String terminalGroupId;
-    final int processedPaymentsSum;
+    final double processedPaymentsSum;
     final LoyaltyInfoEntiti loyaltyInfo;
+    final dynamic externalData;
 
-    OrderEntiti({
+    OrderEntiti( {
         required this.tableIds,
         required this.customer,
         required this.phone,
@@ -57,5 +59,6 @@ class OrderEntiti{
         required this.terminalGroupId,
         required this.processedPaymentsSum,
         required this.loyaltyInfo,
+        required this.externalData,
     });
 }

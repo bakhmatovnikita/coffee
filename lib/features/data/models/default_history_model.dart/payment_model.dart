@@ -8,7 +8,7 @@ import '../../../domain/entiti/default_history_entiti.dart/payment_type_entiti.d
 class PaymentModel extends PaymentEntiti {
   PaymentModel({
     required final PaymentTypeEntiti paymentType,
-    required final int sum,
+    required final double sum,
     required final bool isPreliminary,
     required final bool isExternal,
     required final bool isProcessedExternally,

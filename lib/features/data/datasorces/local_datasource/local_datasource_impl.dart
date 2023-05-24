@@ -137,7 +137,7 @@ class LocalDatasourceImplement implements LocalDatasource {
 
   @override
   Future<void> saveTerminalGroup(TerminalGroupModel terminalGroupModel) async {
-    final String terminalGroup = terminalGroupModel.toString();
+    final String terminalGroup = terminalGroupModel.terminalGroups[0].items[0].id;
     print(terminalGroup);
     sharedPreferences.setString(
         BackConstants.SAVED_TERMINAL_GROUP, terminalGroup);
@@ -173,6 +173,20 @@ class LocalDatasourceImplement implements LocalDatasource {
       return list;
     }
     return [];
+  }
+  
+  @override
+  Future<String> getTerminalGroup() async {
+    final data = sharedPreferences.getString(BackConstants.SAVED_TERMINAL_GROUP);
+    if (data != null) {
+      return data;
+    }
+    return '';
+  }
+  
+  @override
+  Future<void> deleteAllOrders() async {
+    sharedPreferences.remove(BackConstants.SAVED_HISTORY_ORDERS);
   }
   // @override
   // Future<void> saveToCart(List<CartModel> cartModel) {

@@ -18,17 +18,21 @@ class HistoryCubit extends Cubit<HistoryState> {
     String endpoint,
   ) async {
     try {
-      emit(HistoryEmptyState());
-      final loadedHistoryOrFailure = await getHistory.call(
-        HistoryEndpointParams(
-          endpoint: endpoint,
-          organizationIds: [await localDatasource.getOrganizatuonId()],
-          ordersId: await localDatasource.getOrdersId(),
-        ),
-      );
-      loadedHistoryOrFailure.fold(
-          (error) => emit(HistoryErrorState(message: error.toString())),
-          (loadedHistory) => emit(HistoryLoadedSatate(loadedHistory)));
+      final List<String> orders = await localDatasource.getOrdersId();
+      if (orders.isEmpty) {
+        emit(NotHaveItemState());
+      } else {
+        final loadedHistoryOrFailure = await getHistory.call(
+          HistoryEndpointParams(
+            endpoint: endpoint,
+            organizationIds: [await localDatasource.getOrganizatuonId()],
+            ordersId: await localDatasource.getOrdersId(),
+          ),
+        );
+        loadedHistoryOrFailure.fold(
+            (error) => emit(HistoryErrorState(message: error.toString())),
+            (loadedHistory) => emit(HistoryLoadedSatate(loadedHistory)));
+      }
     } catch (_) {
       emit(
         HistoryErrorState(message: BackConstants.SERVER_FAILURE_MESSAGE),

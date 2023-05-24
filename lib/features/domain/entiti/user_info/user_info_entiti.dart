@@ -4,29 +4,29 @@ import 'package:cofee/features/domain/entiti/user_info/wallet_balance_entiti.dar
 
 class UserInfoEntiti {
   final String id;
-  final String referrerId;
-  final String name;
-  final String surname;
-  final String middleName;
-  final String comment;
+  final String? referrerId;
+  final String? name;
+  final String? surname;
+  final String? middleName;
+  final String? comment;
   final String phone;
   final String cultureName;
-  final DateTime birthday;
-  final String email;
+  final DateTime? birthday;
+  final String? email;
   final int sex;
   final int consentStatus;
   final bool anonymized;
   final List<CardEntiti> cards;
   final List<CategoryEntiti> categories;
   final List<WalletBalanceEntiti> walletBalances;
-  final String userData;
+  final String? userData;
   final bool shouldReceivePromoActionsInfo;
   final bool shouldReceiveLoyaltyInfo;
   final bool shouldReceiveOrderStatusInfo;
-  final DateTime personalDataConsentFrom;
-  final DateTime personalDataConsentTo;
-  final DateTime personalDataProcessingFrom;
-  final DateTime personalDataProcessingTo;
+  final DateTime? personalDataConsentFrom;
+  final DateTime? personalDataConsentTo;
+  final DateTime? personalDataProcessingFrom;
+  final DateTime? personalDataProcessingTo;
   final bool isDeleted;
 
   UserInfoEntiti({

@@ -4,7 +4,7 @@ import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_e
 
 class OrdersEntiti {
   final String id;
-  final String posId;
+  final String? posId;
   final dynamic externalNumber;
   final String organizationId;
   final int timestamp;

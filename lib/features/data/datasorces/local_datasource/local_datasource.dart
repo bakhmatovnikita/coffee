@@ -21,4 +21,6 @@ abstract class LocalDatasource {
   Future<void> saveHistory(List<String>? orderId);
   Future<void> getUser();
   Future<List<String>> getOrdersId();
+  Future<String> getTerminalGroup();
+  Future<void> deleteAllOrders();
 }

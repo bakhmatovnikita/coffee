@@ -58,352 +58,372 @@ class _ProfilePageState extends State<ProfilePage> {
     return BlocBuilder<ProfilePageCubit, ProfilePageState>(
       builder: (context, state) {
         if (state is ProfilePageEmptyState) {
-          context.read<ProfilePageCubit>().fetchOrganization('organizations');
-        } else if (state is ProfilePageLoadedState) {
-          return Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 25.w, top: 5),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: SvgPicture.asset(
-                            SvgImg.cross,
-                            height: 13.64.h,
-                            width: 13.64.w,
-                            color: ColorStyles.accentColor,
-                          ),
+          context.read<ProfilePageCubit>().fetchUserInfo('organizations');
+        } else if (state is ProfileLoadingState) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Colors.orange,
+              ),
+            ),
+          );
+        }
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.h),
+              child: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 25.w, top: 5),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: SvgPicture.asset(
+                          SvgImg.cross,
+                          height: 13.64.h,
+                          width: 13.64.w,
+                          color: ColorStyles.accentColor,
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: CustomText(
-                        title: 'Личный кабинет',
-                        color: ColorStyles.blackColor,
-                        fontSize: 17.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      title: 'Личный кабинет',
+                      color: ColorStyles.blackColor,
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 16.h,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 80.h,
-                            width: 80.w,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.contain,
-                                image: AssetImage(
-                                  Img.avatar,
-                                ),
+            ),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 16.h,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 80.h,
+                          width: 80.w,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.contain,
+                              image: AssetImage(
+                                Img.avatar,
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        BlocBuilder<EditProfileCubit, EditProfileState>(
+                          builder: (context, uaserState) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  title: state is ProfilePageLoadedState
+                                      ? state.userInfoEntiti.name ?? 'Имя'
+                                      : 'Имя',
+                                  color: ColorStyles.blackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                CustomText(
+                                  title: state is ProfilePageLoadedState
+                                      ? state.userInfoEntiti.email ?? 'Email'
+                                      : 'Email',
+                                  color: ColorStyles.greyTitleColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                CustomText(
+                                  title: state is ProfilePageLoadedState
+                                      ? state.userInfoEntiti.phone
+                                      : '7 (999) 999-99-99',
+                                  color: ColorStyles.greyTitleColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  ScaleButton(
+                    onTap: () =>
+                        Functions(context).showEditProfilePageBottomSheet(),
+                    bound: 0.02,
+                    duration: const Duration(milliseconds: 100),
+                    child: Container(
+                      height: 48.h,
+                      margin: EdgeInsets.symmetric(horizontal: 16.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(SvgImg.edit),
                           SizedBox(
-                            width: 16.w,
+                            width: 8.w,
                           ),
-                          BlocBuilder<EditProfileCubit, EditProfileState>(
-                            builder: (context, state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    title: "Имя Фамилия",
-                                    color: ColorStyles.blackColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  SizedBox(
-                                    height: 8.h,
-                                  ),
-                                  CustomText(
-                                    title: "mail@yandex.ru",
-                                    color: ColorStyles.greyTitleColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  CustomText(
-                                    title: "+7 654 675-78-09",
-                                    color: ColorStyles.greyTitleColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ],
-                              );
-                            },
-                          )
+                          CustomText(
+                            title: "Редактировать",
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: ColorStyles.blackColor,
+                          ),
                         ],
                       ),
                     ),
-                    ScaleButton(
-                      onTap: () =>
-                          Functions(context).showEditProfilePageBottomSheet(),
-                      bound: 0.02,
-                      duration: const Duration(milliseconds: 100),
-                      child: Container(
-                        height: 48.h,
-                        margin: EdgeInsets.symmetric(horizontal: 16.w),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(SvgImg.edit),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            CustomText(
-                              title: "Редактировать",
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              color: ColorStyles.blackColor,
-                            ),
-                          ],
-                        ),
-                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 16.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 16.h,
-                      ),
-                      child: Container(
-                        height: 134.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          image: const DecorationImage(
-                            image: AssetImage(
-                              Img.bonusCard,
-                            ),
-                            fit: BoxFit.cover,
+                    child: Container(
+                      height: 134.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            Img.bonusCard,
                           ),
-                          borderRadius: BorderRadius.circular(12.r),
+                          fit: BoxFit.cover,
                         ),
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: 16.h, left: 16.w, bottom: 16.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    title: 'Бонусный счет',
-                                    color: ColorStyles.greyTitleColor,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        title: bonus.toString(),
-                                        fontSize: 32.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: ColorStyles.whiteColor,
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            color: ColorStyles.accentColor,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          padding: const EdgeInsets.all(5),
-                                          height: 21.h,
-                                          width: 21.w,
-                                          child: SvgPicture.asset(
-                                            SvgImg.plus,
-                                            color: ColorStyles.whiteColor,
-                                          ),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 16.h, left: 16.w, bottom: 16.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  title: 'Бонусный счет',
+                                  color: ColorStyles.greyTitleColor,
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      title: bonus.toString(),
+                                      fontSize: 32.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorStyles.whiteColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: ColorStyles.accentColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(5),
+                                        height: 21.h,
+                                        width: 21.w,
+                                        child: SvgPicture.asset(
+                                          SvgImg.plus,
+                                          color: ColorStyles.whiteColor,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        title: '#78684',
-                                        fontSize: 12,
-                                        color: ColorStyles.greyTitleColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      SizedBox(
-                                        width: 3.w,
-                                      ),
-                                      CustomText(
-                                        title: bonus > 0
-                                            ? 'СКИДКА 10% НА ВСЕ'
-                                            : 'СКИДКА 5% НА ВСЕ',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: ColorStyles.accentColor,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      title: '#78684',
+                                      fontSize: 12,
+                                      color: ColorStyles.greyTitleColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    SizedBox(
+                                      width: 3.w,
+                                    ),
+                                    CustomText(
+                                      title: bonus > 0
+                                          ? 'СКИДКА 10% НА ВСЕ'
+                                          : 'СКИДКА 5% НА ВСЕ',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorStyles.accentColor,
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
+                  ),
+                  if (state is ProfilePageLoadedState)
                     RestaurantWidget(
                       size: size,
                       title: state.organizationsEntiti.organizations[0].name,
                       address: state.organizationsEntiti.organizations[0]
                           .restaurantAddress,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      margin: EdgeInsets.only(
-                        bottom: 16.h,
-                        right: 16.w,
-                        left: 16.w,
-                      ),
-                      height: 52.h,
-                      width: size.width.w,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: ColorStyles.whiteColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          CustomText(
-                            title: 'Push-Уведомления',
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500,
-                            color: ColorStyles.blackColor,
-                          ),
-                          const Spacer(),
-                          SwitchBtn(
-                            onChange: (value) {
-                              setState(() {
-                                switchValue = value;
-                              });
-                            },
-                            value: switchValue,
-                          ),
-                        ],
-                      ),
-                    ),
+                      id: state.organizationsEntiti.organizations[0].id,
+                    )
+                  else
                     Container(
                       margin: EdgeInsets.only(
                         bottom: 16.h,
                         right: 16.w,
                         left: 16.w,
                       ),
+                      padding: const EdgeInsets.all(16),
+                      height: 146.h,
                       width: size.width.w,
                       decoration: BoxDecoration(
                         color: ColorStyles.whiteColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Column(
-                        children: List.generate(
-                          settings.length,
-                          (index) => GestureDetector(
-                            onTap: () {
-                              if (index == 0) {
-                                Functions(context).showUserHistoryBottomSheet();
-                              } else if (index == 1) {
-                              } else if (index == 2) {
-                              } else if (index == 3) {
-                              } else if (index == 4) {
-                                Functions(context).showAboutUsBottomsheet();
-                              }
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              padding: index == 4
-                                  ? EdgeInsets.only(
-                                      bottom: 16.h,
-                                      top: 16.h,
-                                      right: 16.w,
-                                      left: 16.w,
-                                    )
-                                  : EdgeInsets.only(
-                                      top: 16.h, right: 16.w, left: 16.w),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: index == 4
-                                        ? EdgeInsets.only(bottom: 0.h)
-                                        : EdgeInsets.only(bottom: 10.h),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 15.w),
-                                          child: SvgPicture.asset(
-                                            settings[index]["icon"],
-                                          ),
+                    ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    margin: EdgeInsets.only(
+                      bottom: 16.h,
+                      right: 16.w,
+                      left: 16.w,
+                    ),
+                    height: 52.h,
+                    width: size.width.w,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: ColorStyles.whiteColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        CustomText(
+                          title: 'Push-Уведомления',
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w500,
+                          color: ColorStyles.blackColor,
+                        ),
+                        const Spacer(),
+                        SwitchBtn(
+                          onChange: (value) {
+                            setState(() {
+                              switchValue = value;
+                            });
+                          },
+                          value: switchValue,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 16.h,
+                      right: 16.w,
+                      left: 16.w,
+                    ),
+                    width: size.width.w,
+                    decoration: BoxDecoration(
+                      color: ColorStyles.whiteColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: List.generate(
+                        settings.length,
+                        (index) => GestureDetector(
+                          onTap: () {
+                            if (index == 0) {
+                              Functions(context).showUserHistoryBottomSheet();
+                              
+                            } else if (index == 1) {
+                            } else if (index == 2) {
+                            } else if (index == 3) {
+                            } else if (index == 4) {
+                              Functions(context).showAboutUsBottomsheet();
+                            }
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            padding: index == 4
+                                ? EdgeInsets.only(
+                                    bottom: 16.h,
+                                    top: 16.h,
+                                    right: 16.w,
+                                    left: 16.w,
+                                  )
+                                : EdgeInsets.only(
+                                    top: 16.h, right: 16.w, left: 16.w),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: index == 4
+                                      ? EdgeInsets.only(bottom: 0.h)
+                                      : EdgeInsets.only(bottom: 10.h),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 15.w),
+                                        child: SvgPicture.asset(
+                                          settings[index]["icon"],
                                         ),
-                                        CustomText(
-                                          title: settings[index]["title"],
-                                          fontSize: 17.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: ColorStyles.blackColor,
-                                        ),
-                                        const Spacer(),
-                                        SvgPicture.asset(SvgImg.goto),
-                                      ],
-                                    ),
+                                      ),
+                                      CustomText(
+                                        title: settings[index]["title"],
+                                        fontSize: 17.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: ColorStyles.blackColor,
+                                      ),
+                                      const Spacer(),
+                                      SvgPicture.asset(SvgImg.goto),
+                                    ],
                                   ),
-                                  index == 4
-                                      ? Container()
-                                      : Container(
-                                          height: 1.h,
-                                          width: size.width,
-                                          color: Colors.grey[300],
-                                        ),
-                                ],
-                              ),
+                                ),
+                                index == 4
+                                    ? Container()
+                                    : Container(
+                                        height: 1.h,
+                                        width: size.width,
+                                        color: Colors.grey[300],
+                                      ),
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        } else if (state is ProfilePageErrorState) {
-          feetchProfile(() => context
-              .read<ProfilePageCubit>()
-              .fetchOrganization('organizations'));
-        }
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(
-              color: Colors.orange,
             ),
-          ),
+          ],
         );
       },
     );

@@ -6,7 +6,7 @@ import 'package:cofee/features/domain/entiti/default_history_entiti.dart/payment
 
 class PaymentEntiti {
   final PaymentTypeEntiti paymentType;
-  final int sum;
+  final double sum;
   final bool isPreliminary;
   final bool isExternal;
   final bool isProcessedExternally;

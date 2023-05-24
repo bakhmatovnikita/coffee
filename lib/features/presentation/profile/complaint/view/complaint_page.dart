@@ -8,7 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ComplaintPage extends StatefulWidget {
-  const ComplaintPage({super.key});
+  final int? numberOrder;
+  const ComplaintPage({super.key, required this.numberOrder});
 
   @override
   State<ComplaintPage> createState() => CcomplaintStatePage();
@@ -80,7 +81,7 @@ class CcomplaintStatePage extends State<ComplaintPage> {
               Padding(
                 padding: EdgeInsets.only(left: 16.w, top: 32.h),
                 child: CustomText(
-                  title: 'Жалоба к заказу №32809432',
+                  title: 'Жалоба к заказу №${widget.numberOrder}',
                   fontSize: 17.sp,
                   fontWeight: FontWeight.w500,
                   color: ColorStyles.greyTitleColor,

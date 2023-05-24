@@ -7,7 +7,7 @@ import 'package:cofee/features/domain/entiti/default_history_entiti.dart/orders_
 class OrdersModel extends OrdersEntiti{
   OrdersModel({
     required final String id,
-    required final String posId,
+    required final String? posId,
     required final dynamic externalNumber,
     required final String organizationId,
     required final int timestamp,

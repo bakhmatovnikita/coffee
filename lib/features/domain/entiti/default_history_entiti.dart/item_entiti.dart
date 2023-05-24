@@ -1,19 +1,17 @@
-
-
-import 'package:cofee/features/domain/entiti/default_history_entiti.dart/product_entiti.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/dicount_type_entiti.dart';
 
 class ItemEntiti {
   final String type;
-  final ProductEntiti product;
+  final DiscountTypeEntiti discountType;
   final dynamic modifiers;
-  final int price;
-  final int cost;
+  final double price;
+  final double cost;
   final bool pricePredefined;
   final String positionId;
   final dynamic taxPercent;
   final String status;
   final dynamic deleted;
-  final int amount;
+  final double amount;
   final dynamic comment;
   final dynamic whenPrinted;
   final dynamic size;
@@ -21,7 +19,7 @@ class ItemEntiti {
 
   ItemEntiti({
     required this.type,
-    required this.product,
+    required this.discountType,
     required this.modifiers,
     required this.price,
     required this.cost,

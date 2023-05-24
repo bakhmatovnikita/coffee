@@ -7,11 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RestaurantWidget extends StatelessWidget {
   final String title;
   final String address;
+  final String id;
   const RestaurantWidget({
     Key? key,
     required this.size,
     required this.title,
     required this.address,
+    required this.id,
   }) : super(key: key);
 
   final Size size;
@@ -44,7 +46,7 @@ class RestaurantWidget extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  Functions(context).showRestaurantBottomSheet();
+                  Functions(context).showRestaurantBottomSheet(id);
                 },
                 child: Container(
                   alignment: Alignment.center,

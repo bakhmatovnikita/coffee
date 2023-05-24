@@ -21,14 +21,10 @@ class _AddedCartState extends State<AddedCart> {
   final TextEditingController controller = TextEditingController();
   final TextEditingController controllerDate = TextEditingController();
   final TextEditingController controllerCvv = TextEditingController();
-  
-
-
 
   int currentDialogStyle = 0;
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(top: 20.h),
       child: Column(
@@ -173,8 +169,9 @@ class _AddedCartState extends State<AddedCart> {
                   animationType: SmartAnimationType.fade,
                   builder: (context) => const SafeArea(
                     child: Align(
-                        alignment: Alignment.center,
-                        child: NotHaveDay()),
+                      alignment: Alignment.center,
+                      child: NotHaveDay(),
+                    ),
                   ),
                 );
               },

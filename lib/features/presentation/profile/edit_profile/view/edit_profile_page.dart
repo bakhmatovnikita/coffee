@@ -3,6 +3,7 @@ import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/core/helpers/input_formatter.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/presentation/profile/%20personal_area/controller/profile_page_cubit.dart';
 import 'package:cofee/features/presentation/profile/edit_profile/controller/edit_profile_cubit.dart';
 import 'package:cofee/features/presentation/profile/edit_profile/controller/edit_profile_state.dart';
 import 'package:flutter/material.dart';
@@ -301,13 +302,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                     );
                   } else {
-                    if (await context.read<EditProfileCubit>().createCustomer(
-                        'loyalty/iiko/customer/create_or_update',
-                        number.text, name.text, )) {
-                      Navigator.of(context).pop();
-                    } else {
-                      print('error');
-                    }
+                    context
+                        .read<EditProfileCubit>()
+                        .createCustomer(
+                            'loyalty/iiko/customer/create_or_update',
+                            number.text,
+                            email.text,
+                            name.text)
+                        .then(
+                          (value) => context
+                              .read<ProfilePageCubit>()
+                              .fetchUserInfo('organizations'),
+                        );
+                    Navigator.pop(context);
                   }
                 },
               ),

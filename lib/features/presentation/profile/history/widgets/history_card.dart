@@ -2,19 +2,32 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_entiti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class HistoryCard extends StatefulWidget {
-  const HistoryCard({super.key});
+  final OrderEntiti orderEntiti;
+  final int index;
+  const HistoryCard(
+      {super.key, required this.orderEntiti, required this.index});
 
   @override
   State<HistoryCard> createState() => _HistoryCardState();
 }
 
 class _HistoryCardState extends State<HistoryCard> {
+  String time = '';
+  @override
+  void initState() {
+    final DateFormat formatter = DateFormat('dd.MM.yyyy')..add_Hm();
+    time = formatter.format(widget.orderEntiti.whenCreated);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,7 +48,7 @@ class _HistoryCardState extends State<HistoryCard> {
           Align(
             alignment: Alignment.topLeft,
             child: CustomText(
-              title: '№32809432',
+              title: '№${widget.orderEntiti.number}',
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
               color: ColorStyles.greyTitleColor,
@@ -47,16 +60,29 @@ class _HistoryCardState extends State<HistoryCard> {
               children: [
                 Row(
                   children: [
-                    SvgPicture.asset(
-                      SvgImg.pencilCircle,
-                      color: const Color(0xff039D00),
-                    ),
-                    SizedBox(
-                      width: 4.w,
-                    ),
+                    widget.orderEntiti.status == 'Closed'
+                        ? SvgPicture.asset(
+                            SvgImg.pencilCircle,
+                            color: const Color(0xff039D00),
+                          )
+                        : const SizedBox(),
                     CustomText(
-                      title: 'Собрано',
-                      color: const Color(0xff039D00),
+                      title: widget.orderEntiti.status == 'Deleted'
+                          ? "Заказ отменен"
+                          : widget.orderEntiti.status == 'Bill'
+                              ? 'Заказ готовится'
+                              : widget.orderEntiti.status == 'New'
+                                  ? "Новый заказ"
+                                  : ' Заказ получен',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: widget.orderEntiti.status == 'Deleted'
+                          ? Colors.grey
+                          : widget.orderEntiti.status == 'Bill'
+                              ? Colors.black
+                              : widget.orderEntiti.status == 'New'
+                                  ? Colors.black
+                                  : const Color(0xff039D00),
                     ),
                   ],
                 ),
@@ -109,14 +135,14 @@ class _HistoryCardState extends State<HistoryCard> {
                 Row(
                   children: [
                     CustomText(
-                      title: '534 ₽',
+                      title: '${widget.orderEntiti.sum.toInt()} ₽',
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                       color: ColorStyles.blackColor,
                     ),
                     const Spacer(),
                     CustomText(
-                      title: '01.02.2022 11:00',
+                      title: time,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                       color: ColorStyles.blackColor,
@@ -134,7 +160,8 @@ class _HistoryCardState extends State<HistoryCard> {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              Functions(context).showMorePageBottomSheet();
+              Functions(context).showMorePageBottomSheet(
+                  widget.orderEntiti, widget.index, time);
             },
             child: Row(
               children: [

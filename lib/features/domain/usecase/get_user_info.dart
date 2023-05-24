@@ -12,21 +12,11 @@ class GetUserInfo extends UseCase<UserInfoEntiti, UserInfoParams> {
 
   @override
   Future<Either<Failure, UserInfoEntiti>> call(UserInfoParams params) async {
-    return await coffeeRepository.getUserInfo(
-        params.endpoint, params.phone, params.organizationId);
+    return await coffeeRepository.getUserInfo();
   }
 }
 
 class UserInfoParams extends Equatable {
-  final String phone;
-  final String organizationId;
-  final String endpoint;
-
-  const UserInfoParams({
-    required this.phone,
-    required this.organizationId,
-    required this.endpoint,
-  });
   @override
-  List<Object?> get props => [phone, organizationId, endpoint];
+  List<Object?> get props => [];
 }

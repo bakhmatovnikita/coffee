@@ -15,7 +15,8 @@ import '../../../../../custom_widgets/custom_button.dart';
 import '../../../auth/choice_adress/widgets/choiced_restaurant.dart';
 
 class RestaurantBottomsheet extends StatefulWidget {
-  const RestaurantBottomsheet({super.key});
+  String? id;
+   RestaurantBottomsheet({super.key, this.id});
 
   @override
   State<RestaurantBottomsheet> createState() => _RestaurantBottomsheetState();
@@ -102,26 +103,34 @@ class _RestaurantBottomsheetState extends State<RestaurantBottomsheet> {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 16.w, vertical: 40.h),
                             child: Column(
-                              children: state.organizationsEntiti.organizations
-                                  .map(
-                                    (e) => GestureDetector(
-                                      onTap: () => streamController.sink.add(
-                                        state.organizationsEntiti.organizations
-                                            .indexOf(e),
-                                      ),
-                                      child: ChoicedRestaurant(
-                                        title: e.name,
-                                        adress: e.restaurantAddress,
-                                        isSelected: snapshot.data! ==
+                              children: List.generate(
+                                  state.organizationsEntiti.organizations
+                                      .length, (index) {
+                                if (widget.id ==
+                                    state.organizationsEntiti
+                                        .organizations[index].id) {
+                                  streamController.sink.add(index);
+                                }
+                                return GestureDetector(
+                                  onTap: () => {
+                                    streamController.sink.add(index),
+                                    widget.id = state.organizationsEntiti
+                                        .organizations[index].id,
+                                  },
+                                  child: ChoicedRestaurant(
+                                    title: state.organizationsEntiti
+                                        .organizations[index].name,
+                                    adress: state.organizationsEntiti
+                                        .organizations[index].restaurantAddress,
+                                    isSelected: snapshot.data! == index &&
+                                            widget.id ==
                                                 state.organizationsEntiti
-                                                    .organizations
-                                                    .indexOf(e)
-                                            ? true
-                                            : false,
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
+                                                    .organizations[index].id
+                                        ? true
+                                        : false,
+                                  ),
+                                );
+                              }),
                             ),
                           ),
                           CustomButton(
@@ -133,7 +142,7 @@ class _RestaurantBottomsheetState extends State<RestaurantBottomsheet> {
                                       .organizations[snapshot.data!].id)) {
                                 context
                                     .read<ProfilePageCubit>()
-                                    .fetchOrganization('organizations');
+                                    .fetchUserInfo('organizations');
                                 Navigator.of(context).pop();
                               } else {
                                 print('error');

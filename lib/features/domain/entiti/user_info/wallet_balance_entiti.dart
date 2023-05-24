@@ -2,7 +2,7 @@ class WalletBalanceEntiti {
   final String id;
   final String name;
   final int type;
-  final int balance;
+  final double balance;
 
   WalletBalanceEntiti({
     required this.id,

@@ -12,7 +12,7 @@ class CreateUser implements UseCase<UserIdEntiti, EndpointUserParams> {
   @override
   Future<Either<Failure, UserIdEntiti>> call(EndpointUserParams params) async {
     return await coffeeRepository.createUser(
-        params.endpoint, params.phone, params.organizationId);
+        params.endpoint, params.phone, params.organizationId, params.email, params.name);
   }
 }
 
@@ -20,11 +20,15 @@ class EndpointUserParams extends Equatable {
   final String endpoint;
   final String phone;
   final String organizationId;
+  String? email;
+  String? name;
 
-  const EndpointUserParams({
+  EndpointUserParams({
     required this.endpoint,
     required this.phone,
     required this.organizationId,
+    this.email,
+    this.name,
   });
   @override
   List<Object?> get props => [endpoint, phone, organizationId];

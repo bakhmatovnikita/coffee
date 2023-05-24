@@ -10,10 +10,12 @@ import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
+import 'package:cofee/features/data/models/status_terminal_model.dart/status_terminal_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
 import 'package:cofee/features/data/models/user_info/user_info_model.dart';
+import 'package:cofee/features/domain/entiti/user_info/user_info_entiti.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -50,10 +52,13 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   };
   @override
   Future<UserIdModel> createUser(
-      String endpoint, String phone, String organizationId) async {
+      String endpoint, String phone, String organizationId,
+      [String? email, String? name]) async {
     final userData = jsonEncode({
       "organizationId": organizationId,
       "phone": phone,
+      'name': name,
+      'email': email,
     });
     try {
       final response = await _dio.post(
@@ -218,7 +223,8 @@ class RemoteDatasourceImplement implements RemoteDatasource {
       print(response.statusCode);
       print(response.data);
       return HistoryOrderModel.fromJson(response.data);
-    } on DioError catch (_) {
+    } catch (e) {
+      print(e);
       rethrow;
     }
   }
@@ -264,31 +270,48 @@ class RemoteDatasourceImplement implements RemoteDatasource {
   }
 
   @override
-  Future<UserInfoModel> getUserInfo(
-      String endpoint, String phone, String organizationId) async {
-    final userInfoData = jsonEncode({
-      {
-        "phone": phone,
-        "type": "phone",
-        "organizationId": organizationId,
-      }
-    });
+  Future fetch(RequestOptions options) {
     try {
-      final response = await _dio.post(
-        endpoint,
-        data: userInfoData,
-      );
-      return UserInfoModel.fromJson(response.data);
-    } on DioError catch (_) {
+      return _dio.fetch(options);
+    } catch (_) {
       rethrow;
     }
   }
 
   @override
-  Future fetch(RequestOptions options) {
+  Future<UserInfoEntiti> getUserInfo(
+      String phone, String organizationId) async {
     try {
-      return _dio.fetch(options);
-    } catch (_) {
+      final Response response = await _dio.post(
+        'loyalty/iiko/customer/info',
+        data: jsonEncode({
+          "phone": phone,
+          "type": "phone",
+          "organizationId": organizationId,
+        }),
+      );
+      return UserInfoModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StatusTerminalModel> getStatusTerminal(
+      String organizationId, String terminalGroupId) async {
+    try {
+      final Response response = await _dio.post(
+        'terminal_groups/is_alive',
+        data: jsonEncode(
+          {
+            "organizationIds": [organizationId],
+            "terminalGroupIds": [terminalGroupId]
+          },
+        ),
+      );
+      return StatusTerminalModel.fromJson(response.data);
+    } on DioError {
       rethrow;
     }
   }

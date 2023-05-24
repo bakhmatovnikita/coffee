@@ -11,12 +11,13 @@ import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
-import 'package:cofee/features/data/models/user_info/user_info_model.dart';
 import 'package:cofee/features/domain/entiti/organizations_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
+import 'package:cofee/features/domain/entiti/status_terminal_entiti/status_terminal_entiti.dart';
 import 'package:cofee/features/domain/entiti/terminal_group/terminal_group_entiti.dart';
 import 'package:cofee/features/domain/entiti/token_entiti.dart';
 import 'package:cofee/features/domain/entiti/user_id_entiti.dart';
+import 'package:cofee/features/domain/entiti/user_info/user_info_entiti.dart';
 import 'package:cofee/features/domain/repository/coffe_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -27,9 +28,11 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   CoffeeRepositoryImpl(this.remoteDatasource, this.localDatasource);
   @override
   Future<Either<Failure, UserIdEntiti>> createUser(
-      String endpoint, String phone, String organizationId) async {
+      String endpoint, String phone, String organizationId,
+      [String? email, String? name]) async {
     return await _createUser(
-        () => remoteDatasource.createUser(endpoint, phone, organizationId),
+        () => remoteDatasource.createUser(
+            endpoint, phone, organizationId, email, name),
         phone,
         organizationId);
   }
@@ -203,17 +206,27 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   }
 
   @override
-  Future<Either<Failure, UserInfoModel>> getUserInfo(
-      String endpoint, String phone, String organizationId) async {
-    return await _getUserInfo(
-        () => remoteDatasource.getUserInfo(endpoint, phone, organizationId));
+  Future<Either<Failure, UserInfoEntiti>> getUserInfo() async {
+    try {
+      final result = await remoteDatasource.getUserInfo(
+        await localDatasource.getPhoneUser(),
+        await localDatasource.getOrganizatuonId(),
+      );
+      return Right(result);
+    } catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 
-  Future<Either<Failure, UserInfoModel>> _getUserInfo(
-      Future<UserInfoModel> Function() userInfo) async {
+  @override
+  Future<Either<Failure, StatusTerminalEntiti>> getStatusTerminal(String organizationId, String terminalGroupId) async {
     try {
-      final userData = await userInfo();
-      return Right(userData);
+      final data = await remoteDatasource.getStatusTerminal(organizationId, terminalGroupId);
+      return Right(data);
     } catch (e) {
       return Left(ServerFailure());
     }

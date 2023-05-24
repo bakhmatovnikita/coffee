@@ -15,8 +15,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
 
-import '../../../../core/services/auth_config/time_accept.dart';
-import '../../../../injection.container.dart';
 import '../../home/controller/bottom_nav_nar_controller/cart_cubit.dart';
 import '../../home/controller/bottom_nav_nar_controller/cart_state.dart';
 
@@ -269,14 +267,18 @@ class _CartViewState extends State<CartView> {
                       Padding(
                         padding: EdgeInsets.only(top: 16.h, bottom: 20.h),
                         child: CustomButton(
-                            title: 'Оформить заказ',
-                            onTap: () {
-                              sl<AcceptTime>().day = day;
-                              sl<AcceptTime>().month = month;
-                              sl<AcceptTime>().weekDay = weekDay;
-                              Functions(context).showCheckoutBottomsheet(
-                                  state.cartModel!, totalAmount, totalWeigth);
-                            }),
+                          title: 'Оформить заказ',
+                          onTap: () {
+                            context.read<CartCubit>().getStatus(
+                                  day,
+                                  month,
+                                  weekDay,
+                                  () => Functions(context)
+                                      .showCheckoutBottomsheet(state.cartModel!,
+                                          totalAmount, totalWeigth),
+                                );
+                          },
+                        ),
                       )
                     ],
                   ),

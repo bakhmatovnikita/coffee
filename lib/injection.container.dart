@@ -13,8 +13,10 @@ import 'package:cofee/features/domain/usecase/get_history.dart';
 import 'package:cofee/features/domain/usecase/get_order_types.dart';
 import 'package:cofee/features/domain/usecase/get_organization.dart';
 import 'package:cofee/features/domain/usecase/get_products.dart';
+import 'package:cofee/features/domain/usecase/get_status_terminal.dart';
 import 'package:cofee/features/domain/usecase/get_terminal_group.dart';
 import 'package:cofee/features/domain/usecase/get_token.dart';
+import 'package:cofee/features/domain/usecase/get_user_info.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
@@ -48,7 +50,7 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => HomeViewCubit(getProducts: sl()));
   sl.registerFactory(() => LoginViewCubit(getToken: sl()));
-  sl.registerFactory(() => CartCubit(sl(), sl()));
+  sl.registerFactory(() => CartCubit(sl(), sl(), sl()));
   sl.registerFactory(() => ListViewCubit());
   sl.registerFactory(() => HistoryCubit(
         getHistory: sl(),
@@ -61,12 +63,14 @@ Future<void> init() async {
     () => ProfilePageCubit(
       getOrganization: sl(),
       localDatasource: sl(),
+      getUserInfo: sl(),
     ),
   );
   sl.registerFactory(
       () => SelectCartCubit(getCart: sl(), localDatasource: sl()));
   sl.registerFactory(() => CartViewCubit(localDatasource: sl()));
-  sl.registerFactory(() => OrderTypesCubit(getOrderTypes: sl(), localDatasource: sl()));
+  sl.registerFactory(
+      () => OrderTypesCubit(getOrderTypes: sl(), localDatasource: sl()));
   //Usecase
   sl.registerLazySingleton(() => CreateUser(sl()));
   sl.registerLazySingleton(() => GetOrganization(sl()));
@@ -77,6 +81,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetHistory(sl()));
   sl.registerLazySingleton(() => GetCart(coffeeRepository: sl()));
   sl.registerLazySingleton(() => GetOrderTypes(sl()));
+  sl.registerLazySingleton(() => GetUserInfo(coffeeRepository: sl()));
+  sl.registerLazySingleton(
+    () => GetStatusTerminal(
+      coffeeRepository: sl(),
+    ),
+  );
   //Repository
   sl.registerLazySingleton<CoffeeRepository>(
       () => CoffeeRepositoryImpl(sl(), sl()));

@@ -1,8 +1,11 @@
-import 'package:cofee/features/domain/entiti/cart/order_entiti.dart';
+
+
+
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/orders_entiti.dart';
 
 class HistoryOrderEntiti {
   final String correlationId;
-  final List<OrderEntiti> orders;
+  final List<OrdersEntiti> orders;
 
   HistoryOrderEntiti({
     required this.correlationId,

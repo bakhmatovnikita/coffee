@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -6,7 +5,6 @@ import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:octo_image/octo_image.dart';
 
 class FoodCard extends StatefulWidget {
   final CartModel cartModel;
@@ -39,33 +37,34 @@ class _FoodCardState extends State<FoodCard> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.cartModel.imageLink.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: OctoImage(
-                          image: CachedNetworkImageProvider(
-                            widget.cartModel.imageLink[0],
-                          ),
-                          height: 130.h,
-                          width: 130.w,
-                          placeholderBuilder: OctoPlaceholder.blurHash(
-                            'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
-                          ),
-                          fit: BoxFit.cover,
-                          memCacheHeight: 0,
-                          memCacheWidth: 0,
-                          filterQuality: FilterQuality.low,
-                        ),
-                      )
-                    : SizedBox(
-                        width: 130.w,
-                        height: 130.h,
-                        child: Image.asset(
-                          'assets/images/splash.png',
-                          width: 155.w / 2,
-                          height: 155.w / 2,
-                        ),
-                      ),
+                // widget.cartModel.imageLink.isNotEmpty
+                //     ? ClipRRect(
+                //         borderRadius: BorderRadius.circular(4),
+                //         child: OctoImage(
+                //           image: CachedNetworkImageProvider(
+                //             widget.cartModel.imageLink[0],
+                //           ),
+                //           height: 130.h,
+                //           width: 130.w,
+                //           placeholderBuilder: OctoPlaceholder.blurHash(
+                //             'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                //           ),
+                //           fit: BoxFit.cover,
+                //           memCacheHeight: 0,
+                //           memCacheWidth: 0,
+                //           filterQuality: FilterQuality.low,
+                //         ),
+                //       )
+                // :
+                SizedBox(
+                  width: 130.w,
+                  height: 130.h,
+                  child: Image.asset(
+                    'assets/images/splash.png',
+                    width: 155.w / 2,
+                    height: 155.w / 2,
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
@@ -93,7 +92,8 @@ class _FoodCardState extends State<FoodCard> {
                         color: const Color(0xff515151),
                       ),
                       CustomText(
-                        title: 'БЖУ: ${widget.cartModel.proteinsFullAmount}/${widget.cartModel.weight.toStringAsFixed(2)}/${widget.cartModel.carbohydratesFullAmount}',
+                        title:
+                            'БЖУ: ${widget.cartModel.proteinsFullAmount}/${widget.cartModel.weight.toStringAsFixed(2)}/${widget.cartModel.carbohydratesFullAmount}',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: const Color(0xff515151),

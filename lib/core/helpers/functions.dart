@@ -3,6 +3,7 @@ import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/status_page.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
@@ -262,7 +263,7 @@ class Functions {
     );
   }
 
-  void showMorePageBottomSheet() {
+  void showMorePageBottomSheet(OrderEntiti orderEntiti, int index, String time) {
     showCupertinoModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
       elevation: 12,
@@ -271,12 +272,16 @@ class Functions {
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
       builder: (context) {
-        return const MorePage();
+        return MorePage(
+          orderEntiti: orderEntiti,
+          index: index,
+          time:  time,
+        );
       },
     );
   }
 
-  void showComplaintPageBottomSheet() {
+  void showComplaintPageBottomSheet(int? numberOrder) {
     showCupertinoModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
       elevation: 12,
@@ -285,7 +290,7 @@ class Functions {
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
       builder: (context) {
-        return const ComplaintPage();
+        return  ComplaintPage(numberOrder: numberOrder,);
       },
     );
   }
@@ -322,7 +327,7 @@ class Functions {
     );
   }
 
-  void showRestaurantBottomSheet() {
+  void showRestaurantBottomSheet(String? id) {
     showCupertinoModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
       elevation: 12,
@@ -331,7 +336,7 @@ class Functions {
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
       builder: (context) {
-        return const RestaurantBottomsheet();
+        return RestaurantBottomsheet(id: id);
       },
     );
   }

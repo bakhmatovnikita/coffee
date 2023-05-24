@@ -2,6 +2,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_entiti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class MorePage extends StatefulWidget {
-  const MorePage({super.key});
+  final OrderEntiti orderEntiti;
+  final int index;
+  final String time;
+  const MorePage(
+      {super.key,
+      required this.orderEntiti,
+      required this.index,
+      required this.time});
 
   @override
   State<MorePage> createState() => _MorePageState();
@@ -82,7 +90,7 @@ class _MorePageState extends State<MorePage> {
               Align(
                 alignment: Alignment.topCenter,
                 child: CustomText(
-                  title: 'Заказ № №32809432',
+                  title: 'Заказ №${widget.orderEntiti.number}',
                   color: ColorStyles.greyTitleColor,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
@@ -105,7 +113,13 @@ class _MorePageState extends State<MorePage> {
                         ),
                         const Spacer(),
                         CustomText(
-                          title: 'Получено',
+                          title: widget.orderEntiti.status == 'Deleted'
+                              ? "Заказ отменен"
+                              : widget.orderEntiti.status == 'Bill'
+                                  ? 'Заказ готовится'
+                                  : widget.orderEntiti.status == 'New'
+                                      ? "Новый заказ"
+                                      : ' Заказ получен',
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w700,
                           color: ColorStyles.blackColor,
@@ -125,7 +139,7 @@ class _MorePageState extends State<MorePage> {
                         ),
                         const Spacer(),
                         CustomText(
-                          title: '01.02.2022 11:00',
+                          title: widget.time,
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w700,
                           color: ColorStyles.blackColor,
@@ -145,7 +159,8 @@ class _MorePageState extends State<MorePage> {
                         ),
                         const Spacer(),
                         CustomText(
-                          title: 'Банковской картой',
+                          title:
+                              widget.orderEntiti.payments![0].paymentType.name,
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w700,
                           color: ColorStyles.blackColor,
@@ -178,7 +193,7 @@ class _MorePageState extends State<MorePage> {
                         ),
                         const Spacer(),
                         CustomText(
-                          title: '534 ₽',
+                          title: '${widget.orderEntiti.sum.toInt()}₽',
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w700,
                           color: ColorStyles.blackColor,
@@ -188,42 +203,30 @@ class _MorePageState extends State<MorePage> {
                     SizedBox(
                       height: 16.h,
                     ),
-                    Row(
-                      children: [
-                        CustomText(
-                          title: 'Окрошка ( 1х )',
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: ColorStyles.blackColor,
-                        ),
-                        const Spacer(),
-                        CustomText(
-                          title: '230 ₽',
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w400,
-                          color: ColorStyles.blackColor,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        CustomText(
-                          title: 'Сырники ( 2х )',
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: ColorStyles.blackColor,
-                        ),
-                        const Spacer(),
-                        CustomText(
-                          title: '304 ₽',
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w400,
-                          color: ColorStyles.blackColor,
-                        ),
-                      ],
+                    ...List.generate(
+                      widget.orderEntiti.items.length,
+                      (index) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            flex: 8,
+                            child: CustomText(
+                              title:
+                                  '${widget.orderEntiti.items[index].discountType.name} ( ${widget.orderEntiti.items[index].amount.toInt()}х )',
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: ColorStyles.blackColor,
+                            ),
+                          ),
+                          CustomText(
+                            title:
+                                '${widget.orderEntiti.items[index].price.toInt()} ₽',
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w400,
+                            color: ColorStyles.blackColor,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -297,7 +300,8 @@ class _MorePageState extends State<MorePage> {
                 ),
               ),
               ScaleButton(
-                onTap: () => Functions(context).showComplaintPageBottomSheet(),
+                onTap: () => Functions(context)
+                    .showComplaintPageBottomSheet(widget.orderEntiti.number),
                 bound: 0.02,
                 duration: const Duration(milliseconds: 100),
                 child: Container(

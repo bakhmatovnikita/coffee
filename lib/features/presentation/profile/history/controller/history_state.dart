@@ -19,6 +19,11 @@ class HistoryLoadedSatate extends HistoryState {
   List<Object?> get props => [historyEntiti];
 }
 
+class NotHaveItemState extends HistoryState {
+  @override
+  List<Object?> get props => [];
+}
+
 class HistoryErrorState extends HistoryState {
   final String message;
 

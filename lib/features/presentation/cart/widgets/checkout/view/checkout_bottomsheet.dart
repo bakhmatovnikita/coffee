@@ -29,7 +29,6 @@ class CheckoutBottomsheet extends StatefulWidget {
 class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
   static PageController pageController = PageController(keepPage: true);
 
-
   late List<dynamic> listPages = [
     TimeAccept(
       pageController: pageController,
@@ -82,16 +81,18 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
                     top: 27.h, bottom: 45.h, left: 25.5.w, right: 16.w),
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => pageController.previousPage(
-                        duration: const Duration(milliseconds: 600),
-                        curve: Curves.easeInOutQuint,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: ColorStyles.accentColor,
-                      ),
-                    ),
+                    index != 6
+                        ? GestureDetector(
+                            onTap: () => pageController.previousPage(
+                              duration: const Duration(milliseconds: 600),
+                              curve: Curves.easeInOutQuint,
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: ColorStyles.accentColor,
+                            ),
+                          )
+                        : Container(),
                     const Spacer(),
                     index != 6
                         ? Row(

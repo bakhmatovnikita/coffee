@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -6,7 +5,6 @@ import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:octo_image/octo_image.dart';
 
 import '../../../../../../../../core/services/auth_config/time_accept.dart';
 
@@ -78,25 +76,26 @@ class _OrderUserState extends State<OrderUser> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      widget.cartModel[index].imageLink.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: OctoImage(
-                                image: CachedNetworkImageProvider(
-                                  widget.cartModel[index].imageLink[0],
-                                ),
-                                height: 80.h,
-                                width: 80.w,
-                                placeholderBuilder: OctoPlaceholder.blurHash(
-                                  'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
-                                ),
-                                fit: BoxFit.cover,
-                                memCacheHeight: 0,
-                                memCacheWidth: 0,
-                                filterQuality: FilterQuality.low,
-                              ),
-                            )
-                          : SizedBox(
+                      // widget.cartModel[index].imageLink.isNotEmpty
+                      //     ? ClipRRect(
+                      //         borderRadius: BorderRadius.circular(4),
+                      //         child: OctoImage(
+                      //           image: CachedNetworkImageProvider(
+                      //             widget.cartModel[index].imageLink[0],
+                      //           ),
+                      //           height: 80.h,
+                      //           width: 80.w,
+                      //           placeholderBuilder: OctoPlaceholder.blurHash(
+                      //             'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
+                      //           ),
+                      //           fit: BoxFit.cover,
+                      //           memCacheHeight: 0,
+                      //           memCacheWidth: 0,
+                      //           filterQuality: FilterQuality.low,
+                      //         ),
+                      //       )
+                      //     :
+                           SizedBox(
                               width: 80.w,
                               height: 80.h,
                               child: Image.asset(

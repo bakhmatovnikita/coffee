@@ -6,22 +6,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditProfileCubit extends Cubit<EditProfileState> {
   final CreateUser createUser;
   final LocalDatasource localDatasource;
+
   EditProfileCubit({
     required this.createUser,
     required this.localDatasource,
   }) : super(EditProfileEmptyState());
-  Future<bool> createCustomer(String endpoint, String phone, String name,) async {
+  Future<void> createCustomer(String endpoint, String phone,
+      [String? email, String? name]) async {
     try {
-      createUser.call(
+      await createUser.call(
         EndpointUserParams(
           endpoint: endpoint,
           phone: phone,
           organizationId: await localDatasource.getOrganizatuonId(),
+          email: email,
+          name: name,
         ),
       );
-      return true;
+      //TODO Убрать этот кубит и использовать ProfilePageCubit
     } catch (_) {
-      return false;
+      rethrow;
     }
   }
 }

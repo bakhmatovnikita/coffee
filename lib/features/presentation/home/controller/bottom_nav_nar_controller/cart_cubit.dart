@@ -1,14 +1,68 @@
+import 'package:cofee/core/services/auth_config/time_accept.dart';
+import 'package:cofee/custom_widgets/not_have_day.dart';
 import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/domain/usecase/create_order.dart';
+import 'package:cofee/features/domain/usecase/get_status_terminal.dart';
 import 'package:cofee/features/presentation/home/controller/bottom_nav_nar_controller/cart_state.dart';
+import 'package:cofee/injection.container.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-class   CartCubit extends Cubit<CartState> {
+class CartCubit extends Cubit<CartState> {
   final LocalDatasource localDatasource;
   final CreateOrder createOrder;
-  CartCubit(this.localDatasource, this.createOrder) : super(CartEmptyState());
+  final GetStatusTerminal getStatusTerminal;
+  CartCubit(this.localDatasource, this.createOrder, this.getStatusTerminal)
+      : super(CartEmptyState());
+
+  Future<void> getStatus(
+      int day, String month, String weekDay, Function() onTap) async {
+    try {
+      final result = await getStatusTerminal.call(
+        GetStatusTerminalParams(
+          organizationId: await localDatasource.getOrganizatuonId(),
+          terminalGroupId: await localDatasource.getTerminalGroup(),
+        ),
+      );
+      result.fold(
+        (error) {
+          SmartDialog.show(
+            animationType: SmartAnimationType.fade,
+            builder: (context) => const SafeArea(
+              child: Align(
+                alignment: Alignment.center,
+                child: NotHaveDay(),
+              ),
+            ),
+          );
+        },
+        (data) {
+          if (!data.isAliveStatus[0].isAlive) {
+            SmartDialog.show(
+              animationType: SmartAnimationType.fade,
+              builder: (context) => const SafeArea(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: NotHaveDay(),
+                ),
+              ),
+            );
+          } else {
+            sl<AcceptTime>().day = day;
+            sl<AcceptTime>().month = month;
+            sl<AcceptTime>().weekDay = weekDay;
+            onTap();
+          }
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   void addToCartItem(CartModel productModel) {
     try {
       List<CartModel> cart = localDatasource.getSavedCart();
@@ -85,8 +139,14 @@ class   CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> createClientOrder(String endpoint, List<Item> item,
-      String paymentTypeKind, int sum, String paymentTypeId, Function() onError, Function() onSucces) async {
+  Future<void> createClientOrder(
+      String endpoint,
+      List<Item> item,
+      String paymentTypeKind,
+      int sum,
+      String paymentTypeId,
+      Function() onError,
+      Function() onSucces) async {
     try {
       final value = await createOrder.call(
         CresteOrderParams(
