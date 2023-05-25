@@ -95,15 +95,15 @@ class _OrderUserState extends State<OrderUser> {
                       //         ),
                       //       )
                       //     :
-                           SizedBox(
-                              width: 80.w,
-                              height: 80.h,
-                              child: Image.asset(
-                                'assets/images/splash.png',
-                                width: 155.w / 2,
-                                height: 155.w / 2,
-                              ),
-                            ),
+                      SizedBox(
+                        width: 80.w,
+                        height: 80.h,
+                        child: Image.asset(
+                          'assets/images/splash.png',
+                          width: 155.w / 2,
+                          height: 155.w / 2,
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(left: 8.w),
                         child: Column(
@@ -224,8 +224,9 @@ class _OrderUserState extends State<OrderUser> {
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    title:
-                        'во ${sl<AcceptTime>().weekDay} ${sl<AcceptTime>().day} ${sl<AcceptTime>().month}, ${sl<AcceptTime>().time}',
+                    title: sl<AcceptTime>().weekDay == "Вторник"
+                        ? 'во ${sl<AcceptTime>().weekDay} ${sl<AcceptTime>().day} ${sl<AcceptTime>().month}, ${sl<AcceptTime>().time}'
+                        : 'в ${sl<AcceptTime>().weekDay} ${sl<AcceptTime>().day} ${sl<AcceptTime>().month}, ${sl<AcceptTime>().time}',
                     fontSize: 16,
                     color: ColorStyles.accentColor,
                     fontWeight: FontWeight.w600,

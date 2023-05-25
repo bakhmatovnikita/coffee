@@ -122,20 +122,23 @@ class _BottomNavViewState extends State<BottomNavView>
                                     return Align(
                                       alignment: Alignment.topRight,
                                       child: Container(
-                                        height: 8.h,
-                                        width: 8.w,
+                                        height: 13.h,
+                                        width: 13.w,
+                                        alignment: Alignment.center,
                                         decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
                                           color: ColorStyles.accentColor,
-                                          borderRadius:
-                                              BorderRadius.circular(4.r),
+                                          border: Border.all(
+                                            width: 2,
+                                            color: Colors.white,
+                                            
+                                          )
                                         ),
-                                        child: Align(
-                                            alignment: Alignment.center,
-                                            child: CustomText(
-                                              title: state.countCart.toString(),
-                                              color: Colors.white,
-                                              fontSize: 6,
-                                            )),
+                                        child: CustomText(
+                                          title: state.countCart.toString(),
+                                          color: Colors.white,
+                                          fontSize: 6,
+                                        ),
                                       ),
                                     );
                                   }

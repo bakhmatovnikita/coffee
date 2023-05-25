@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/core/helpers/input_formatter.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
@@ -126,7 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       // inputFormatters: [CustomInputFormatter()],
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration.collapsed(
-                        hintText: 'Имя Фамилия',
+                        hintText: 'Иван Иванов',
                         hintStyle: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w500,
                           fontSize: 17.h,
@@ -266,8 +267,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         color: ColorStyles.blackColor,
                       ),
                       cursorColor: ColorStyles.accentColor,
-                      // inputFormatters: [CustomInputFormatter()],
-                      keyboardType: TextInputType.name,
+                      inputFormatters: [BackConstants.maskDate],
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration.collapsed(
                         hintText: 'Дата рождения',
                         hintStyle: GoogleFonts.montserrat(

@@ -1,5 +1,6 @@
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class BackConstants {
   final storage = const FlutterSecureStorage();
@@ -75,4 +76,14 @@ class BackConstants {
     'в Субботу',
     'в Воскресение',
   ];
+  static var maskFormatter = MaskTextInputFormatter(
+    mask: '+7 ### ###-##-##',
+    filter: {"#": RegExp(r'[0-9A-Za-zа-яА-я]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+  static final maskDate = MaskTextInputFormatter(
+    mask: '##/##/####',
+    filter: {"#": RegExp(r'[0-9A-Za-zа-яА-я]')},
+    type: MaskAutoCompletionType.lazy,
+  );
 }

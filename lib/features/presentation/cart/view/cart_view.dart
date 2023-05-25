@@ -96,7 +96,7 @@ class _CartViewState extends State<CartView> {
                               borderRadius: BorderRadius.circular(46.r),
                             ),
                             child: CustomText(
-                              title: "Очистить",
+                              title: "Очистить".toUpperCase(),
                               color: const Color(0xffD30000),
                               fontSize: 12.sp,
                             ),
@@ -259,7 +259,7 @@ class _CartViewState extends State<CartView> {
                               title:
                                   '${totalAmount.toString()} ₽ · ${totalWeigth.toStringAsFixed(2)} Ккал',
                               fontSize: 17,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),

@@ -51,6 +51,7 @@ class _AboutUsBottomsheetState extends State<AboutUsBottomsheet> {
         ),
         Expanded(
           child: ListView(
+            padding: const EdgeInsets.only(bottom: 40),      
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -67,7 +68,7 @@ class _AboutUsBottomsheetState extends State<AboutUsBottomsheet> {
                       padding: EdgeInsets.symmetric(vertical: 16.w),
                       child: CustomText(
                         title:
-                            'В ресторане быстрого обслуживания «Ели-Млели» вас ждут простые и вкусные блюда русской и европейской кухонь по демократичным ценам, а также быстрое обслуживание, постоянно обновляемое меню, оригинальный дизайн и теплая дружеская атмосфера!\n\n\nС помощбю мобильного приложения вы можете сделать заказ в одном из наших ресторанов и забрать его без очередей.',
+                            'В ресторане быстрого обслуживания «Ели-Млели» вас ждут простые и вкусные блюда русской и европейской кухонь по демократичным ценам, а также быстрое обслуживание, постоянно обновляемое меню, оригинальный дизайн и теплая дружеская атмосфера!\n\n\nС помощью мобильного приложения вы можете сделать заказ в одном из наших ресторанов и забрать его без очередей.',
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         color: ColorStyles.blackColor,

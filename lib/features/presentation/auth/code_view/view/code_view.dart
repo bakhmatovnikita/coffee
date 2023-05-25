@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
@@ -21,7 +23,7 @@ class _CodeViewState extends State<CodeView> {
 
   @override
   void initState() {
-    controller.addListener(() {});
+    controller.addListener(() { });
     super.initState();
     listen();
   }
@@ -29,6 +31,7 @@ class _CodeViewState extends State<CodeView> {
   @override
   void dispose() {
     SmsAutoFill().unregisterListener();
+    controller.dispose();
     super.dispose();
   }
 
@@ -83,18 +86,7 @@ class _CodeViewState extends State<CodeView> {
                       ),
                     ),
                   )),
-              Padding(
-                padding: EdgeInsets.only(top: 16.h),
-                child: Text(
-                  'Отправить код еще раз\n( через 57 секунд )',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff515151),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              const TimerWidget(),
               Padding(
                 padding: EdgeInsets.only(top: 32.h),
                 child: CustomButton(
@@ -146,6 +138,65 @@ class _CodeViewState extends State<CodeView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class TimerWidget extends StatefulWidget {
+  const TimerWidget({
+    super.key,
+  });
+
+  @override
+  State<TimerWidget> createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  late Timer _timer;
+  int _start = 60;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 16.h),
+      child: Text(
+        'Отправить код еще раз\n( через $_start секунд )',
+        style: GoogleFonts.montserrat(
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xff515151),
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }

@@ -51,7 +51,7 @@ class _ChoicedRestaurantState extends State<ChoicedRestaurant> {
                 ),
                 Flexible(
                   child: Text(
-                    widget.title,
+                    'Ресторан ${widget.title}',
                     style: GoogleFonts.montserrat(
                       color: ColorStyles.accentColor,
                       fontSize: 17.sp,

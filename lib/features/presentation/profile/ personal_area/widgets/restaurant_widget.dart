@@ -27,7 +27,6 @@ class RestaurantWidget extends StatelessWidget {
         left: 16.w,
       ),
       padding: const EdgeInsets.all(16),
-      height: 146.h,
       width: size.width.w,
       decoration: BoxDecoration(
         color: ColorStyles.whiteColor,
@@ -35,6 +34,7 @@ class RestaurantWidget extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -58,7 +58,7 @@ class RestaurantWidget extends StatelessWidget {
                         Border.all(color: ColorStyles.accentColor, width: 2.w),
                   ),
                   child: CustomText(
-                    title: 'Изменить',
+                    title: 'Изменить'.toUpperCase(),
                     color: ColorStyles.accentColor,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
@@ -71,6 +71,7 @@ class RestaurantWidget extends StatelessWidget {
             height: 8.h,
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height: 10.h,
@@ -92,7 +93,6 @@ class RestaurantWidget extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           CustomText(
             title: address,
             fontSize: 16.sp,

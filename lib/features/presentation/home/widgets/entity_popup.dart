@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/data/models/cart/cart_model.dart';
+import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,6 +43,7 @@ class _EntityPopupState extends State<EntityPopup> {
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
                     height: 370.h,
@@ -160,33 +161,35 @@ class _EntityPopupState extends State<EntityPopup> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  CustomButton(
-                    title: 'Добавить в корзину',
-                    onTap: () {
-                      context.read<CartCubit>().addToCartItem(
-                            CartModel(
-                              name: widget.productEntiti.name,
-                              fatFullAmount: widget.productEntiti.fatFullAmount
-                                  .toStringAsFixed(2),
-                              weight: widget.productEntiti.weight,
-                              proteinsFullAmount: widget
-                                  .productEntiti.proteinsFullAmount
-                                  .toStringAsFixed(1),
-                              carbohydratesFullAmount: widget
-                                  .productEntiti.carbohydratesFullAmount
-                                  .toStringAsFixed(1),
-                              sizePrices: widget.productEntiti.sizePrices[0]
-                                  .price.currentPrice,
-                              imageLink: widget.productEntiti.imageLink,
-                              productId: widget.productEntiti.id,
-                              count: 1,
-                              isSelected: true,
-                            ),
-                          );
-                      context.read<CartCubit>().getItemsCart();
-                      Navigator.pop(context);
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: CustomButton(
+                      title: 'Добавить в корзину',
+                      onTap: () {
+                        context.read<CartCubit>().addToCartItem(
+                              CartModel(
+                                name: widget.productEntiti.name,
+                                fatFullAmount: widget.productEntiti.fatFullAmount
+                                    .toStringAsFixed(2),
+                                weight: widget.productEntiti.weight,
+                                proteinsFullAmount: widget
+                                    .productEntiti.proteinsFullAmount
+                                    .toStringAsFixed(1),
+                                carbohydratesFullAmount: widget
+                                    .productEntiti.carbohydratesFullAmount
+                                    .toStringAsFixed(1),
+                                sizePrices: widget.productEntiti.sizePrices[0]
+                                    .price.currentPrice,
+                                imageLink: widget.productEntiti.imageLink,
+                                productId: widget.productEntiti.id,
+                                count: 1,
+                                isSelected: true,
+                              ),
+                            );
+                        context.read<CartCubit>().getItemsCart();
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                 ],
               ),

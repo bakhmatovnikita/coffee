@@ -1,4 +1,5 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/constants/constants_for_back/constants.dart';
 import 'package:cofee/core/helpers/functions.dart';
 import 'package:cofee/core/helpers/images.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
@@ -155,7 +156,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 CustomText(
                                   title: state is ProfilePageLoadedState
-                                      ? state.userInfoEntiti.phone
+                                      ? BackConstants.maskFormatter
+                                          .maskText(state.userInfoEntiti.phone)
                                       : '7 (999) 999-99-99',
                                   color: ColorStyles.greyTitleColor,
                                   fontSize: 16,
@@ -232,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Row(
                                   children: [
                                     CustomText(
-                                      title: bonus.toString(),
+                                      title: "${bonus.toString()} ₽",
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.w600,
                                       color: ColorStyles.whiteColor,
@@ -303,11 +305,78 @@ class _ProfilePageState extends State<ProfilePage> {
                         left: 16.w,
                       ),
                       padding: const EdgeInsets.all(16),
-                      height: 146.h,
                       width: size.width.w,
                       decoration: BoxDecoration(
                         color: ColorStyles.whiteColor,
                         borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              CustomText(
+                                title: 'Адрес ресторана',
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 95.w,
+                                  height: 32.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(46.r),
+                                    border: Border.all(
+                                        color: ColorStyles.accentColor,
+                                        width: 2.w),
+                                  ),
+                                  child: CustomText(
+                                    title: 'изменить'.toUpperCase(),
+                                    color: ColorStyles.accentColor,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Container(
+                            height: 20,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 20,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 40,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   Container(
@@ -362,7 +431,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             if (index == 0) {
                               Functions(context).showUserHistoryBottomSheet();
-                              
                             } else if (index == 1) {
                             } else if (index == 2) {
                             } else if (index == 3) {

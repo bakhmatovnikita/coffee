@@ -282,7 +282,7 @@ class _SelectCartState extends State<SelectCart> {
                             title: state.selectCartEntiti
                                         .paymentTypes[snapshot.data!].code ==
                                     'CASH'
-                                ? 'Оформить'
+                                ? 'Заказать'
                                 : 'Оплатить',
                             onTap: () async {
                               if (state.selectCartEntiti

@@ -76,7 +76,7 @@ class LoginOrNot extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: 16.h),
                   child: CustomText(
-                    title: 'Похоже вы не зарегестрированы',
+                    title: 'Похоже вы не зарегистрированы',
                     fontSize: 16,
                   ),
                 ),
@@ -86,7 +86,7 @@ class LoginOrNot extends StatelessWidget {
                   padding: EdgeInsets.only(top: 40.h, left: 16.h, right: 16.h),
                   child: CustomText(
                     title:
-                        'Зарегестрируйтесь, чтобы получить доступ к корзине и другим полезным функциям',
+                        'Зарегистрируйтесь, чтобы получить доступ к корзине и другим полезным функциям',
                     fontSize: 16.h,
                     fontWeight: FontWeight.w500,
                     color: ColorStyles.greyTitleColor,
@@ -97,7 +97,7 @@ class LoginOrNot extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 24.h),
                 child: CustomButton(
-                  title: 'Зарегестрироваться',
+                  title: 'Зарегистрироваться',
                   onTap: () {
                     Functions(context).showLoginBottomsheet();
                   },

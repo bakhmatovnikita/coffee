@@ -31,7 +31,7 @@ class _ProductCardState extends State<ProductCard> {
 
   returnBool(List<CartModel> cart) {
     for (var element in cart) {
-      if (element.name == widget.productEntiti.name && element.isSelected) {
+      if (element.name == widget.productEntiti.name && element.isSelected && element.count > 0) {
         return true;
       }
     }
@@ -168,7 +168,7 @@ class _ProductCardState extends State<ProductCard> {
                           children: [
                             CustomText(
                               title:
-                                  '${widget.productEntiti.sizePrices[0].price.currentPrice} ₽'
+                                  '${widget.productEntiti.sizePrices[0].price.currentPrice.toStringAsFixed(0)} ₽'
                                       .toUpperCase(),
                               fontSize: 20.h,
                               fontWeight: FontWeight.w600,
@@ -188,11 +188,11 @@ class _ProductCardState extends State<ProductCard> {
                                                           .cartModel![getIndex(
                                                               state.cartModel!)]
                                                           .count <
-                                                      2) {
+                                                      1) {
                                                     state
                                                         .cartModel![getIndex(
                                                             state.cartModel!)]
-                                                        .count = 1;
+                                                        .count = 0;
                                                   } else if (state
                                                           .cartModel![getIndex(
                                                               state.cartModel!)]
@@ -211,14 +211,6 @@ class _ProductCardState extends State<ProductCard> {
                                                   context
                                                       .read<CartCubit>()
                                                       .getItemsCart();
-
-                                                  // context
-                                                  //     .read<CartCubit>()
-                                                  //     .saveToCart(
-                                                  //         state.cartModel!);
-                                                  // context
-                                                  //     .read<CartCubit>()
-                                                  //     .getItemsCart();
                                                 },
                                                 child: Container(
                                                   height: 27.h,

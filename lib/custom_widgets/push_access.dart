@@ -14,6 +14,7 @@ class PushAccess extends StatelessWidget {
     return Container(
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 90.h),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: const Color(0xff039D00),
         borderRadius: BorderRadius.circular(8),
@@ -21,20 +22,18 @@ class PushAccess extends StatelessWidget {
       child: Row(
         children: [
           Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: 13.2.h, left: 13.6.w),
-              child: SvgPicture.asset(
-                SvgImg.pencilCircle,
-                height: 20.h,
-                width: 20.w,
-              ),
+            alignment: Alignment.centerLeft,
+            child: SvgPicture.asset(
+              SvgImg.pencilCircle,
+              height: 20.h,
+              width: 20.w,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 8.h, bottom: 8.h, left: 10.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   title,
