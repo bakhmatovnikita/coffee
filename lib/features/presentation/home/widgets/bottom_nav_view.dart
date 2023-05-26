@@ -14,8 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BottomNavView extends StatefulWidget {
-  String? organizationId;
-  BottomNavView({super.key, this.organizationId});
+  final String? organizationId;
+  const BottomNavView({super.key, this.organizationId});
 
   @override
   State<BottomNavView> createState() => _BottomNavViewState();

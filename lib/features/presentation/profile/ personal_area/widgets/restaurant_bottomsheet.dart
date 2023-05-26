@@ -16,7 +16,7 @@ import '../../../auth/choice_adress/widgets/choiced_restaurant.dart';
 
 class RestaurantBottomsheet extends StatefulWidget {
   String? id;
-   RestaurantBottomsheet({super.key, this.id});
+  RestaurantBottomsheet({super.key, this.id});
 
   @override
   State<RestaurantBottomsheet> createState() => _RestaurantBottomsheetState();
