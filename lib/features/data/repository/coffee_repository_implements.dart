@@ -8,6 +8,7 @@ import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
+import 'package:cofee/features/data/models/sms_model/sms_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
 import 'package:cofee/features/data/models/user_id_model.dart';
@@ -223,9 +224,21 @@ class CoffeeRepositoryImpl implements CoffeeRepository {
   }
 
   @override
-  Future<Either<Failure, StatusTerminalEntiti>> getStatusTerminal(String organizationId, String terminalGroupId) async {
+  Future<Either<Failure, StatusTerminalEntiti>> getStatusTerminal(
+      String organizationId, String terminalGroupId) async {
     try {
-      final data = await remoteDatasource.getStatusTerminal(organizationId, terminalGroupId);
+      final data = await remoteDatasource.getStatusTerminal(
+          organizationId, terminalGroupId);
+      return Right(data);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, SmsModel>> getSms(String phone, String msg) async {
+    try {
+      final data = await remoteDatasource.sendMessage(phone, msg);
       return Right(data);
     } catch (e) {
       return Left(ServerFailure());

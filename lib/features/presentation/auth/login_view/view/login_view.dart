@@ -1,11 +1,11 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
-import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/custom_text_field.dart';
 import 'package:cofee/custom_widgets/push_error.dart';
 import 'package:cofee/custom_widgets/switch_button.dart';
+import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
+import 'package:cofee/features/presentation/auth/login_view/controller/login_view_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +31,17 @@ class _LoginViewState extends State<LoginView> {
   bool switchValue = true;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginViewCubit, LoginViewState>(
+    return BlocConsumer<LoginViewCubit, LoginViewState>(
+      listener: (context, state) {
+        if (state is LoginViewSavedState) {
+          Navigator.of(context).pushNamed(
+            '/CodeView',
+            arguments: {
+              'phone': controller.text,
+            },
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
@@ -167,12 +177,10 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             );
                           } else {
-                            Navigator.of(context).pushNamed(
-                              '/CodeView',
-                              arguments: {
-                                'phone': controller.text,
-                              },
-                            );
+                            print(controller.text);
+                            context
+                                .read<LoginViewCubit>()
+                                .sendSms(controller.text);
                           }
                         },
                       ),

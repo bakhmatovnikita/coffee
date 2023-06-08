@@ -5,6 +5,7 @@ import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
+import 'package:cofee/features/data/models/sms_model/sms_model.dart';
 import 'package:cofee/features/data/models/status_terminal_model.dart/status_terminal_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
@@ -39,4 +40,5 @@ abstract class RemoteDatasource {
   Future<dynamic> fetch(RequestOptions options);
   Future<UserInfoEntiti> getUserInfo(String phone, String organizationId);
   Future<StatusTerminalModel> getStatusTerminal(String organizationId, String terminalGroupId);
+  Future<SmsModel>sendMessage(String phone, String msg);
 }

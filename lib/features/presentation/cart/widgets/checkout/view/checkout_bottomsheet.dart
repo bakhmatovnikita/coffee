@@ -1,13 +1,10 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/code_accept/view/code_accept.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/congratulations/view/congratulations.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/number_accept/view/number_accept.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/order_user/view/order_user.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/view/select_cart.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/time_accept/view/time_accept.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/way_of_obtaining/view/way_of_obtaining.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,18 +30,12 @@ class CheckoutBottomsheetState extends State<CheckoutBottomsheet> {
     TimeAccept(
       pageController: pageController,
     ),
-    WayOfObtaining(
-      pageController: pageController,
-      cartModel: widget.cartModel,
-      totalAmount: widget.totalAmount,
-      totalWeigth: widget.totalWeigth,
-    ),
-    NumberAccept(
-      pageController: pageController,
-    ),
-    CodeAccept(
-      pageController: pageController,
-    ),
+    // NumberAccept(
+    //   pageController: pageController,
+    // ),
+    // CodeAccept(
+    //   pageController: pageController,
+    // ),
     OrderUser(
       pageController: pageController,
       cartModel: widget.cartModel,

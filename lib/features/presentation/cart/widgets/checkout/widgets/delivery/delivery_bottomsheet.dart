@@ -1,9 +1,7 @@
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/code_accept/view/code_accept.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/congratulations/view/congratulations.dart';
-import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/number_accept/view/number_accept.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/order_user/view/order_user.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/selected_cart/view/select_cart.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +25,12 @@ class _DeliveryBottomsheetState extends State<DeliveryBottomsheet> {
     ChoiceTime(
       pageController: pageController,
     ),
-    NumberAccept(
-      pageController: pageController,
-    ),
-    CodeAccept(
-      pageController: pageController,
-    ),
+    // NumberAccept(
+    //   pageController: pageController,
+    // ),
+    // CodeAccept(
+    //   pageController: pageController,
+    // ),
     OrderUser(
       pageController: pageController,
       cartModel: widget.cartModel,

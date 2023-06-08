@@ -50,6 +50,10 @@ class _ProfilePageState extends State<ProfilePage> {
       "icon": SvgImg.info,
       "title": "О нас",
     },
+    {
+      "icon": SvgImg.info,
+      "title": "Способы заказа",
+    },
   ];
 
   bool switchValue = true;
@@ -436,11 +440,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             } else if (index == 3) {
                             } else if (index == 4) {
                               Functions(context).showAboutUsBottomsheet();
+                            } else if (index == 5) {
+                              Functions(context).showWayBottomsheet();
                             }
                           },
                           child: Container(
                             color: Colors.transparent,
-                            padding: index == 4
+                            padding: index == 5
                                 ? EdgeInsets.only(
                                     bottom: 16.h,
                                     top: 16.h,
@@ -452,7 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: index == 4
+                                  padding: index == 5
                                       ? EdgeInsets.only(bottom: 0.h)
                                       : EdgeInsets.only(bottom: 10.h),
                                   child: Row(
@@ -474,7 +480,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ],
                                   ),
                                 ),
-                                index == 4
+                                index == 5
                                     ? Container()
                                     : Container(
                                         height: 1.h,

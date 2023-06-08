@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/helpers/images.dart';
+import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_state.dart';
-import 'package:cofee/custom_widgets/custom_button.dart';
+import 'package:cofee/features/presentation/auth/choice_way_of_obtaining/view/choice_way_of_obtaining.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -136,13 +137,15 @@ class _ChoiceAdressViewState extends State<ChoiceAdressView> {
                                       state.organizationsEntiti
                                           .organizations[snapshot.data!].id,
                                       widget.phone)) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/MainView",
-                                  (route) => false,
-                                  arguments: {
-                                    'organizationId': state.organizationsEntiti
-                                        .organizations[snapshot.data!].id,
-                                  },
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChoiceWayOfObtaining(
+                                      id: state.organizationsEntiti
+                                          .organizations[snapshot.data!].id,
+                                          orderTypeId: snapshot.data!,
+                                    ),
+                                  ),
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(

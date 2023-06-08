@@ -5,6 +5,8 @@ class AuthConfig {
   String? phoneUser;
   String? nameUser;
   String? email;
+  String? orderType;
+  int? orderTypeId;
   UserIdModel? userId;
   int? bonus;
   AuthConfig({
@@ -14,5 +16,7 @@ class AuthConfig {
     this.bonus,
     this.email,
     this.nameUser,
+    this.orderType,
+    this.orderTypeId,
   });
 }

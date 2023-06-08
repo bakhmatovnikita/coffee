@@ -3,6 +3,7 @@ import 'package:cofee/features/data/models/cart/order_model.dart';
 import 'package:cofee/features/data/models/cart_to_order.dart/cart_to_order_model.dart';
 import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
+import 'package:cofee/features/data/models/sms_model/sms_model.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/history_order_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/products_entiti.dart';
 import 'package:cofee/features/domain/entiti/status_terminal_entiti/status_terminal_entiti.dart';
@@ -43,5 +44,6 @@ abstract class CoffeeRepository {
       String endpoint, String organizationId);
   Future<Either<Failure, UserInfoEntiti>> getUserInfo();
   Future<Either<Failure, StatusTerminalEntiti>> getStatusTerminal(String organizationId, String terminalGroupId);
+  Future<Either<Failure, SmsModel>> getSms(String phone, String msg);
   
 }

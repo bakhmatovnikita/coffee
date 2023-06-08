@@ -10,6 +10,7 @@ import 'package:cofee/features/data/models/order_types/order_types.dart';
 import 'package:cofee/features/data/models/organizations_model.dart';
 import 'package:cofee/features/data/models/products/products_model.dart';
 import 'package:cofee/features/data/models/select_cart/select_cart_model.dart';
+import 'package:cofee/features/data/models/sms_model/sms_model.dart';
 import 'package:cofee/features/data/models/status_terminal_model.dart/status_terminal_model.dart';
 import 'package:cofee/features/data/models/terminal_group/terminal_group_model.dart';
 import 'package:cofee/features/data/models/token_model.dart';
@@ -311,6 +312,23 @@ class RemoteDatasourceImplement implements RemoteDatasource {
         ),
       );
       return StatusTerminalModel.fromJson(response.data);
+    } on DioError {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SmsModel> sendMessage(String phone, String msg) async {
+    try {
+      final Response response = await _dio.post(
+        'https://sms.ru/sms/send?api_id=CA9C39BE-6DCD-EA63-48D3-52C56CDD54C4',
+        queryParameters: {
+          'to': phone,
+          'msg': msg,
+          'json': 1,
+        },
+      );
+      return SmsModel.fromJson(response.data);
     } on DioError {
       rethrow;
     }

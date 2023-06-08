@@ -1,10 +1,12 @@
 import 'package:cofee/constants/colors/color_styles.dart';
+import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/status_page.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
+import 'package:cofee/features/presentation/auth/choice_way_of_obtaining/view/choice_way_of_obtaining.dart';
 import 'package:cofee/features/presentation/auth/login_view/widgets/login_bottomscheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/view/checkout_bottomsheet.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/added_cart/view/added_cart.dart';
@@ -20,6 +22,7 @@ import 'package:cofee/features/presentation/profile/edit_profile/view/edit_profi
 import 'package:cofee/features/presentation/profile/history/view/history.dart';
 import 'package:cofee/features/presentation/profile/history/widgets/edit_order/edit_order.dart';
 import 'package:cofee/features/presentation/profile/history/widgets/more/more_bottomsheet.dart';
+import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -431,6 +434,17 @@ class Functions {
       enableDrag: false,
       context: context,
       builder: (context) => const StatusPage(),
+    );
+  }
+  void showWayBottomsheet() {
+    showCupertinoModalBottomSheet(
+      animationCurve: Curves.easeInOutQuint,
+      elevation: 12,
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.2),
+      duration: const Duration(milliseconds: 600),
+      backgroundColor: const Color(0xffF3F3F3),
+      context: context,
+      builder: (context) => ChoiceWayOfObtaining(id: sl<AuthConfig>().orderType!, orderTypeId: sl<AuthConfig>().orderTypeId!,),
     );
   }
 }

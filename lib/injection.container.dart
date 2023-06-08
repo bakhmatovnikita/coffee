@@ -17,6 +17,7 @@ import 'package:cofee/features/domain/usecase/get_status_terminal.dart';
 import 'package:cofee/features/domain/usecase/get_terminal_group.dart';
 import 'package:cofee/features/domain/usecase/get_token.dart';
 import 'package:cofee/features/domain/usecase/get_user_info.dart';
+import 'package:cofee/features/domain/usecase/send_sms.dart';
 import 'package:cofee/features/presentation/auth/choice_adress/controller/choice_adress_cubit.dart';
 import 'package:cofee/features/presentation/auth/login_view/controller/login_view_cubit.dart';
 import 'package:cofee/features/presentation/auth/root_screen/controller/root_screen_cubit.dart';
@@ -49,7 +50,7 @@ Future<void> init() async {
         localDatasource: sl(),
       ));
   sl.registerFactory(() => HomeViewCubit(getProducts: sl()));
-  sl.registerFactory(() => LoginViewCubit(getToken: sl()));
+  sl.registerFactory(() => LoginViewCubit(getToken: sl(), localDatasource: sl(), sendMsg: sl()));
   sl.registerFactory(() => CartCubit(sl(), sl(), sl()));
   sl.registerFactory(() => ListViewCubit());
   sl.registerFactory(() => HistoryCubit(
@@ -82,11 +83,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetCart(coffeeRepository: sl()));
   sl.registerLazySingleton(() => GetOrderTypes(sl()));
   sl.registerLazySingleton(() => GetUserInfo(coffeeRepository: sl()));
-  sl.registerLazySingleton(
-    () => GetStatusTerminal(
-      coffeeRepository: sl(),
-    ),
-  );
+  sl.registerLazySingleton(() => GetStatusTerminal(coffeeRepository: sl()));
+  sl.registerLazySingleton(() => SendMsg(coffeeRepository: sl()));
   //Repository
   sl.registerLazySingleton<CoffeeRepository>(
       () => CoffeeRepositoryImpl(sl(), sl()));

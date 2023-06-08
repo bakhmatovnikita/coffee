@@ -16,6 +16,9 @@ class LoginViewEmptyState extends LoginViewState {
 }
 
 class LoginViewSavedState extends LoginViewState{
+  final String? code;
+
+  LoginViewSavedState(this.code);
   @override
   List<Object?> get props => [];
 }

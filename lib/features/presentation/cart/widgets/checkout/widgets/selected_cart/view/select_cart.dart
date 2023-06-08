@@ -115,7 +115,7 @@ class _SelectCartState extends State<SelectCart> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              title: 'Шаг 6',
+                              title: 'Шаг 3',
                               fontSize: 17.sp,
                               fontWeight: FontWeight.w500,
                               color: ColorStyles.greyTitleColor,
