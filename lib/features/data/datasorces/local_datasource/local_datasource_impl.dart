@@ -137,7 +137,8 @@ class LocalDatasourceImplement implements LocalDatasource {
 
   @override
   Future<void> saveTerminalGroup(TerminalGroupModel terminalGroupModel) async {
-    final String terminalGroup = terminalGroupModel.terminalGroups[0].items[0].id;
+    final String terminalGroup =
+        terminalGroupModel.terminalGroups[0].items[0].id;
     print(terminalGroup);
     sharedPreferences.setString(
         BackConstants.SAVED_TERMINAL_GROUP, terminalGroup);
@@ -168,25 +169,55 @@ class LocalDatasourceImplement implements LocalDatasource {
 
   @override
   Future<List<String>> getOrdersId() async {
-    final list =  sharedPreferences.getStringList(BackConstants.SAVED_HISTORY_ORDERS);
+    final list =
+        sharedPreferences.getStringList(BackConstants.SAVED_HISTORY_ORDERS);
     if (list != null) {
       return list;
     }
     return [];
   }
-  
+
   @override
   Future<String> getTerminalGroup() async {
-    final data = sharedPreferences.getString(BackConstants.SAVED_TERMINAL_GROUP);
+    final data =
+        sharedPreferences.getString(BackConstants.SAVED_TERMINAL_GROUP);
     if (data != null) {
       return data;
     }
     return '';
   }
-  
+
   @override
   Future<void> deleteAllOrders() async {
     sharedPreferences.remove(BackConstants.SAVED_HISTORY_ORDERS);
+  }
+
+  @override
+  Future<void> saveOrderTypeId(int id) async {
+    sharedPreferences.setInt(BackConstants.SAVED_ORDER_TYPE_ID, id);
+  }
+
+  @override
+  Future<void> saveOrderType(String orderId) async {
+    sharedPreferences.setString(BackConstants.SAVED_ORDER_TYPE, orderId);
+  }
+
+  @override
+  Future<String> getOrderType() async {
+    final data = sharedPreferences.getString(BackConstants.SAVED_ORDER_TYPE);
+    if (data != null) {
+      return data;
+    }
+    return '';
+  }
+
+  @override
+  Future<int> getOrderTypeId() async {
+    final data = sharedPreferences.getInt(BackConstants.SAVED_ORDER_TYPE_ID);
+    if (data != null) {
+      return data;
+    }
+    return 0;
   }
   // @override
   // Future<void> saveToCart(List<CartModel> cartModel) {

@@ -1,8 +1,8 @@
 import 'package:cofee/constants/colors/color_styles.dart';
-import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
 import 'package:cofee/custom_widgets/status_page.dart';
+import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/data/models/cart/cart_model.dart';
 import 'package:cofee/features/domain/entiti/default_history_entiti.dart/order_entiti.dart';
 import 'package:cofee/features/domain/entiti/products/product_entiti.dart';
@@ -436,7 +436,9 @@ class Functions {
       builder: (context) => const StatusPage(),
     );
   }
-  void showWayBottomsheet() {
+  void showWayBottomsheet() async {
+    String id = await sl<LocalDatasource>().getOrderType();
+    int orderTypeId = await sl<LocalDatasource>().getOrderTypeId();
     showCupertinoModalBottomSheet(
       animationCurve: Curves.easeInOutQuint,
       elevation: 12,
@@ -444,7 +446,7 @@ class Functions {
       duration: const Duration(milliseconds: 600),
       backgroundColor: const Color(0xffF3F3F3),
       context: context,
-      builder: (context) => ChoiceWayOfObtaining(id: sl<AuthConfig>().orderType!, orderTypeId: sl<AuthConfig>().orderTypeId!,),
+      builder: (context) => ChoiceWayOfObtaining(id: id, orderTypeId: orderTypeId,),
     );
   }
 }

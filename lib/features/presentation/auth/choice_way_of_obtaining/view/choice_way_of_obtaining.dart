@@ -4,6 +4,7 @@ import 'package:cofee/constants/colors/color_styles.dart';
 import 'package:cofee/core/services/auth_config/auth_config.dart';
 import 'package:cofee/custom_widgets/custom_button.dart';
 import 'package:cofee/custom_widgets/custom_text.dart';
+import 'package:cofee/features/data/datasorces/local_datasource/local_datasource.dart';
 import 'package:cofee/features/presentation/cart/widgets/checkout/widgets/way_of_obtaining/controller/way_of_obtaining_cubit.dart';
 import 'package:cofee/injection.container.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ import '../../../profile/edit_order/widgets/shipping_options.dart';
 class ChoiceWayOfObtaining extends StatefulWidget {
   final String id;
   final int orderTypeId;
-  const ChoiceWayOfObtaining({super.key, required this.id, required this.orderTypeId});
+  const ChoiceWayOfObtaining(
+      {super.key, required this.id, required this.orderTypeId});
 
   @override
   State<ChoiceWayOfObtaining> createState() => _ChoiceWayOfObtainingState();
@@ -57,8 +59,8 @@ class _ChoiceWayOfObtainingState extends State<ChoiceWayOfObtaining> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.only(right: 16.w, left: 16.w, bottom: 56.h, top: 30),
+                        padding: EdgeInsets.only(
+                            right: 16.w, left: 16.w, bottom: 56.h, top: 30),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -93,15 +95,20 @@ class _ChoiceWayOfObtainingState extends State<ChoiceWayOfObtaining> {
                         child: CustomButton(
                             title: 'Далее',
                             onTap: () async {
-                              sl<AuthConfig>().orderType = wayOfObtaining[snapshot.data!]['title'];
-                              sl<AuthConfig>().orderTypeId = snapshot.data!; 
+                              sl<AuthConfig>().orderType =
+                                  wayOfObtaining[snapshot.data!]['title'];
+                              sl<AuthConfig>().orderTypeId = snapshot.data!;
+                              await sl<LocalDatasource>()
+                                  .saveOrderTypeId(snapshot.data!);
+                              await sl<LocalDatasource>().saveOrderType(wayOfObtaining[snapshot.data!]['title']);
+
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/MainView",
-                                    (route) => false,
-                                    arguments: {
-                                      'organizationId': widget.id,
-                                    },
-                                  );
+                                "/MainView",
+                                (route) => false,
+                                arguments: {
+                                  'organizationId': widget.id,
+                                },
+                              );
                               // if (wayOfObtaining[2]['isSelected']) {
                               //   Navigator.pop(context);
                               //   const Duration(

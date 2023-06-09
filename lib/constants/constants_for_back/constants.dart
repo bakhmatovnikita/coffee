@@ -13,6 +13,8 @@ class BackConstants {
   static const String SAVED_ORGANIZATIONID = "SAVED_ORGANIZATIONID";
   static const String SAVED_TERMINAL_GROUP = "SAVED_TERMINAL_GROUP";
   static const String SAVED_HISTORY_ORDERS = "SAVED_HISTORY_ORDERS";
+  static const String SAVED_ORDER_TYPE_ID = 'SAVED_ORDER_TYPE_ID';
+  static const String SAVED_ORDER_TYPE = 'SAVED_ORDER_TYPE';
   static const String baseUrl = 'https://api-ru.iiko.services/api/1/';
   static String token = "";
   static List<CartModel> cart = [];
